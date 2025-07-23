@@ -22,7 +22,7 @@ if (!isset($_SESSION['last_regeneration'])) {
 }
 
 // Include database and functions
-require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/../admin/includes/functions.php';
 
 // Initialize database connection
 try {

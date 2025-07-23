@@ -1,6 +1,8 @@
 <?php
-require_once '../includes/session.php';
-require_once '../controllers/OrderController.php';
+//require_once '../includes/session.php';
+//require_once '../controllers/OrderController.php';
+require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/controllers/OrderController.php';
 
 // Check if user is logged in
 if (!is_logged_in()) {

@@ -1,7 +1,7 @@
 <?php
 // Dynamic sidebar that uses database menu items
-require_once __DIR__ . '/../../models/AdminMenu.php';
-require_once __DIR__ . '/../../models/Permission.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/models/AdminMenu.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/models/Permission.php';
 // Get user permissions
 $userPermissions = [];
 if (isset($_SESSION['user_id'])) {
@@ -91,12 +91,12 @@ function isMenuActive($item) {
     <div class="sidebar-header">
       <div class="logo-icon">
         <?php 
-        require_once __DIR__ . '/../../models/Setting.php';
+        require_once get_setting('base_path', '/var/www/html') . 'admin/models/Setting.php';
         $settingModel = new Setting();
         $logoPath = $settingModel->get('logo_path');
         $logoUrl = !empty($logoPath) ? '/uploads/' . $logoPath : '/images/Logo.jpg';
         ?>
-        <img src="<?php echo $logoUrl; ?>" class="logo-img" alt="Logo" onerror="this.src='/images/Logo.jpg'">
+        <img src="<?php echo $logoUrl; ?>" class="logo-img" alt="Logo">
       </div>
       <div class="logo-name flex-grow-1">
         <h5 class="mb-0">Metoxi</h5>
@@ -120,14 +120,14 @@ function isMenuActive($item) {
           </a>
         </div>
         <div class="dropdown dropup-center dropup dropdown-laungauge">
-          <a class="dropdown-toggle dropdown-toggle-nocaret footer-icon" href="javascript:;" data-bs-toggle="dropdown"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/assets/images/county/02.png" width="22" alt="">
+          <a class="dropdown-toggle dropdown-toggle-nocaret footer-icon" href="javascript:;" data-bs-toggle="dropdown"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/admin/assets/images/county/02.png" width="22" alt="">
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="en"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/assets/images/county/01.png" width="20" alt=""><span class="ms-2">English</span></a>
+            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="en"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/admin/assets/images/county/01.png" width="20" alt=""><span class="ms-2">English</span></a>
             </li>
-            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="it"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/assets/images/county/02.png" width="20" alt=""><span class="ms-2">Italiano</span></a>
+            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="it"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/admin/assets/images/county/02.png" width="20" alt=""><span class="ms-2">Italiano</span></a>
             </li>
-            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="ar"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/assets/images/county/08.png" width="20" alt=""><span class="ms-2">العربية</span></a>
+            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="ar"><img src="<?php echo get_setting('site_url', 'http://restaurant.com')?>/admin/assets/images/county/08.png" width="20" alt=""><span class="ms-2">العربية</span></a>
             </li>
           </ul>
         </div>

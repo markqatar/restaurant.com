@@ -11,9 +11,9 @@ define('SITE_URL', $protocol . $host . $baseDir);
 $siteUrl = SITE_URL;
 
 // Assets paths
-$jsPath = $siteUrl . '/assets/js';
-$cssPath = $siteUrl . '/assets/css';
-$imgPath = $siteUrl . '/assets/images';
+$jsPath = $siteUrl . '/admin/assets/js';
+$cssPath = $siteUrl . '/admin/assets/css';
+$imgPath = $siteUrl . '/admin/assets/images';
 
 // Theme configuration
 $theme = 'default';

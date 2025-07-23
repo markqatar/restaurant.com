@@ -8,8 +8,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include required files
-require_once __DIR__ . '/includes/functions.php';
-require_once get_setting('base_path', '/var/www/html') . 'includes/globals.php';
+require_once __DIR__ . '/admin/includes/functions.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/globals.php';
 require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
 
 // Get the request URI

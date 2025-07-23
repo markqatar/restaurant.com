@@ -1,7 +1,7 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
-require_once get_setting('base_path', '/var/www/html') . 'includes/functions.php';
-require_once get_setting('base_path', '/var/www/html') . 'controllers/BranchController.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/session.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/functions.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/controllers/BranchController.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {

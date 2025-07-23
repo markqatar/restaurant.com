@@ -1,11 +1,11 @@
 <?php
 // Define site URL
 // Get site URL from settings
-require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../admin/includes/functions.php';
 $siteUrl = get_setting('site_url', 'http://restaurant.com');
 
 // Load user preferences
-require_once __DIR__ . '/../../models/UserPreferences.php';
+require_once __DIR__ . '/../../admin/models/UserPreferences.php';
 
 if (isset($_SESSION['user_id'])) {
   $userPrefsModel = new UserPreferences();
@@ -35,23 +35,23 @@ $langCode = $currentLanguage;
   <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
 
   <!-- Local CSS files -->
-  <link href="<?php echo $siteUrl; ?>/assets/css/bootstrap.min.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/css/bootstrap-extended.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/css/extra-icons.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/sass/main.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/sass/dark-theme.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/sass/semi-dark.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/sass/bordered-theme.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/sass/responsive.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/css/bootstrap-extended.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/css/extra-icons.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/sass/main.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/sass/dark-theme.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/sass/semi-dark.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/sass/bordered-theme.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/sass/responsive.css" rel="stylesheet">
 
   <!-- Plugins -->
-  <link href="<?php echo $siteUrl; ?>/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/plugins/metismenu/metisMenu.min.css" rel="stylesheet">
-  <link href="<?php echo $siteUrl; ?>/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/metismenu/metisMenu.min.css" rel="stylesheet">
+  <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
 
   <?php if ($currentPage == 'branches.php' || $currentPage == 'users.php'): ?>
     <!-- DataTable CSS -->
-    <link href="<?php echo $siteUrl; ?>/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet">
   <?php endif; ?>
 
   <title><?php echo translate('Restaurant Management System'); ?></title>
@@ -135,7 +135,7 @@ $langCode = $currentLanguage;
                   <a class="dropdown-item border-bottom py-2" href="javascript:;">
                     <div class="d-flex align-items-center gap-3">
                       <div class="">
-                        <img src="assets/images/avatars/default.png" class="rounded-circle" width="45" height="45" alt="">
+                        <img src="<?php echo $siteUrl;?>/admin/assets/images/avatars/default.png" class="rounded-circle" width="45" height="45" alt="">
                       </div>
                       <div class="">
                         <h5 class="notify-title">Congratulations Jhon</h5>
@@ -169,7 +169,6 @@ $langCode = $currentLanguage;
                   <a class="dropdown-item border-bottom py-2" href="javascript:;">
                     <div class="d-flex align-items-center gap-3">
                       <div class="">
-                        <img src="assets/images/apps/13.png" class="rounded-circle" width="45" height="45" alt="">
                       </div>
                       <div class="">
                         <h5 class="notify-title">Payment Recived</h5>
@@ -186,7 +185,6 @@ $langCode = $currentLanguage;
                   <a class="dropdown-item border-bottom py-2" href="javascript:;">
                     <div class="d-flex align-items-center gap-3">
                       <div class="">
-                        <img src="assets/images/apps/14.png" class="rounded-circle" width="45" height="45" alt="">
                       </div>
                       <div class="">
                         <h5 class="notify-title">New Order Recived</h5>
@@ -203,7 +201,6 @@ $langCode = $currentLanguage;
                   <a class="dropdown-item border-bottom py-2" href="javascript:;">
                     <div class="d-flex align-items-center gap-3">
                       <div class="">
-                        <img src="assets/images/avatars/06.png" class="rounded-circle" width="45" height="45" alt="">
                       </div>
                       <div class="">
                         <h5 class="notify-title">Congratulations Jhon</h5>
@@ -245,16 +242,16 @@ $langCode = $currentLanguage;
               <div class="user-img">
                 <?php 
                 $userAvatar = isset($userPrefs['avatar']) ? $userPrefs['avatar'] : 'default.png';
-                $avatarPath = $siteUrl . '/assets/images/avatars/' . $userAvatar;
+                $avatarPath = $siteUrl . '/admin/assets/images/avatars/' . $userAvatar;
                 ?>
-                <img src="<?php echo $avatarPath; ?>" alt="User" onerror="this.src='<?php echo $siteUrl; ?>/assets/images/avatars/default.png'">
+                <img src="<?php echo $avatarPath; ?>" alt="User" onerror="this.src='<?php echo $siteUrl; ?>/admin/assets/images/avatars/default.png'">
               </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
               <div class="user-details p-3">
                 <div class="d-flex mb-2">
                   <div class="user-img">
-                    <img src="<?php echo $avatarPath; ?>" alt="User" onerror="this.src='<?php echo $siteUrl; ?>/assets/images/avatars/default.png'">
+                    <img src="<?php echo $avatarPath; ?>" alt="User" onerror="this.src='<?php echo $siteUrl; ?>/admin/assets/images/avatars/default.png'">
                   </div>
                   <div class="ms-2">
                     <h6 class="mb-0">

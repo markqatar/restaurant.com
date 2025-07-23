@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../admin/includes/session.php';
+require_once __DIR__ . '/../admin/includes/functions.php';
 require_once __DIR__ . '/../controllers/SettingController.php';
 
 // Check if user is logged in

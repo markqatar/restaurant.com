@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../controllers/AdminMenuController.php';
-
+//require_once __DIR__ . '/../includes/session.php';
+//require_once __DIR__ . '/../controllers/AdminMenuController.php';
+require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/controllers/AdminMenuController.php';
 // Check if user is logged in
 if (!is_logged_in()) {
     redirect('login.php');

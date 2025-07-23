@@ -1,6 +1,6 @@
 <?php
 // Process language changes first, before any output
-require_once 'includes/process_language.php';
+require_once __DIR__ . '/../admin/includes/process_language.php';
 require_once __DIR__ . '/../includes/session.php';
 
 // If already logged in, redirect to dashboard
