@@ -111,7 +111,7 @@ if (!function_exists('get_csrf_token')) {
 
                         <?php
                         // Load branches
-                        require_once __DIR__ . '/../../models/Branch.php';
+                        require_once get_setting('base_path', '/var/www/html') . 'admin/models/Branch.php';
                         $branch_model = new Branch();
                         $branches = $branch_model->read(true); // Get only active branches
 

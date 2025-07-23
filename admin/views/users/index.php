@@ -98,7 +98,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                             <td>
                                 <?php
                                 // Get user branches
-                                require_once __DIR__ . '/../../models/Branch.php';
+                                require_once get_setting('base_path', '/var/www/html') . 'admin/models/Branch.php';
                                 $branch_model = new Branch();
                                 $user_branches = $branch_model->getUserBranches($user['id']);
 

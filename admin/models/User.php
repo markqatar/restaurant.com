@@ -12,8 +12,6 @@ class User {
     // Create user
     public function create($data) {
         try {
-            // Start transaction
-            $this->db->beginTransaction();
             
             $query = "INSERT INTO " . $this->table . " 
                       (username, email, password, first_name, last_name, phone, is_active) 
@@ -51,14 +49,11 @@ class User {
                 ]);
                 
                 if ($prefsResult) {
-                    $this->db->commit();
                     return $userId; // Return the user ID instead of just true
                 } else {
-                    $this->db->rollback();
                     return false;
                 }
             } else {
-                $this->db->rollback();
                 return false;
             }
             

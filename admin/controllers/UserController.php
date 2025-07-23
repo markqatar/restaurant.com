@@ -62,7 +62,7 @@ class UserController {
             // Verify CSRF token
             if (!verify_csrf_token($_POST['csrf_token'])) {
                 send_notification('Token di sicurezza non valido', 'danger');
-                redirect('users.php?action=create');
+                redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/users/create');
             }
             
             // Validate input
@@ -80,12 +80,8 @@ class UserController {
                 ];
                 
                 try {
-                    $this->db->beginTransaction();
-                    
-                    if ($this->user_model->create($data)) {
-                        // Get the newly created user ID
-                        $user_id = $this->db->lastInsertId();
-                        
+                    $newUserId = $this->user_model->create($data);
+                    if ($newUserId) {
                         // Process branch assignments
                         $branch_ids = $_POST['branch_ids'] ?? [];
                         $primary_branch_id = $_POST['primary_branch_id'] ?? null;
@@ -96,20 +92,17 @@ class UserController {
                             
                             foreach ($branch_ids as $branch_id) {
                                 $is_primary = ($branch_id == $primary_branch_id);
-                                $branch_model->assignUser($user_id, $branch_id, $is_primary);
+                                $branch_model->assignUser($newUserId, $branch_id, $is_primary);
                             }
                         }
                         
-                        $this->db->commit();
                         log_activity($_SESSION['user_id'], 'create_user', 'Created user: ' . $data['username']);
                         send_notification('Utente creato con successo', 'success');
-                        redirect('../admin/users.php');
+                        redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/users');
                     } else {
-                        $this->db->rollBack();
                         send_notification('Errore nella creazione dell\'utente', 'danger');
                     }
                 } catch (Exception $e) {
-                    $this->db->rollBack();
                     send_notification('Errore database: ' . $e->getMessage(), 'danger');
                 }
             } else {
@@ -117,8 +110,8 @@ class UserController {
                     send_notification($error, 'danger');
                 }
             }
-            
-            redirect('../admin/users.php?action=create');
+
+            redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/users/create');
         }
     }
     
