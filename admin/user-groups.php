@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../controllers/UserGroupController.php';
+require_once __DIR__ . '/includes/functions.php';
+require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/controllers/UserGroupController.php';
 
 // Check if user is logged in
 if (!is_logged_in()) {
@@ -25,7 +26,7 @@ switch ($action) {
         if ($id) {
             $controller->edit($id);
         } else {
-            redirect('user-groups.php');
+            redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/user-groups');
         }
         break;
         
@@ -33,7 +34,7 @@ switch ($action) {
         if ($id) {
             $controller->update($id);
         } else {
-            redirect('user-groups.php');
+            redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/user-groups');
         }
         break;
         
@@ -41,7 +42,7 @@ switch ($action) {
         if ($id) {
             $controller->delete($id);
         } else {
-            redirect('user-groups.php');
+            redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/user-groups');
         }
         break;
         

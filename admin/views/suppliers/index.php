@@ -9,7 +9,7 @@ require_once '../admin/includes/header.php';
                 <h1 class="h2">
                     <i class="fas fa-truck me-2"></i><?php echo t('supplier.management'); ?>
                 </h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
                     <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'create')): ?>
                     <a href="suppliers/create" class="btn btn-primary me-2">
                         <i class="fas fa-plus me-1"></i><?php echo t('supplier.new_supplier'); ?>

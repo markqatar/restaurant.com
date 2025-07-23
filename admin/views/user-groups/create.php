@@ -1,6 +1,6 @@
 <?php
 // Process language changes first to prevent header issues
-require_once __DIR__ . '/../../admin/includes/process_language.php';
+require_once __DIR__ . '/../../../admin/includes/process_language.php';
 
 // Set page title before including header
 $page_title = t('user.groups') . ' - ' . t('btn.add_new') . ' - Restaurant Admin';
@@ -30,7 +30,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                 <h1 class="h2">
                     <i class="fas fa-users-cog me-2"></i><?php echo t('user.groups'); ?> - <?php echo t('btn.add_new'); ?>
                 </h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
                     <a href="user-groups.php" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i><?php echo t('back_to_list'); ?>
                     </a>
@@ -44,7 +44,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                             <h6 class="m-0 font-weight-bold text-primary"><?php echo t('user.groups'); ?> - <?php echo t('msg.info'); ?></h6>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="<?php echo get_setting('site_url', 'http://restaurant.com'); ?>/admin/user-groups/tore" id="groupForm">
+                            <form method="POST" action="<?php echo get_setting('site_url', 'http://restaurant.com'); ?>/admin/user-groups/store" id="groupForm">
                                 <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
                                 <div class="row">
                                     <div class="col-md-6">

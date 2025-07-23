@@ -17,7 +17,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <h1 class="h2">
         <i class="fas fa-users-cog me-2"></i><?php echo t('user.groups'); ?>
     </h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'user_groups', 'create')): ?>
             <a href="<?php echo admin_url('user-groups', 'create'); ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo t('btn.add_new'); ?>
@@ -108,15 +108,24 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function deleteGroup(groupId) {
-        confirmDelete('<?php echo addslashes(t('msg.confirm_delete')); ?>').then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = `<?php echo admin_url('user-groups', 'delete'); ?>/${groupId}`;
-            }
-        });
-    }
+function deleteGroup(userId) {
+    Swal.fire({
+        title: '<?php echo addslashes(t('msg.confirm_delete')); ?>',
+        text: "<?php echo addslashes(t('msg.confirm_delete_text')); ?>",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<?php echo addslashes(t('yes_delete')); ?>',
+        cancelButtonText: '<?php echo addslashes(t('cancel')); ?>'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = `<?php echo admin_url('user-groups', 'delete'); ?>/${userId}`;
+        }
+    });
+}
 </script>
 
 <?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>

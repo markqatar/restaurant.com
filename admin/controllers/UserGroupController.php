@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../models/UserGroup.php';
+require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/models/UserGroup.php';
 
 class UserGroupController {
     private $userGroupModel;

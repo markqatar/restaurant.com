@@ -6,7 +6,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
     <h1 class="h2">
         <i class="fas fa-users me-2"></i><?php echo t('user.management'); ?>
     </h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'users', 'create')): ?>
             <a href="<?php echo admin_url('users', 'create'); ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo t('user.new_user'); ?>
@@ -160,16 +160,26 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
         </div>
     </div>
 </div>
+<!-- SweetAlert2 CDN (assicurati di averlo incluso) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    function deleteUser(userId) {
-        confirmDelete('<?php echo addslashes(t('user.confirm_delete')); ?>')
-            .then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `<?php echo admin_url('users', 'delete'); ?>/${userId}`;
-                }
-            });
-    }
+function deleteUser(userId) {
+    Swal.fire({
+        title: '<?php echo addslashes(t('user.confirm_delete')); ?>',
+        text: "<?php echo addslashes(t('user.confirm_delete_text')); ?>",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<?php echo addslashes(t('yes_delete')); ?>',
+        cancelButtonText: '<?php echo addslashes(t('cancel')); ?>'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = `<?php echo admin_url('users', 'delete'); ?>/${userId}`;
+        }
+    });
+}
 </script>
 
 <?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>

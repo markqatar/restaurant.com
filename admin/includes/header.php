@@ -318,7 +318,7 @@ $langCode = $currentLanguage;
       }
 
       // Save to database
-      fetch('../../controllers/PreferencesController.php', {
+      fetch('../../admin/controllers/PreferencesController.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -355,7 +355,7 @@ $langCode = $currentLanguage;
           const language = this.getAttribute('data-lang');
 
           // Save to database and reload page
-          fetch('../../controllers/PreferencesController.php', {
+          fetch('../../admin/controllers/PreferencesController.php', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

@@ -31,7 +31,7 @@ if (!function_exists('get_csrf_token')) {
     <h1 class="h2">
         <i class="fas fa-user-plus me-2"></i><?php echo t('user.new_user'); ?>
     </h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <a href="<?php echo get_setting('site_url', 'http://restaurant.com') . '/admin/users'; ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i><?php echo t('back_to_list'); ?>
         </a>

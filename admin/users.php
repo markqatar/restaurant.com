@@ -25,7 +25,7 @@ switch ($action) {
         if ($id) {
             $controller->edit($id);
         } else {
-            redirect('users.php');
+            redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/users');
         }
         break;
         
@@ -33,7 +33,7 @@ switch ($action) {
         if ($id) {
             $controller->update($id);
         } else {
-            redirect('users.php');
+            redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/users');
         }
         break;
         
@@ -41,7 +41,7 @@ switch ($action) {
         if ($id) {
             $controller->delete($id);
         } else {
-            redirect('users.php');
+            redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/users');
         }
         break;
         

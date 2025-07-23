@@ -6,7 +6,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
     <h1 class="h2">
         <i class="fas fa-user-edit me-2"></i><?php echo t('user.edit_user'); ?>
     </h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <a href="<?php echo admin_url('users'); ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i><?php echo t('back_to_list'); ?>
         </a>
@@ -20,7 +20,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                 <h6 class="m-0 font-weight-bold text-primary"><?php echo t('user.user_data'); ?></h6>
             </div>
             <div class="card-body">
-                <form method="POST" action="<?php echo get_setting('base_path', '/var/www/html') . 'admin/users/update/' . $user['id']; ?>">
+                <form method="POST" action="<?php echo get_setting('site_url', 'users/update') . '/admin/users/update/' . $user['id']; ?>">
                     <?php echo csrf_token_field(); ?>
 
                     <div class="row">

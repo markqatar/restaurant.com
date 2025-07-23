@@ -30,7 +30,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                 <h1 class="h2">
                     <i class="fas fa-shield-alt me-2"></i><?php echo t('user.permissions'); ?> - <?php echo t('btn.add_new'); ?>
                 </h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
                     <a href="permissions.php" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i><?php echo t('back_to_list'); ?>
                     </a>
