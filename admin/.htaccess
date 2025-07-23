@@ -1,0 +1,6 @@
+# Send all requests to the root router.php
+RewriteEngine On
+RewriteBase /admin/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ ../router.php [QSA,L]
