@@ -1,11 +1,10 @@
 <?php
 // Include required files
-require_once __DIR__ . '/../../includes/functions.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 // Set page title before including header
 $page_title = t('user.groups') . ' - Restaurant Admin';
 
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 
 
 // Start session if not already started
@@ -86,6 +85,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                                 class="btn btn-sm btn-outline-primary" title="<?php echo t('edit'); ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
+                                            &nbsp;
                                         <?php endif; ?>
 
                                         <?php if (has_permission($_SESSION['user_id'], 'user_groups', 'delete')): ?>
@@ -128,4 +128,4 @@ function deleteGroup(userId) {
 }
 </script>
 
-<?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

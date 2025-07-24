@@ -3,10 +3,11 @@
 require_once __DIR__ . '/../../admin/includes/process_language.php';
 
 // Set page title before including header
-$page_title = t('user.permissions') . ' - ' . t('btn.add_new') . ' - Restaurant Admin';
+$page_title = t('user.permissions') . ' - ' . t('edit') . ' - Restaurant Admin';
 
 // Include required files
 require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../models/UserGroup.php';
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -20,15 +21,15 @@ if (!function_exists('get_csrf_token')) {
     }
 }
 
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 
 <div class="container-fluid">
-    <div class="row">        
+    <div class="row">
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">
-                    <i class="fas fa-shield-alt me-2"></i><?php echo t('user.permissions'); ?> - <?php echo t('btn.add_new'); ?>
+                    <i class="fas fa-shield-alt me-2"></i><?php echo t('user.permissions'); ?> - <?php echo t('edit'); ?>
                 </h1>
                 <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
                     <a href="permissions.php" class="btn btn-outline-secondary">
@@ -41,61 +42,70 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                 <div class="col-lg-8">
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary"><?php echo t('user.permissions'); ?> - <?php echo t('msg.info'); ?></h6>
+                            <h6 class="m-0 font-weight-bold text-primary"><?php echo t('user.permissions'); ?> - <?php echo t('edit'); ?></h6>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="permissions.php?action=store" id="permissionForm">
+                            <form method="POST" action="permissions.php?action=update&id=<?php echo $permission['id']; ?>" id="editPermissionForm">
                                 <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
                                 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="name" class="form-label"><?php echo t('name'); ?> *</label>
-                                            <input type="text" class="form-control" id="name" name="name" required>
+                                            <label for="module" class="form-label"><?php echo t('module'); ?> *</label>
+                                            <select class="form-control" id="module" name="module" required>
+                                                <option value=""><?php echo t('form.select_option'); ?></option>
+                                                <?php foreach ($modules as $module_name): ?>
+                                                    <option value="<?php echo $module_name; ?>" <?php echo ($permission['module'] ?? '') == $module_name ? 'selected' : ''; ?>>
+                                                        <?php echo ucfirst($module_name); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="resource" class="form-label"><?php echo t('resource'); ?> *</label>
-                                            <select class="form-control" id="resource" name="resource" required>
+                                            <label for="action" class="form-label"><?php echo t('action'); ?> *</label>
+                                            <select class="form-control" id="action" name="action" required>
                                                 <option value=""><?php echo t('form.select_option'); ?></option>
-                                                <option value="users"><?php echo t('users'); ?></option>
-                                                <option value="branches"><?php echo t('branches'); ?></option>
-                                                <option value="suppliers"><?php echo t('suppliers'); ?></option>
-                                                <option value="products"><?php echo t('products'); ?></option>
-                                                <option value="orders"><?php echo t('orders'); ?></option>
+                                                <?php foreach ($actions as $action_name): ?>
+                                                    <option value="<?php echo $action_name; ?>" <?php echo ($permission['action'] ?? '') == $action_name ? 'selected' : ''; ?>>
+                                                        <?php echo ucfirst($action_name); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label for="action" class="form-label"><?php echo t('action'); ?> *</label>
-                                            <select class="form-control" id="action" name="action" required>
+                                            <label for="group_id" class="form-label"><?php echo t('user_group'); ?></label>
+                                            <select class="form-control" id="group_id" name="group_id">
                                                 <option value=""><?php echo t('form.select_option'); ?></option>
-                                                <option value="view"><?php echo t('view'); ?></option>
-                                                <option value="create"><?php echo t('create'); ?></option>
-                                                <option value="edit"><?php echo t('edit'); ?></option>
-                                                <option value="delete"><?php echo t('delete'); ?></option>
+                                                <?php 
+                                                // Get all user groups
+                                                $userGroupModel = new UserGroup();
+                                                $userGroups = $userGroupModel->getActive();
+                                                foreach ($userGroups as $group): 
+                                                ?>
+                                                    <option value="<?php echo $group['id']; ?>" <?php echo ($permission['group_id'] ?? '') == $group['id'] ? 'selected' : ''; ?>>
+                                                        <?php echo htmlspecialchars($group['name']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="description" class="form-label"><?php echo t('description'); ?></label>
-                                            <input type="text" class="form-control" id="description" name="description">
-                                        </div>
-                                    </div>
                                 </div>
+
+
                                 
                                 <div class="d-flex justify-content-between">
                                     <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
                                         <i class="fas fa-times me-1"></i><?php echo t('cancel'); ?>
                                     </button>
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-save me-1"></i><?php echo t('create'); ?>
+                                        <i class="fas fa-save me-1"></i><?php echo t('save'); ?>
                                     </button>
                                 </div>
                             </form>
@@ -116,6 +126,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                                     <li><?php echo t('name'); ?> <?php echo t('form.required'); ?></li>
                                     <li><?php echo t('resource'); ?> <?php echo t('form.required'); ?></li>
                                     <li><?php echo t('action'); ?> <?php echo t('form.required'); ?></li>
+                                    <li><?php echo t('user.groups_assigned'); ?> <?php echo t('form.optional'); ?></li>
                                 </ul>
                             </div>
                         </div>
@@ -129,8 +140,8 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
 
 <script>
 // Form validation
-document.getElementById('permissionForm').addEventListener('submit', function(e) {
-    if (!validateForm('permissionForm')) {
+document.getElementById('editPermissionForm').addEventListener('submit', function(e) {
+    if (!validateForm('editPermissionForm')) {
         e.preventDefault();
         Swal.fire({
             title: '<?php echo t('msg.error'); ?>',
@@ -141,4 +152,4 @@ document.getElementById('permissionForm').addEventListener('submit', function(e)
 });
 </script>
 
-<?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

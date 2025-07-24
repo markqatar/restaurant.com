@@ -34,15 +34,12 @@
   
   <!-- Main JS -->
   <script src="<?php echo $siteUrl; ?>/admin/assets/js/main.js"></script>
-
-  <!-- IonIcons -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- Page-specific scripts -->
   <?php if (isset($pageScripts)): ?>
     <?php foreach ($pageScripts as $script): ?>
-      <script src="<?php echo $siteUrl; ?>/<?php echo $script; ?>"></script>
+      <script src="<?php echo $script; ?>"></script>
     <?php endforeach; ?>
   <?php endif; ?>
 

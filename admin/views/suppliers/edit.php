@@ -115,4 +115,4 @@
 
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

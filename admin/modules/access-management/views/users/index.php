@@ -1,5 +1,5 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
 
@@ -146,7 +146,12 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
                                     <?php endif; ?>
 
                                     <?php if (has_permission($_SESSION['user_id'], 'users', 'delete') && $user['id'] != $_SESSION['user_id']): ?>
-                                        <button onclick="deleteUser(<?php echo $user['id']; ?>)"
+                                        <button onclick="deleteUser(<?php echo $user['id']; ?>,
+                                        '<?php echo addslashes(t('user.confirm_delete')); ?>',
+                                        '<?php echo addslashes(t('user.confirm_delete_text')); ?>',
+                                        '<?php echo addslashes(t('yes_delete')); ?>',
+                                        '<?php echo addslashes(t('cancel')); ?>'
+                                        )"
                                             class="btn btn-sm btn-outline-danger" title="<?php echo t('delete'); ?>">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -160,26 +165,10 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
         </div>
     </div>
 </div>
-<!-- SweetAlert2 CDN (assicurati di averlo incluso) -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php
+$pageScripts = [
+    get_setting('site_url', 'http://restaurant.com') . '/admin/views/users/js/index.js',
+];
+?>
 
-<script>
-function deleteUser(userId) {
-    Swal.fire({
-        title: '<?php echo addslashes(t('user.confirm_delete')); ?>',
-        text: "<?php echo addslashes(t('user.confirm_delete_text')); ?>",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: '<?php echo addslashes(t('yes_delete')); ?>',
-        cancelButtonText: '<?php echo addslashes(t('cancel')); ?>'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = `<?php echo admin_url('users', 'delete'); ?>/${userId}`;
-        }
-    });
-}
-</script>
-
-<?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

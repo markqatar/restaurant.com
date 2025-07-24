@@ -1,7 +1,7 @@
 <?php
 // Dynamic sidebar that uses database menu items
 require_once get_setting('base_path', '/var/www/html') . 'admin/models/AdminMenu.php';
-require_once get_setting('base_path', '/var/www/html') . 'admin/models/Permission.php';
+require_once admin_module_path('/models/Permission.php');
 // Get user permissions
 $userPermissions = [];
 if (isset($_SESSION['user_id'])) {
@@ -43,7 +43,7 @@ function renderMenu($items, $level = 0) {
             echo '</li>' . "\n";
         } else {
             // Single menu item
-            $url = $item['url'] ? htmlspecialchars($item['url']) : 'javascript:;';
+            $url = $item['url'] ? htmlspecialchars($item['permission_module']) . '/' . htmlspecialchars($item['url']) : 'javascript:;';
             $target = $item['target'] === '_blank' ? ' target="_blank"' : '';
             $cssClass = $item['css_class'] ? ' ' . htmlspecialchars($item['css_class']) : '';
             

@@ -6,7 +6,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process
 // Set page title before including header
 $page_title = t('user.new_user') . ' - Restaurant Admin';
 
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -236,4 +236,4 @@ if (!function_exists('get_csrf_token')) {
     });
 </script>
 
-<?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

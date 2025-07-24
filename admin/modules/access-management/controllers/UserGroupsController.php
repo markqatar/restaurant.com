@@ -1,8 +1,8 @@
 <?php
 require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
-require_once get_setting('base_path', '/var/www/html') . 'admin/models/UserGroup.php';
+require_once admin_module_path('/models/UserGroup.php');
 
-class UserGroupController {
+class UserGroupsController {
     private $userGroupModel;
     
     public function __construct() {

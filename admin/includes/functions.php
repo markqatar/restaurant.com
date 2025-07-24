@@ -247,4 +247,17 @@ function verify_csrf_token($token) {
 function validate_csrf_token($token) {
     return verify_csrf_token($token);
 }
+
+function admin_module_path($path = '') {
+    global $module;
+    $base = get_setting('base_path', '/var/www/html') . "admin/modules/$module/";
+    return $base . ltrim($path, '/');
+}
+
+function public_module_path($path = '') {
+    global $module;
+    $base = get_setting('base_path', '/var/www/html') . "public/modules/$module/";
+    return $base . ltrim($path, '/');
+}
+
 ?>

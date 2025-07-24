@@ -1,6 +1,5 @@
 <?php
 require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/functions.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/controllers/BranchController.php';
 
 // Check if user is logged in

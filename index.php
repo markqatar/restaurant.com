@@ -33,64 +33,44 @@ $path_parts = explode('/', trim($request_uri, '/'));
 
 // Handle admin routes
 if (!empty($path_parts[0]) && $path_parts[0] === 'admin') {
-    // If not logged in and not on login page, redirect to login
+
     if (!isset($_SESSION['user_id']) && (!isset($path_parts[1]) || $path_parts[1] !== 'login')) {
         header('Location: /admin/login');
         exit;
     }
 
-    // Remove 'admin' from path parts
-    array_shift($path_parts);
-    
-    // Default to index if no specific page requested
-    $page = !empty($path_parts[0]) ? $path_parts[0] : 'index';
-    
-    // Handle login page specially
-    if ($page === 'login') {
-        require_once get_setting('base_path', '/var/www/html') . 'admin/login.php';
-        exit;
-    }
-    
-    // Handle logout page specially
-    if ($page === 'logout') {
-        require_once get_setting('base_path', '/var/www/html') . 'admin/logout.php';
-        exit;
-    }
-    
-    // Determine PHP file to include
-    $file_path = get_setting('base_path', '/var/www/html') . 'admin/' . $page . '.php';
+    array_shift($path_parts); // rimuove "admin"
 
-    // Set action and ID parameters if they exist in the URL
-    if (isset($path_parts[1])) {
-        $_GET['action'] = $path_parts[1];
+    // Modulo, controller, action, parametri
+    $module = $path_parts[0] ?? 'dashboard';
+    $controllerName = ucfirst($path_parts[1] ?? $module) . 'Controller';
+    $action = $path_parts[2] ?? 'index';
+    $params = array_slice($path_parts, 3);
+
+    $controllerPath = __DIR__ . "/admin/modules/{$module}/controllers/{$controllerName}.php";
+
+    if (file_exists($controllerPath)) {
+        require_once $controllerPath;
+        $controller = new $controllerName();
         
-        if (isset($path_parts[2])) {
-            $_GET['id'] = $path_parts[2];
-        }
-    }
-    
-    // Include the appropriate file if it exists
-    if (file_exists($file_path)) {
-        require_once $file_path;
-        exit;
-    } else {
-        // File not found, return 404
-        header("HTTP/1.0 404 Not Found");
-        if (function_exists('is_logged_in') && is_logged_in()) {
-            include __DIR__ . '/views/admin/404.php';
+        if(method_exists($controller, $action)){
+            call_user_func_array([$controller, $action], $params);
         } else {
-            echo "<h1>404 - Page Not Found</h1>";
-            echo "<p>The requested admin page could not be found.</p>";
-            echo "<p><a href='/admin'>Return to Admin Dashboard</a></p>";
+            header("HTTP/1.0 404 Not Found");
+            include __DIR__ . '/views/admin/404.php';
         }
-        exit;
+    } else {
+        header("HTTP/1.0 404 Not Found");
+        include __DIR__ . '/views/admin/404.php';
     }
+
+    exit;
 } else {
     // Handle public routes
     
     // Main site root shows homepage
     if (empty($path_parts[0])) {
-        include __DIR__ . '/homepage.php';
+        include __DIR__ . '/public/index.php';
         exit;
     }
     

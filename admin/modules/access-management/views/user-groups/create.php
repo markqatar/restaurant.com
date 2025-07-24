@@ -20,7 +20,7 @@ if (!function_exists('get_csrf_token')) {
     }
 }
 
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 
 <div class="container-fluid">
@@ -156,4 +156,4 @@ document.getElementById('groupForm').addEventListener('submit', function(e) {
 });
 </script>
 
-<?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

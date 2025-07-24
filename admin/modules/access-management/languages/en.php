@@ -25,7 +25,7 @@ return [
     'back_to_list' => 'Back to List',
     'required_field' => 'Required field',
     'optional' => 'Optional',
-
+    
     // Navigation & Menu
     'dashboard' => 'Dashboard',
     'users' => 'Users',
@@ -37,16 +37,16 @@ return [
     'settings' => 'Settings',
     'logout' => 'Logout',
     'profile' => 'Profile',
-
+    
     // Error messages
     'error' => [
         '404_title' => 'Page Not Found',
         '404_message' => 'The page you are looking for could not be found. Please check the URL or return to the dashboard.',
     ],
-
+    
     'page_not_found' => 'Page Not Found',
     'back_to_dashboard' => 'Back to Dashboard',
-
+    
     // User Management
     'user' => [
         'management' => 'User Management',
@@ -76,7 +76,7 @@ return [
         'confirm_delete' => 'Are you sure you want to delete this user? This action cannot be undone.',
         'confirm_reset_password' => 'Are you sure you want to reset this user\'s password? A temporary password will be sent.',
     ],
-
+    
     // Branch Management
     'branch' => [
         'management' => 'Branch Management',
@@ -95,7 +95,7 @@ return [
         'confirm_delete_message' => 'Are you sure you want to delete the branch',
         'delete_warning' => 'This action will also remove all user assignments.',
     ],
-
+    
     // Supplier Management
     'supplier' => [
         'management' => 'Supplier Management',
@@ -111,7 +111,7 @@ return [
         'country' => 'Country',
         'confirm_delete' => 'Are you sure you want to delete this supplier? This action will also delete all associated contacts and cannot be undone.',
     ],
-
+    
     // Product Management
     'product' => [
         'management' => 'Product Management',
@@ -124,7 +124,7 @@ return [
         'stock' => 'Stock',
         'barcode' => 'Barcode',
     ],
-
+    
     // Order Management
     'order' => [
         'management' => 'Order Management',
@@ -137,7 +137,7 @@ return [
         'order_date' => 'Order Date',
         'delivery_date' => 'Delivery Date',
     ],
-
+    
     // Buttons & Actions
     'btn' => [
         'refresh' => 'Refresh',
@@ -148,7 +148,7 @@ return [
         'confirm' => 'Confirm',
         'close' => 'Close',
     ],
-
+    
     // Messages
     'msg' => [
         'success' => 'Operation completed successfully',
@@ -161,7 +161,7 @@ return [
         'deleted' => 'Deleted successfully',
         'updated' => 'Updated successfully',
     ],
-
+    
     // Forms
     'form' => [
         'required' => 'Required',
@@ -170,7 +170,7 @@ return [
         'enter_value' => 'Enter value',
         'choose_file' => 'Choose file',
     ],
-
+    
     // Additional missing translations
     'password' => 'Password',
     'min_characters' => 'Minimum characters',
@@ -184,7 +184,7 @@ return [
     'assign_groups_after_creation' => 'After creation, you can assign the user to groups',
     'validation_error' => 'Validation Error',
     'fill_required_fields' => 'Please fill in all required fields',
-
+    
     // Settings specific
     'general_settings' => 'General Settings',
     'site_name' => 'Site Name',
@@ -211,7 +211,7 @@ return [
     'select_room' => 'Select Room',
     'room_examples' => 'Examples: Main Hall, Terrace, Balcony, Private Room, Garden, etc.',
     'table_examples' => 'Examples: Table 1, A1, Terrace-1, etc.',
-
+    
     // Messages for new features
     'msg.settings_updated_successfully' => 'Settings updated successfully',
     'msg.room_created_successfully' => 'Room created successfully',
@@ -228,14 +228,14 @@ return [
     'msg.updated_successfully' => 'Updated successfully',
     'msg.deleted_successfully' => 'Deleted successfully',
     'msg.error_occurred' => 'An error occurred',
-
+    
     // Logo management
     'delete_logo' => 'Delete Logo',
     'confirm_delete_logo' => 'Are you sure you want to delete the current logo?',
     'logo_deleted_successfully' => 'Logo deleted successfully',
     'error_occurred' => 'An error occurred',
 
-    // Delivery Areas Management
+        // Delivery Areas Management
     'add_delivery_area' => 'Add Delivery Area',
     'edit_delivery_area' => 'Edit Delivery Area',
     'area_name' => 'Area Name',
@@ -260,3 +260,4 @@ return [
     'yes_delete' => 'Yes, Delete',
 
 ];
+?>

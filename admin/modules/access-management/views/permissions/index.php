@@ -14,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Include header
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -149,4 +149,4 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.
     }
 </script>
 
-<?php include get_setting('base_path', '/var/www/html') . 'admin/includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

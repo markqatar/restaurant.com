@@ -1,8 +1,8 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'admin/models/User.php';
+require_once admin_module_path('/models/User.php');
 require_once get_setting('base_path', '/var/www/html') . 'admin/includes/functions.php';
 
-class UserController {
+class UsersController {
     private $user_model;
     private $db;
     
@@ -23,7 +23,7 @@ class UserController {
         $total_users = $this->user_model->count();
         
         $page_title = "Gestione Utenti";
-        include get_setting('base_path', '/var/www/html') . 'admin/views/users/index.php';
+        include admin_module_path('/views/users/index.php');
     }
     
     // Show create user form

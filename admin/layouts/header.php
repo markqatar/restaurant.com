@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../admin/includes/functions.php';
 $siteUrl = get_setting('site_url', 'http://restaurant.com');
 
 // Load user preferences
-require_once __DIR__ . '/../../admin/models/UserPreferences.php';
+require_once admin_module_path('/models/UserPreferences.php');
 
 if (isset($_SESSION['user_id'])) {
   $userPrefsModel = new UserPreferences();
