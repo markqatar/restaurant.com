@@ -18,5 +18,5 @@ if (ini_get("session.use_cookies")) {
 }
 
 // Redirect to login page
-redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/login');
+redirect(get_setting('site_url', 'http://localhost') . '/admin/login');
 ?>

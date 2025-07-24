@@ -7,12 +7,12 @@ require_once '../admin/includes/header.php';
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">
-                    <i class="fas fa-truck me-2"></i><?php echo t('supplier.management'); ?>
+                    <i class="fas fa-truck me-2"></i><?php echo TranslationManager::t('supplier.management'); ?>
                 </h1>
                 <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
                     <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'create')): ?>
                     <a href="suppliers/create" class="btn btn-primary me-2">
-                        <i class="fas fa-plus me-1"></i><?php echo t('supplier.new_supplier'); ?>
+                        <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('supplier.new_supplier'); ?>
                     </a>
                     <?php endif; ?>
                     <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
@@ -29,7 +29,7 @@ require_once '../admin/includes/header.php';
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        <?php echo t('supplier.total_suppliers'); ?></div>
+                                        <?php echo TranslationManager::t('supplier.total_suppliers'); ?></div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_suppliers; ?></div>
                                 </div>
                                 <div class="col-auto">
@@ -46,7 +46,7 @@ require_once '../admin/includes/header.php';
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        <?php echo t('supplier.active_suppliers'); ?></div>
+                                        <?php echo TranslationManager::t('supplier.active_suppliers'); ?></div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                         <?php echo count(array_filter($suppliers, function($s) { return $s['is_active']; })); ?>
                                     </div>
@@ -63,7 +63,7 @@ require_once '../admin/includes/header.php';
             <!-- Suppliers Table -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary"><?php echo t('supplier.supplier_list'); ?></h6>
+                    <h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('supplier.supplier_list'); ?></h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -71,14 +71,14 @@ require_once '../admin/includes/header.php';
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th><?php echo t('name'); ?></th>
-                                    <th><?php echo t('address'); ?></th>
-                                    <th><?php echo t('supplier.city'); ?></th>
-                                    <th><?php echo t('supplier.country'); ?></th>
-                                    <th><?php echo t('phone'); ?></th>
-                                    <th><?php echo t('email'); ?></th>
-                                    <th><?php echo t('status'); ?></th>
-                                    <th><?php echo t('actions'); ?></th>
+                                    <th><?php echo TranslationManager::t('name'); ?></th>
+                                    <th><?php echo TranslationManager::t('address'); ?></th>
+                                    <th><?php echo TranslationManager::t('supplier.city'); ?></th>
+                                    <th><?php echo TranslationManager::t('supplier.country'); ?></th>
+                                    <th><?php echo TranslationManager::t('phone'); ?></th>
+                                    <th><?php echo TranslationManager::t('email'); ?></th>
+                                    <th><?php echo TranslationManager::t('status'); ?></th>
+                                    <th><?php echo TranslationManager::t('actions'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -113,28 +113,28 @@ require_once '../admin/includes/header.php';
                                     </td>
                                     <td>
                                         <?php if ($supplier['is_active']): ?>
-                                            <span class="badge bg-success"><?php echo t('active'); ?></span>
+                                            <span class="badge bg-success"><?php echo TranslationManager::t('active'); ?></span>
                                         <?php else: ?>
-                                            <span class="badge bg-danger"><?php echo t('inactive'); ?></span>
+                                            <span class="badge bg-danger"><?php echo TranslationManager::t('inactive'); ?></span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a href="suppliers/view/<?php echo $supplier['id']; ?>" 
-                                               class="btn btn-sm btn-outline-info" title="<?php echo t('btn.view'); ?>">
+                                               class="btn btn-sm btn-outline-info" title="<?php echo TranslationManager::t('btn.view'); ?>">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             
                                             <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'update')): ?>
                                             <a href="suppliers/edit/<?php echo $supplier['id']; ?>" 
-                                               class="btn btn-sm btn-outline-primary" title="<?php echo t('edit'); ?>">
+                                               class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <?php endif; ?>
                                             
                                             <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'delete')): ?>
                                             <button onclick="deleteSupplier(<?php echo $supplier['id']; ?>)" 
-                                                    class="btn btn-sm btn-outline-danger" title="<?php echo t('delete'); ?>">
+                                                    class="btn btn-sm btn-outline-danger" title="<?php echo TranslationManager::t('delete'); ?>">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                             <?php endif; ?>

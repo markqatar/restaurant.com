@@ -2,10 +2,10 @@
 // Define site URL
 // Get site URL from settings
 require_once __DIR__ . '/../../admin/includes/functions.php';
-$siteUrl = get_setting('site_url', 'http://restaurant.com');
+$siteUrl = get_setting('site_url', 'http://localhost');
 
 // Load user preferences
-require_once admin_module_path('/models/UserPreferences.php');
+require_once admin_module_path('/models/UserPreferences.php', 'access-management');
 
 if (isset($_SESSION['user_id'])) {
   $userPrefsModel = new UserPreferences();
@@ -54,7 +54,7 @@ $langCode = $currentLanguage;
     <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet">
   <?php endif; ?>
 
-  <title><?php echo translate('Restaurant Management System'); ?></title>
+  <title><?php echo TranslationManager::t('Restaurant Management System'); ?></title>
 
   <style>
     .dropdown-menu {
@@ -268,7 +268,7 @@ $langCode = $currentLanguage;
                     <ion-icon name="person-outline"></ion-icon>
                   </div>
                   <div class="ms-3"><span>
-                      <?php echo translate('Profile'); ?>
+                      <?php echo TranslationManager::t('Profile'); ?>
                     </span></div>
                 </div>
               </a>
@@ -278,7 +278,7 @@ $langCode = $currentLanguage;
                     <ion-icon name="settings-outline"></ion-icon>
                   </div>
                   <div class="ms-3"><span>
-                      <?php echo translate('Settings'); ?>
+                      <?php echo TranslationManager::t('Settings'); ?>
                     </span></div>
                 </div>
               </a>
@@ -288,7 +288,7 @@ $langCode = $currentLanguage;
                     <ion-icon name="log-out-outline"></ion-icon>
                   </div>
                   <div class="ms-3"><span>
-                      <?php echo translate('Logout'); ?>
+                      <?php echo TranslationManager::t('Logout'); ?>
                     </span></div>
                 </div>
               </a>

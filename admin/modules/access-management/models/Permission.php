@@ -1,17 +1,20 @@
 <?php
 
-class Permission {
+class Permission
+{
     private $db;
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $database = Database::getInstance();
         $this->db = $database->getConnection();
     }
-    
+
     /**
      * Get all permissions
      */
-    public function getAll() {
+    public function getAll()
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT p.*, 
@@ -31,11 +34,12 @@ class Permission {
             return [];
         }
     }
-    
+
     /**
      * Get permission by ID
      */
-    public function getById($id) {
+    public function getById($id)
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT p.*, 
@@ -53,11 +57,12 @@ class Permission {
             return null;
         }
     }
-    
+
     /**
      * Create new permission
      */
-    public function create($data) {
+    public function create($data)
+    {
         try {
             $name = $data['module'] . ' - ' . $data['action'];
             $stmt = $this->db->prepare("
@@ -75,11 +80,12 @@ class Permission {
             return false;
         }
     }
-    
+
     /**
      * Update permission
      */
-    public function update($id, $data) {
+    public function update($id, $data)
+    {
         try {
             $name = $data['module'] . ' - ' . $data['action'];
             $stmt = $this->db->prepare("
@@ -99,11 +105,12 @@ class Permission {
             return false;
         }
     }
-    
+
     /**
      * Delete permission
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         try {
             // Check if permission is in use
             $stmt = $this->db->prepare("
@@ -112,25 +119,25 @@ class Permission {
             ");
             $stmt->execute([$id]);
             $inUse = $stmt->fetchColumn();
-            
+
             if ($inUse > 0) {
                 return ['error' => 'Cannot delete permission: it is currently assigned to user groups'];
             }
-            
+
             // Delete the permission
             $stmt = $this->db->prepare("DELETE FROM permissions WHERE id = ?");
             return $stmt->execute([$id]);
-            
         } catch (PDOException $e) {
             error_log("Error deleting permission: " . $e->getMessage());
             return false;
         }
     }
-    
+
     /**
      * Get permissions by resource
      */
-    public function getByResource($resource) {
+    public function getByResource($resource)
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT * FROM permissions 
@@ -144,44 +151,48 @@ class Permission {
             return [];
         }
     }
-    
+
     /**
      * Get available resources
      */
-    public function getResources() {
+    public function getResources()
+    {
         return [
             'users',
-            'branches', 
+            'branches',
             'suppliers',
             'products',
             'orders',
             'reports'
         ];
     }
-    
+
     /**
      * Get available actions
      */
-    public function getActions() {
+    public function getActions()
+    {
         return [
             'view' => 'View',
             'create' => 'Create',
-            'edit' => 'Edit', 
+            'edit' => 'Edit',
             'delete' => 'Delete'
         ];
     }
-    
+
     /**
      * Get user permissions
      */
-    public function getUserPermissions($user_id) {
+    public function getUserPermissions($user_id)
+    {
         try {
             $stmt = $this->db->prepare("
-                SELECT p.resource, p.action 
+                SELECT p.module, p.action 
                 FROM permissions p
                 JOIN user_group_permissions ugp ON p.id = ugp.permission_id
-                JOIN users u ON u.user_group_id = ugp.user_group_id
-                WHERE u.id = ? AND u.is_active = 1
+                JOIN user_group_assignments uga ON uga.group_id = ugp.user_group_id
+                JOIN users u ON u.id = uga.user_id
+                WHERE u.id = ? and u.is_active =1
             ");
             $stmt->execute([$user_id]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

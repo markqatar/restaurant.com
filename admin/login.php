@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/session.php';
 
 // If already logged in, redirect to dashboard
 if (is_logged_in()) {
-    redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/index');
+    redirect(get_setting('site_url', 'http://localhost') . '/admin/index');
 }
 
 $error = '';
@@ -31,7 +31,7 @@ if ($_POST) {
                     $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
 
                     log_activity($user['id'], 'login', 'User logged in');
-                    redirect(get_setting('site_url', 'http://restaurant.com') . '/admin/index');
+                    redirect(get_setting('site_url', 'http://localhost') . '/admin/index');
                 } else {
                     $error = 'Invalid username or password';
                 }

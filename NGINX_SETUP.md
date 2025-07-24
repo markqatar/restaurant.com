@@ -71,4 +71,4 @@ If you continue to experience issues:
    ```bash
    echo "<?php phpinfo();" > /opt/homebrew/var/www/restaurant.com/public/test.php
    ```
-   Then visit http://restaurant.com/test.php
+   Then visit http://restaurant1.com/test.php

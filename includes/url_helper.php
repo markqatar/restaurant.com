@@ -9,6 +9,9 @@
 function url($path = '') {
     $baseUrl = rtrim(SITE_URL ?? 'http://localhost', '/');
     $path = ltrim($path, '/');
+    $p21 = $baseUrl . '/' . $path;
+        $p21 = $baseUrl . '/' . $path;
+
     return $baseUrl . '/' . $path;
 }
 
@@ -17,6 +20,13 @@ function url($path = '') {
  */
 function admin_url($path = '') {
     return url('admin/' . ltrim($path, '/'));
+}
+
+/**
+ * Generate dynamic admin URL modules based
+ */
+function module_admin_url($path = '') {
+    return url('admin/modules/' . ltrim($path, '/'));
 }
 
 /**

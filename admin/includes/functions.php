@@ -1,17 +1,50 @@
 <?php
-// Common functions for the restaurant management system
-
-// Include global settings first
-require_once 'globals.php';
-
 // Include branch helper functions
 require_once 'branch_helpers.php';
 
-// Include translation system
-require_once 'translations.php';
-
 // Include URL helper functions
 require_once __DIR__ . '/../../includes/url_functions.php';
+
+/**
+ * Recupera un setting dal database (con caching statico).
+ *
+ * @param string $key Nome del setting.
+ * @param mixed $default Valore di default se non trovato.
+ * @return mixed
+ */
+function get_setting($key, $default = null) {
+    static $settings = null;
+
+    if ($settings === null) {
+        // Includi Database se non già incluso
+        if (!class_exists('Database')) {
+            require_once __DIR__ . '/../../config/database.php'; // Percorso corretto al tuo file
+        }
+
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->query("SELECT setting_key, setting_value FROM settings");
+        $settings = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $settings[$row['setting_key']] = $row['setting_value'];
+        }
+    }
+
+    return $settings[$key] ?? $default;
+}
+// Fix redirect function to use absolute URLs
+function redirect($url) {
+    // If URL doesn't start with http, make it relative to site_url
+    if (!preg_match('/^https?:\/\//', $url)) {
+        $url = site_url($url);
+    }
+    header("Location: $url");
+    exit();
+}
+
+function site_url($path = '') {
+    $base_url = rtrim(get_setting('site_url', 'http://localhost'), '/');
+    return $path ? $base_url . '/' . ltrim($path, '/') : $base_url;
+}
 
 /**
  * Sanitize input data
@@ -146,13 +179,12 @@ function upload_file($file, $upload_dir = 'uploads/') {
  * Send notification
  */
 function send_notification($message, $type = 'info') {
+    $message = TranslationManager::t($message); // Traduci chiave prima di salvare
     $_SESSION['notification'] = [
         'message' => $message,
         'type' => $type
     ];
-}
-
-/**
+}/**
  * Set notification (alias for send_notification for compatibility)
  */
 function set_notification($message, $type = 'success') {
@@ -248,16 +280,141 @@ function validate_csrf_token($token) {
     return verify_csrf_token($token);
 }
 
-function admin_module_path($path = '') {
+/**
+ * Restituisce il percorso assoluto di un file nel modulo Admin
+ *
+ * @param string $path Percorso relativo dentro il modulo
+ * @param string|null $targetModule Nome del modulo (opzionale, default: modulo corrente)
+ * @return string
+ */
+function admin_module_path($path = '', $targetModule = null) {
     global $module;
-    $base = get_setting('base_path', '/var/www/html') . "admin/modules/$module/";
+    $moduleName = $targetModule ?? $module;
+
+    $base = get_setting('base_path', '/var/www/html') . "admin/modules/{$moduleName}/";
     return $base . ltrim($path, '/');
 }
 
-function public_module_path($path = '') {
+/**
+ * Restituisce il percorso assoluto di un file nel modulo Public
+ *
+ * @param string $path Percorso relativo dentro il modulo
+ * @param string|null $targetModule Nome del modulo (opzionale, default: modulo corrente)
+ * @return string
+ */
+function public_module_path($path = '', $targetModule = null) {
     global $module;
-    $base = get_setting('base_path', '/var/www/html') . "public/modules/$module/";
+    $moduleName = $targetModule ?? $module;
+
+    $base = get_setting('base_path', '/var/www/html') . "public/modules/{$moduleName}/";
     return $base . ltrim($path, '/');
 }
 
+/**
+ * Carica una vista dal modulo Admin
+ *
+ * @param string $view Nome della vista (es: 'settings/index')
+ * @param array $data Dati da passare alla vista
+ * @param string|null $targetModule Nome del modulo (opzionale)
+ */
+function load_admin_view($view, $data = [], $targetModule = null) {
+    global $module;
+
+    $moduleName = $targetModule ?? $module;
+
+    // Convertiamo in percorso file
+    $filePath = admin_module_path('views/' . $view . '.php', $moduleName);
+
+    if (!file_exists($filePath)) {
+        die("❌ View not found: $filePath");
+    }
+
+    // Estrae variabili dall'array $data
+    extract($data);
+
+    include $filePath;
+}
+
+/**
+ * Carica una vista dal modulo Public
+ *
+ * @param string $view Nome della vista (es: 'home/index')
+ * @param array $data Dati da passare alla vista
+ * @param string|null $targetModule Nome del modulo (opzionale)
+ */
+function load_public_view($view, $data = [], $targetModule = null) {
+    global $module;
+
+    $moduleName = $targetModule ?? $module;
+
+    $filePath = public_module_path('views/' . $view . '.php', $moduleName);
+
+    if (!file_exists($filePath)) {
+        die("❌ View not found: $filePath");
+    }
+
+    extract($data);
+
+    include $filePath;
+}
+
+function get_available_languages_from_db($context = 'admin') {
+    global $db;
+
+    try {
+        $stmt = $db->query("
+            SELECT code, name, direction, is_active_admin, is_active_public
+            FROM languages
+            ORDER BY name
+        ");
+        $languages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Aggiunge i campi mancanti se non esistono
+        foreach ($languages as &$lang) {
+            if (!isset($lang['is_active_admin'])) {
+                $lang['is_active_admin'] = 0;
+            }
+            if (!isset($lang['is_active_public'])) {
+                $lang['is_active_public'] = 0;
+            }
+        }
+
+        return $languages;
+    } catch (PDOException $e) {
+        error_log("Error fetching languages: " . $e->getMessage());
+        return [];
+    }
+}
+function get_default_admin_language_from_db() {
+    global $db;
+    $stmt = $db->query("SELECT code FROM languages WHERE is_active_admin = 1 LIMIT 1");
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['code'] ?? 'en';
+}
+
+function get_default_public_language_from_db() {
+    global $db;
+    $stmt = $db->query("SELECT code FROM languages WHERE is_active_public = 1 LIMIT 1");
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['code'] ?? 'en';
+}
+
+$view_hooks = [];
+
+function add_view_hook($hook_name, $callback) {
+    global $view_hooks;
+    if (!isset($view_hooks[$hook_name])) {
+        $view_hooks[$hook_name] = [];
+    }
+    $view_hooks[$hook_name][] = $callback;
+}
+
+function render_hook($hook_name, ...$args) {
+    global $view_hooks;
+    if (isset($view_hooks[$hook_name])) {
+        foreach ($view_hooks[$hook_name] as $callback) {
+            call_user_func_array($callback, $args);
+        }
+    }
+}
 ?>

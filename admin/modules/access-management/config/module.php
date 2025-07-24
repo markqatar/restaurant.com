@@ -1,4 +1,5 @@
 <?php
+
 return [
     'name' => 'Users Management',
     'description' => 'Gestione degli utenti e gruppi utenti.',
@@ -6,10 +7,7 @@ return [
     'dependencies' => [
         'system' => '^1.0'
     ],
-    'routes' => [
-        'users' => 'UsersController@index',
-        'users/create' => 'UsersController@create',
-        'user-groups' => 'UserGroupsController@index',
-        'user-groups/create' => 'UserGroupsController@create'
-    ]
+    'extends' => null,
+    'author' => 'Tuo Nome',
+    'license' => 'MIT'
 ];

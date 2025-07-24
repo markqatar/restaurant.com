@@ -104,9 +104,9 @@
             </div>
             <div class="card-body">
                 <p><strong>ID:</strong> <?php echo $supplier['id']; ?></p>
-                <p><strong>Creato il:</strong> <?php echo format_date_localized($supplier['created_at']); ?></p>
+                <p><strong>Creato il:</strong> <?php echo TranslationManager::format_date_localized($supplier['created_at']); ?></p>
                 <?php if ($supplier['updated_at'] && $supplier['updated_at'] != $supplier['created_at']): ?>
-                    <p><strong>Ultima modifica:</strong> <?php echo format_date_localized($supplier['updated_at']); ?></p>
+                    <p><strong>Ultima modifica:</strong> <?php echo TranslationManager::format_date_localized($supplier['updated_at']); ?></p>
                 <?php endif; ?>
             </div>
         </div>

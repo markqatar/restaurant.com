@@ -3,11 +3,11 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">
-            <i class="fas fa-building"></i> <?php echo t('branch.management'); ?>
+            <i class="fas fa-building"></i> <?php echo TranslationManager::t('branch.management'); ?>
         </h1>
         <?php if (has_permission($_SESSION['user_id'], 'branches', 'create')): ?>
         <a href="branches/create" class="btn btn-primary btn-sm">
-            <i class="fas fa-plus"></i> <?php echo t('branch.new_branch'); ?>
+            <i class="fas fa-plus"></i> <?php echo TranslationManager::t('branch.new_branch'); ?>
         </a>
         <?php endif; ?>
     </div>
@@ -20,7 +20,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                <?php echo t('branch.total_branches'); ?>
+                                <?php echo TranslationManager::t('branch.total_branches'); ?>
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total_branches; ?></div>
                         </div>
@@ -38,7 +38,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                <?php echo t('branch.active_branches'); ?>
+                                <?php echo TranslationManager::t('branch.active_branches'); ?>
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <?php echo count(array_filter($branches, function($b) { return $b['is_active']; })); ?>
@@ -58,7 +58,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                <?php echo t('user.total_users'); ?>
+                                <?php echo TranslationManager::t('user.total_users'); ?>
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <?php echo array_sum(array_column($branches, 'users_count')); ?>
@@ -76,21 +76,21 @@
     <!-- Branches Table -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary"><?php echo t('branch.branch_list'); ?></h6>
+            <h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('branch.branch_list'); ?></h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="branchesTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th><?php echo t('branch.branch_name'); ?></th>
-                            <th><?php echo t('address'); ?></th>
-                            <th><?php echo t('branch.location'); ?></th>
-                            <th><?php echo t('branch.contact_info'); ?></th>
-                            <th><?php echo t('branch.manager'); ?></th>
-                            <th><?php echo t('users'); ?></th>
-                            <th><?php echo t('status'); ?></th>
-                            <th><?php echo t('actions'); ?></th>
+                            <th><?php echo TranslationManager::t('branch.branch_name'); ?></th>
+                            <th><?php echo TranslationManager::t('address'); ?></th>
+                            <th><?php echo TranslationManager::t('branch.location'); ?></th>
+                            <th><?php echo TranslationManager::t('branch.contact_info'); ?></th>
+                            <th><?php echo TranslationManager::t('branch.manager'); ?></th>
+                            <th><?php echo TranslationManager::t('users'); ?></th>
+                            <th><?php echo TranslationManager::t('status'); ?></th>
+                            <th><?php echo TranslationManager::t('actions'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -143,27 +143,27 @@
                             </td>
                             <td>
                                 <?php if ($branch['is_active']): ?>
-                                    <span class="badge badge-success"><?php echo t('active'); ?></span>
+                                    <span class="badge badge-success"><?php echo TranslationManager::t('active'); ?></span>
                                 <?php else: ?>
-                                    <span class="badge badge-secondary"><?php echo t('inactive'); ?></span>
+                                    <span class="badge badge-secondary"><?php echo TranslationManager::t('inactive'); ?></span>
                                 <?php endif; ?>
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
                                     <?php if (has_permission($_SESSION['user_id'], 'branches', 'update')): ?>
                                         <a href="branches/edit/<?php echo $branch['id']; ?>" 
-                                           class="btn btn-outline-primary btn-sm" title="<?php echo t('edit'); ?>">
+                                           class="btn btn-outline-primary btn-sm" title="<?php echo TranslationManager::t('edit'); ?>">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="branches/manage-users/<?php echo $branch['id']; ?>" 
-                                           class="btn btn-outline-info btn-sm" title="<?php echo t('branch.manage_users'); ?>">
+                                           class="btn btn-outline-info btn-sm" title="<?php echo TranslationManager::t('branch.manage_users'); ?>">
                                             <i class="fas fa-users"></i>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (has_permission($_SESSION['user_id'], 'branches', 'delete')): ?>
                                         <button type="button" class="btn btn-outline-danger btn-sm" 
                                                 onclick="confirmDelete(<?php echo $branch['id']; ?>, '<?php echo addslashes($branch['name']); ?>')"
-                                                title="<?php echo t('delete'); ?>">
+                                                title="<?php echo TranslationManager::t('delete'); ?>">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     <?php endif; ?>
@@ -183,18 +183,18 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php echo t('branch.confirm_delete_title'); ?></h5>
+                <h5 class="modal-title"><?php echo TranslationManager::t('branch.confirm_delete_title'); ?></h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><?php echo t('branch.confirm_delete_message'); ?> <strong id="branchName"></strong>?</p>
-                <p class="text-danger"><small><?php echo t('branch.delete_warning'); ?></small></p>
+                <p><?php echo TranslationManager::t('branch.confirm_delete_message'); ?> <strong id="branchName"></strong>?</p>
+                <p class="text-danger"><small><?php echo TranslationManager::t('branch.delete_warning'); ?></small></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo t('cancel'); ?></button>
-                <a href="#" class="btn btn-danger" id="deleteConfirm"><?php echo t('delete'); ?></a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo TranslationManager::t('cancel'); ?></button>
+                <a href="#" class="btn btn-danger" id="deleteConfirm"><?php echo TranslationManager::t('delete'); ?></a>
             </div>
         </div>
     </div>

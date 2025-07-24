@@ -6,12 +6,12 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
 <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3"><?php echo t('settings'); ?></div>
+        <div class="breadcrumb-title pe-3"><?php echo TranslationManager::t('settings'); ?></div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="<?php echo admin_url('index'); ?>"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><?php echo t('menu.management'); ?></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?php echo TranslationManager::t('menu.management'); ?></li>
                 </ol>
             </nav>
         </div>
@@ -24,10 +24,10 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                 <div class="card-body p-5">
                     <div class="card-title d-flex align-items-center">
                         <div><i class="bx bx-menu me-1 font-22 text-primary"></i></div>
-                        <h5 class="mb-0 text-primary"><?php echo t('menu.management'); ?></h5>
+                        <h5 class="mb-0 text-primary"><?php echo TranslationManager::t('menu.management'); ?></h5>
                         <div class="ms-auto">
                             <a href="?action=create" class="btn btn-primary">
-                                <i class="bx bx-plus"></i> <?php echo t('add.new'); ?>
+                                <i class="bx bx-plus"></i> <?php echo TranslationManager::t('add.new'); ?>
                             </a>
                         </div>
                     </div>
@@ -80,14 +80,14 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th><?php echo t('title'); ?></th>
-                                    <th><?php echo t('parent'); ?></th>
-                                    <th><?php echo t('url'); ?></th>
-                                    <th><?php echo t('icon'); ?></th>
-                                    <th><?php echo t('order'); ?></th>
-                                    <th><?php echo t('permission'); ?></th>
-                                    <th><?php echo t('status'); ?></th>
-                                    <th><?php echo t('actions'); ?></th>
+                                    <th><?php echo TranslationManager::t('title'); ?></th>
+                                    <th><?php echo TranslationManager::t('parent'); ?></th>
+                                    <th><?php echo TranslationManager::t('url'); ?></th>
+                                    <th><?php echo TranslationManager::t('icon'); ?></th>
+                                    <th><?php echo TranslationManager::t('order'); ?></th>
+                                    <th><?php echo TranslationManager::t('permission'); ?></th>
+                                    <th><?php echo TranslationManager::t('status'); ?></th>
+                                    <th><?php echo TranslationManager::t('actions'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -169,7 +169,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
 
 <script>
 function confirmDelete(id) {
-    if (confirm('<?php echo t("confirm.delete"); ?>')) {
+    if (confirm('<?php echo TranslationManager::t("confirm.delete"); ?>')) {
         window.location.href = '?action=delete&id=' + id;
     }
 }

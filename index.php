@@ -8,11 +8,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include required files
-require_once __DIR__ . '/admin/includes/functions.php';
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/globals.php';
-require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
-
-// Get the request URI
+require_once __DIR__ . '/admin/includes/bootstrap.php';// Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
 $query_string = $_SERVER['QUERY_STRING'] ?? '';
 
@@ -57,11 +53,11 @@ if (!empty($path_parts[0]) && $path_parts[0] === 'admin') {
             call_user_func_array([$controller, $action], $params);
         } else {
             header("HTTP/1.0 404 Not Found");
-            include __DIR__ . '/views/admin/404.php';
+            include __DIR__ . '/admin/layouts/404.php';
         }
     } else {
         header("HTTP/1.0 404 Not Found");
-        include __DIR__ . '/views/admin/404.php';
+        include __DIR__ . '/admin/layouts/404.php';
     }
 
     exit;

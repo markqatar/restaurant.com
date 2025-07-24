@@ -9,7 +9,7 @@
 
       <!-- Footer -->
       <footer class="page-footer">
-              <p class="mb-0">Copyright © 2023. <?php echo translate('Restaurant Management System'); ?>. <?php echo translate('All right reserved'); ?>.</p>
+              <p class="mb-0">Copyright © 2023. <?php echo TranslationManager::t('Restaurant Management System'); ?>. <?php echo TranslationManager::t('All right reserved'); ?>.</p>
       </footer>
 
   <!-- Local JS Files -->
@@ -42,6 +42,16 @@
       <script src="<?php echo $script; ?>"></script>
     <?php endforeach; ?>
   <?php endif; ?>
-
+<?php if ($notification = get_notification()): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        icon: '<?php echo $notification['type'] === 'danger' ? 'error' : $notification['type']; ?>',
+        title: '<?php echo addslashes($notification['message']); ?>',
+        showConfirmButton: true
+    });
+});
+</script>
+<?php endif; ?>
 </body>
 </html>
