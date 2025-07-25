@@ -1,6 +1,6 @@
 <?php
 // Process language changes first, before any output
-require_once 'includes/process_language.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 require_once __DIR__ . '/../includes/session.php';
 
 // Check if user is logged in

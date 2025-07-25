@@ -1,12 +1,9 @@
 <?php
 // Process language changes
-require_once __DIR__ . '/../../admin/includes/process_language.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 
 // Set page title
-$page_title = t('user.permissions') . ' - Restaurant Admin';
-
-// Include utility functions
-require_once __DIR__ . '/../../includes/functions.php';
+$page_title = TranslationManager::t('user.permissions') . ' - Restaurant Admin';
 
 // Start session if needed
 if (session_status() === PHP_SESSION_NONE) {
@@ -23,7 +20,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'permissions', 'create')): ?>
-            <a href="<?php echo admin_url('permissions', 'create'); ?>" class="btn btn-primary me-2">
+            <a href="<?php echo module_admin_url("access-management/permissions/create"); ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('btn.add_new'); ?>
             </a>
         <?php endif; ?>
@@ -110,7 +107,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                 <td>
                                     <div class="btn-group" role="group">
                                         <?php if (has_permission($_SESSION['user_id'], 'permissions', 'update')): ?>
-                                            <a href="<?php echo admin_url('permissions', 'edit', $permission['id']); ?>" 
+                                            <a href="<?php echo module_admin_url("access-management/permissions/edit" . $permission['id']); ?>" 
                                                class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -140,10 +137,10 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
 
 <script>
     function deletePermission(permissionId) {
-        confirmDelete('<?php echo addslashes(t('msg.confirm_delete')); ?>')
+        confirmDelete('<?php echo addslashes(TranslationManager::t('msg.confirm_delete')); ?>')
             .then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = `<?php echo admin_url('permissions', 'delete'); ?>/${permissionId}`;
+                    window.location.href = '<?php echo module_admin_url("access-management/permissions/delete"); ?>/' + permissionId;
                 }
             });
     }

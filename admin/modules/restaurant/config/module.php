@@ -7,6 +7,18 @@ return [
     'dependencies' => [
         'shops'
     ],
+    'hooks' => [
+        'after_create' => function ($module, $record_id, $new_data) {
+            log_action($module, 'create', $record_id, null, $new_data);
+        },
+        'after_update' => function ($module, $record_id, $old_data, $new_data) {
+            log_action($module, 'update', $record_id, $old_data, $new_data);
+        },
+        'after_delete' => function ($module, $record_id, $old_data) {
+            log_action($module, 'delete', $record_id, $old_data, null);
+        }
+    ],
+
     'extends' => 'shops', // Questo modulo estende Shops
     'author' => 'Tuo Nome',
     'license' => 'MIT'

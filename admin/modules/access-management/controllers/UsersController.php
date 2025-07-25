@@ -82,22 +82,9 @@ class UsersController {
                 try {
                     $newUserId = $this->user_model->create($data);
                     if ($newUserId) {
-                        // Process branch assignments
-                        $branch_ids = $_POST['branch_ids'] ?? [];
-                        $primary_branch_id = $_POST['primary_branch_id'] ?? null;
-                        
-                        if (!empty($branch_ids)) {
-                            require_once __DIR__ . '/../models/Branch.php';
-                            $branch_model = new Branch();
-                            
-                            foreach ($branch_ids as $branch_id) {
-                                $is_primary = ($branch_id == $primary_branch_id);
-                                $branch_model->assignUser($newUserId, $branch_id, $is_primary);
-                            }
-                        }
-                        
-                        log_activity($_SESSION['user_id'], 'create_user', 'Created user: ' . $data['username']);
-                        send_notification('Utente creato con successo', 'success');
+                        log_action('access-management', 'users', 'create', $newUserId, null, $data);
+                        run_logic_hook('user.after_create', $newUserId, $_POST);
+                        send_notification(TranslationManager::t('user.created_successfully'), 'success');
                         redirect(get_setting('site_url', 'http://localhost') . '/admin/users');
                     } else {
                         send_notification('Errore nella creazione dell\'utente', 'danger');
@@ -139,43 +126,21 @@ class UsersController {
             
             try {
                 $this->db->beginTransaction();
-                
+                $old_data = $this->user_model->readOne($id);
+
                 if ($this->user_model->update($id, $data)) {
-                    // Process branch assignments
-                    $branch_ids = $_POST['branch_ids'] ?? [];
-                    $primary_branch_id = $_POST['primary_branch_id'] ?? null;
-                    
-                    require_once __DIR__ . '/../models/Branch.php';
-                    $branch_model = new Branch();
-                    
-                    // Get current user branch assignments
-                    $current_branches = $branch_model->getUserBranches($id);
-                    $current_branch_ids = array_column($current_branches, 'id');
-                    
-                    // Remove user from branches that are no longer selected
-                    foreach ($current_branch_ids as $current_branch_id) {
-                        if (!in_array($current_branch_id, $branch_ids)) {
-                            $branch_model->removeUser($id, $current_branch_id);
-                        }
-                    }
-                    
-                    // Assign user to new branches and update primary branch
-                    foreach ($branch_ids as $branch_id) {
-                        $is_primary = ($branch_id == $primary_branch_id);
-                        $branch_model->assignUser($id, $branch_id, $is_primary);
-                    }
-                    
+                    log_action('access-management', 'users', 'update', $id, $old_data, $data);
+                    run_logic_hook('user.after_update', $id, $_POST);
                     $this->db->commit();
-                    log_activity($_SESSION['user_id'], 'update_user', 'Updated user ID: ' . $id);
-                    send_notification('Utente aggiornato con successo', 'success');
-                    redirect('../admin/users.php');
+                    send_notification(TranslationManager::t('user.updated_successfully'), 'success');
+                    redirect('../admin/access-management/users');
                 } else {
                     $this->db->rollBack();
-                    send_notification('Errore nell\'aggiornamento', 'danger');
+                    send_notification(TranslationManager::t('error.updating_user'), 'danger');
                 }
             } catch (Exception $e) {
                 $this->db->rollBack();
-                send_notification('Errore database: ' . $e->getMessage(), 'danger');
+                send_notification(TranslationManager::t('error.database') . ': ' . $e->getMessage(), 'danger');
             }
         }
         
@@ -189,8 +154,10 @@ class UsersController {
         }
         
         try {
+            $old_data = $this->user_model->readOne($id);
+
             if ($this->user_model->delete($id)) {
-                log_activity($_SESSION['user_id'], 'delete_user', 'Deleted user ID: ' . $id);
+                log_action('access-management', 'users', 'delete', $id, $old_data, null);
                 send_notification('Utente eliminato con successo', 'success');
             } else {
                 send_notification('Errore nell\'eliminazione', 'danger');

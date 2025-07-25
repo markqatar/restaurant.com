@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'user_groups', 'create')): ?>
-            <a href="<?php echo admin_url('user-groups', 'create'); ?>" class="btn btn-primary me-2">
+            <a href="<?php echo module_admin_url("access-management/userGroups/create"); ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('btn.add_new'); ?>
             </a>
         <?php endif; ?>
@@ -82,8 +82,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                     <div class="btn-group" role="group">
                                         <?php if (has_permission($_SESSION['user_id'], 'user_groups', 'update')): ?>
 
-                                            <a href="<?php 
-                                                //echo module_admin_url('access-management', 'usergroups', 'edit', $group['id']); ?>"
+                                        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups/edit/' . $group['id']; ?>"
                                                 class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -91,11 +90,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                         <?php endif; ?>
 
                                         <?php if (has_permission($_SESSION['user_id'], 'user_groups', 'delete')): ?>
-                                            <button onclick="deleteGroup(<?php echo $user['id']; ?>,
-                                        '<?php echo addslashes(TranslationManager::t('user.confirm_delete')); ?>',
-                                        '<?php echo addslashes(TranslationManager::t('user.confirm_delete_text')); ?>',
-                                        '<?php echo addslashes(TranslationManager::t('yes_delete')); ?>',
-                                        '<?php echo addslashes(TranslationManager::t('cancel')); ?>')"
+                                            <button onclick="deleteGroup(<?php echo $group['id']; ?>)"
                                                 class="btn btn-sm btn-outline-danger" title="<?php echo TranslationManager::t('delete'); ?>">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -114,9 +109,20 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </div>
+<script>
+    const USER_GROUPS_VARS = {
+        deleteUrl: '<?php echo module_admin_url("access-management/userGroups/delete/"); ?>',
+        translations: {
+            confirmTitle: '<?php echo TranslationManager::t("user.confirm_delete"); ?>',
+            confirmText: '<?php echo TranslationManager::t("user.confirm_delete_text"); ?>',
+            yesDelete: '<?php echo TranslationManager::t("yes_delete"); ?>',
+            cancel: '<?php echo TranslationManager::t("cancel"); ?>'
+        }
+    };
+</script>
 <?php
 $pageScripts = [
-    admin_module_path('/views/user-groups/js/index.js'),
+    get_setting('site_url', 'http://localhost') . '/admin/modules/access-management/views/user-groups/js/index.js',
 ];
 ?>
 <?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

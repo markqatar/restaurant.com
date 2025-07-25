@@ -1,12 +1,14 @@
 <?php
+
 /**
  * Module Loader
  * Gestisce caricamento moduli, dipendenze ed estensioni
  */
 
-function load_module_info($moduleName) {
+function load_module_info($moduleName)
+{
     $modulePath = get_setting('base_path', '/var/www/html') . "admin/modules/{$moduleName}/config/module.php";
-    
+
     if (!file_exists($modulePath)) {
         throw new Exception("Il modulo '{$moduleName}' non esiste nel percorso {$modulePath}");
     }
@@ -23,7 +25,8 @@ function load_module_info($moduleName) {
 /**
  * Carica tutti i moduli attivi (es. definiti in DB in futuro)
  */
-function get_all_modules() {
+function get_all_modules()
+{
     $modulesDir = get_setting('base_path', '/var/www/html') . 'admin/modules/';
     $modules = [];
 
@@ -40,7 +43,8 @@ function get_all_modules() {
 /**
  * Verifica dipendenze di un modulo
  */
-function check_module_dependencies($moduleName) {
+function check_module_dependencies($moduleName)
+{
     $info = load_module_info($moduleName);
     $dependencies = $info['dependencies'] ?? [];
 
@@ -57,7 +61,8 @@ function check_module_dependencies($moduleName) {
 /**
  * Recupera eventuale modulo padre (extends)
  */
-function get_module_parent($moduleName) {
+function get_module_parent($moduleName)
+{
     $info = load_module_info($moduleName);
     return $info['extends'] ?? null;
 }
@@ -65,7 +70,8 @@ function get_module_parent($moduleName) {
 /**
  * Carica un modulo con tutte le sue dipendenze ed eventuale estensione
  */
-function load_module($moduleName) {
+function load_module($moduleName)
+{
     // Verifica dipendenze
     check_module_dependencies($moduleName);
 
@@ -82,7 +88,8 @@ function load_module($moduleName) {
 /**
  * Carica tutti i moduli attivi leggendo i rispettivi file config/module.php
  */
-function load_active_modules() {
+function load_active_modules()
+{
     $modulesPath = get_setting('base_path') . 'admin/modules/';
     $activeModules = [];
 
@@ -98,11 +105,12 @@ function load_active_modules() {
 /**
  * Ordina i moduli in base alle dipendenze dichiarate nel module.php
  */
-function sort_modules_by_dependencies($modules) {
+function sort_modules_by_dependencies($modules)
+{
     $sorted = [];
     $visited = [];
 
-    $visit = function($moduleName) use (&$visit, &$modules, &$sorted, &$visited) {
+    $visit = function ($moduleName) use (&$visit, &$modules, &$sorted, &$visited) {
         if (isset($visited[$moduleName])) {
             return;
         }
@@ -128,11 +136,18 @@ function sort_modules_by_dependencies($modules) {
 /**
  * Registra gli hook dei moduli caricati
  */
-function register_module_hooks($modules) {
+function register_module_hooks($modules)
+{
     foreach ($modules as $module) {
         if (isset($module['hooks'])) {
             foreach ($module['hooks'] as $hook => $callback) {
                 add_view_hook($hook, $callback);
+            }
+        }
+        // Hook per logica
+        if (isset($module['logicHooks'])) {
+            foreach ($module['logicHooks'] as $hook => $callback) {
+                add_logic_hook($hook, $callback);
             }
         }
     }
@@ -141,7 +156,8 @@ function register_module_hooks($modules) {
 /**
  * Carica automaticamente tutti gli helpers di ciascun modulo
  */
-function load_module_helpers($modules) {
+function load_module_helpers($modules)
+{
     foreach (array_keys($modules) as $moduleName) {
         $helperPath = get_setting('base_path') . "admin/modules/{$moduleName}/helpers/";
         if (is_dir($helperPath)) {
@@ -151,5 +167,3 @@ function load_module_helpers($modules) {
         }
     }
 }
-
-?>

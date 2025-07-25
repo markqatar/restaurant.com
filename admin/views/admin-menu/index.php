@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../admin/includes/process_language.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 

@@ -1,12 +1,9 @@
 <?php
 // Process language changes first to prevent header issues
-require_once __DIR__ . '/../../admin/includes/process_language.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 
 // Set page title before including header
-$page_title = t('user.permissions') . ' - ' . t('edit') . ' - Restaurant Admin';
-
-// Include required files
-require_once __DIR__ . '/../../includes/functions.php';
+$page_title = TranslationManager::t('user.permissions') . ' - ' . TranslationManager::t('edit') . ' - Restaurant Admin';
 require_once __DIR__ . '/../../models/UserGroup.php';
 
 // Start session if not already started

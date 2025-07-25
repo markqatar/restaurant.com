@@ -121,7 +121,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                         <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users/edit/' . $user['id']; ?>"
                                             class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
                                             <i class="fas fa-edit"></i>
-                                        </a>
+                                        </a>&nbsp;
                                     <?php endif; ?>
 
                                     <?php if (has_permission($_SESSION['user_id'], 'users', 'delete') && $user['id'] != $_SESSION['user_id']): ?>

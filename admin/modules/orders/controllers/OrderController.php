@@ -88,7 +88,7 @@ class OrderController {
             try {
                 $order_id = $this->order_model->create($data);
                 if ($order_id) {
-                    log_activity($_SESSION['user_id'], 'create_order', 'Created order ID: ' . $order_id);
+                    log_action($_SESSION['user_id'], 'create_order', 'Created order ID: ' . $order_id);
                     send_notification('Ordine creato con successo', 'success');
                     
                     // Print receipt if requested
@@ -136,7 +136,7 @@ class OrderController {
             
             try {
                 if ($this->order_model->updateStatus($id, $status)) {
-                    log_activity($_SESSION['user_id'], 'update_order_status', "Order ID: $id, Status: $status");
+                    log_action($_SESSION['user_id'], 'update_order_status', "Order ID: $id, Status: $status");
                     send_notification('Status ordine aggiornato', 'success');
                     
                     // Send notification to customer if needed
@@ -163,7 +163,7 @@ class OrderController {
             
             try {
                 if ($this->order_model->assignRider($id, $rider_id)) {
-                    log_activity($_SESSION['user_id'], 'assign_rider', "Order ID: $id, Rider ID: $rider_id");
+                    log_action($_SESSION['user_id'], 'assign_rider', "Order ID: $id, Rider ID: $rider_id");
                     send_notification('Rider assegnato all\'ordine', 'success');
                 } else {
                     send_notification('Errore nell\'assegnazione rider', 'danger');
@@ -197,7 +197,7 @@ class OrderController {
         
         try {
             if ($this->order_model->delete($id)) {
-                log_activity($_SESSION['user_id'], 'delete_order', 'Deleted order ID: ' . $id);
+                log_action($_SESSION['user_id'], 'delete_order', 'Deleted order ID: ' . $id);
                 send_notification('Ordine eliminato con successo', 'success');
             } else {
                 send_notification('Errore nell\'eliminazione', 'danger');

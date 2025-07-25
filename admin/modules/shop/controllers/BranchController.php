@@ -78,7 +78,7 @@ class BranchController {
                 
                 try {
                     if ($this->branch_model->create($data)) {
-                        log_activity($_SESSION['user_id'], 'create_branch', 'Created branch: ' . $data['name']);
+                        log_action($_SESSION['user_id'], 'create_branch', 'Created branch: ' . $data['name']);
                         send_notification('Filiale creata con successo', 'success');
                         redirect('branches.php');
                     } else {
@@ -164,7 +164,7 @@ class BranchController {
                 
                 try {
                     if ($this->branch_model->update($id, $data)) {
-                        log_activity($_SESSION['user_id'], 'update_branch', 'Updated branch ID: ' . $id);
+                        log_action($_SESSION['user_id'], 'update_branch', 'Updated branch ID: ' . $id);
                         send_notification('Filiale aggiornata con successo', 'success');
                         redirect('branches.php');
                     } else {
@@ -191,7 +191,7 @@ class BranchController {
         
         try {
             if ($this->branch_model->delete($id)) {
-                log_activity($_SESSION['user_id'], 'delete_branch', 'Deleted branch ID: ' . $id);
+                log_action($_SESSION['user_id'], 'delete_branch', 'Deleted branch ID: ' . $id);
                 send_notification('Filiale eliminata con successo', 'success');
             } else {
                 send_notification('Errore nell\'eliminazione', 'danger');

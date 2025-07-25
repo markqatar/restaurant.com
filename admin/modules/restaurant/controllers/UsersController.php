@@ -96,7 +96,7 @@ class UsersController {
                             }
                         }
                         
-                        log_activity($_SESSION['user_id'], 'create_user', 'Created user: ' . $data['username']);
+                        log_action($_SESSION['user_id'], 'create_user', 'Created user: ' . $data['username']);
                         send_notification('Utente creato con successo', 'success');
                         redirect(get_setting('site_url', 'http://localhost') . '/admin/users');
                     } else {
@@ -166,7 +166,7 @@ class UsersController {
                     }
                     
                     $this->db->commit();
-                    log_activity($_SESSION['user_id'], 'update_user', 'Updated user ID: ' . $id);
+                    log_action($_SESSION['user_id'], 'update_user', 'Updated user ID: ' . $id);
                     send_notification('Utente aggiornato con successo', 'success');
                     redirect('../admin/users.php');
                 } else {
@@ -190,7 +190,7 @@ class UsersController {
         
         try {
             if ($this->user_model->delete($id)) {
-                log_activity($_SESSION['user_id'], 'delete_user', 'Deleted user ID: ' . $id);
+                log_action($_SESSION['user_id'], 'delete_user', 'Deleted user ID: ' . $id);
                 send_notification('Utente eliminato con successo', 'success');
             } else {
                 send_notification('Errore nell\'eliminazione', 'danger');

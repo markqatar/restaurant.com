@@ -1,12 +1,8 @@
 <?php
 // Process language changes first to prevent header issues
-require_once __DIR__ . '/../../../admin/includes/process_language.php';
-
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 // Set page title before including header
-$page_title = t('user.groups') . ' - ' . t('btn.add_new') . ' - Restaurant Admin';
-
-// Include required files
-require_once __DIR__ . '/../../includes/functions.php';
+$page_title = TranslationManager::t('user.groups') . ' - ' . TranslationManager::t('btn.add_new') . ' - Restaurant Admin';
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -44,7 +40,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             <h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('user.groups'); ?> - <?php echo TranslationManager::t('msg.info'); ?></h6>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="<?php echo get_setting('site_url', 'http://localhost'); ?>/admin/user-groups/store" id="groupForm">
+                            <form method="POST" action="<?php echo get_setting('site_url', 'http://localhost'); ?>/admin/access-management/userGroups/store" id="groupForm">
                                 <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
                                 <div class="row">
                                     <div class="col-md-6">

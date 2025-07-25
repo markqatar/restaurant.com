@@ -1,6 +1,6 @@
 <?php
 // Process language changes first, before any output
-require_once __DIR__ . '/../admin/includes/process_language.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 require_once __DIR__ . '/../includes/session.php';
 
 // If already logged in, redirect to dashboard
@@ -29,8 +29,6 @@ if ($_POST) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
-
-                    log_activity($user['id'], 'login', 'User logged in');
                     redirect(get_setting('site_url', 'http://localhost') . '/admin/index');
                 } else {
                     $error = 'Invalid username or password';

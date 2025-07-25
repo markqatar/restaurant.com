@@ -76,7 +76,7 @@ class ProductController {
             
             try {
                 if ($this->product_model->create($data)) {
-                    log_activity($_SESSION['user_id'], 'create_product', 'Created product: ' . $data['name']);
+                    log_action($_SESSION['user_id'], 'create_product', 'Created product: ' . $data['name']);
                     send_notification('Prodotto creato con successo', 'success');
                     redirect('products.php');
                 } else {
@@ -149,7 +149,7 @@ class ProductController {
             
             try {
                 if ($this->product_model->update($id, $data)) {
-                    log_activity($_SESSION['user_id'], 'update_product', 'Updated product ID: ' . $id);
+                    log_action($_SESSION['user_id'], 'update_product', 'Updated product ID: ' . $id);
                     send_notification('Prodotto aggiornato con successo', 'success');
                     redirect('products.php');
                 } else {
@@ -171,7 +171,7 @@ class ProductController {
         
         try {
             if ($this->product_model->delete($id)) {
-                log_activity($_SESSION['user_id'], 'delete_product', 'Deleted product ID: ' . $id);
+                log_action($_SESSION['user_id'], 'delete_product', 'Deleted product ID: ' . $id);
                 send_notification('Prodotto eliminato con successo', 'success');
             } else {
                 send_notification('Errore nell\'eliminazione', 'danger');

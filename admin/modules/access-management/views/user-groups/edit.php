@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../../includes/functions.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
-$page_title = t('user.groups') . ' - ' . t('edit') . ' - Restaurant Admin';
+$page_title = TranslationManager::t('user.groups') . ' - ' . TranslationManager::t('edit') . ' - Restaurant Admin';
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -29,7 +28,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </h6>
             </div>
             <div class="card-body">
-                <form method="POST" action="<?php echo get_setting('site_url', 'http://localhost'); ?>/admin/user-groups/update/<?php echo $user_group['id']; ?>" id="editGroupForm">
+                <form method="POST" action="<?php echo get_setting('site_url', 'http://localhost'); ?>/admin/access-management/userGroups/update/<?php echo $user_group['id']; ?>" id="editGroupForm">
                     <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
 
                     <div class="row">

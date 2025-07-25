@@ -1,7 +1,6 @@
 <?php
 
 // Include required files
-require_once __DIR__ . '/../../includes/functions.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 // Set page title before including header
 $page_title = t('user.new_user') . ' - Restaurant Admin';

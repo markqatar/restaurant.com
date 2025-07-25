@@ -21,16 +21,8 @@
   <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/metismenu/metisMenu.min.js"></script>
   <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
   
-  <?php if (basename($_SERVER['PHP_SELF']) == 'branches.php' || basename($_SERVER['PHP_SELF']) == 'users.php'): ?>
-  <!-- DataTable JS -->
   <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
   <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('.datatable').DataTable();
-    });
-  </script>
-  <?php endif; ?>
   
   <!-- Main JS -->
   <script src="<?php echo $siteUrl; ?>/admin/assets/js/main.js"></script>

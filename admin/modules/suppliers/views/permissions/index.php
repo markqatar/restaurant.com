@@ -1,13 +1,9 @@
 <?php
 // Process language changes
-require_once __DIR__ . '/../../admin/includes/process_language.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 
 // Set page title
-$page_title = t('user.permissions') . ' - Restaurant Admin';
-
-// Include utility functions
-require_once __DIR__ . '/../../includes/functions.php';
-
+$page_title = TranslationManager::t('user.permissions') . ' - Restaurant Admin';
 // Start session if needed
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -140,7 +136,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
 
 <script>
     function deletePermission(permissionId) {
-        confirmDelete('<?php echo addslashes(t('msg.confirm_delete')); ?>')
+        confirmDelete('<?php echo addslashes(TranslationManager::t('msg.confirm_delete')); ?>')
             .then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = `<?php echo admin_url('permissions', 'delete'); ?>/${permissionId}`;

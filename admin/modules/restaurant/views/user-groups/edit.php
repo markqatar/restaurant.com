@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../../includes/functions.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
-$page_title = t('user.groups') . ' - ' . t('edit') . ' - Restaurant Admin';
+$page_title = TranslationManager::t('user.groups') . ' - ' . TranslationManager::t('edit') . ' - Restaurant Admin';
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 
 if (session_status() === PHP_SESSION_NONE) {

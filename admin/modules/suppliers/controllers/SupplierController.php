@@ -75,7 +75,7 @@ class SupplierController {
                             $this->processContacts($supplier_id, $_POST['contacts']);
                         }
                         
-                        log_activity($_SESSION['user_id'], 'create_supplier', 'Created supplier: ' . $data['name']);
+                        log_action($_SESSION['user_id'], 'create_supplier', 'Created supplier: ' . $data['name']);
                         send_notification('Fornitore creato con successo', 'success');
                         redirect('suppliers.php');
                     } else {
@@ -161,7 +161,7 @@ class SupplierController {
                             $this->processContacts($id, $_POST['contacts']);
                         }
                         
-                        log_activity($_SESSION['user_id'], 'update_supplier', 'Updated supplier ID: ' . $id);
+                        log_action($_SESSION['user_id'], 'update_supplier', 'Updated supplier ID: ' . $id);
                         send_notification('Fornitore aggiornato con successo', 'success');
                         redirect('suppliers.php');
                     } else {
@@ -188,7 +188,7 @@ class SupplierController {
         
         try {
             if ($this->supplier_model->delete($id)) {
-                log_activity($_SESSION['user_id'], 'delete_supplier', 'Deleted supplier ID: ' . $id);
+                log_action($_SESSION['user_id'], 'delete_supplier', 'Deleted supplier ID: ' . $id);
                 send_notification('Fornitore eliminato con successo', 'success');
             } else {
                 send_notification('Errore nell\'eliminazione', 'danger');

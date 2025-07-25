@@ -20,7 +20,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                 <h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('user.user_data'); ?></h6>
             </div>
             <div class="card-body">
-                <form method="POST" action="<?php echo get_setting('site_url', 'users/update') . '/admin/access-management/users/update/' . $user['id']; ?>">
+                <form method="POST" action="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users/update/' . $user['id']; ?>">
                     <?php echo csrf_token_field(); ?>
 
                     <div class="row">
@@ -83,69 +83,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                         <strong><?php echo TranslationManager::t('msg.info'); ?>:</strong> <?php echo TranslationManager::t('user.password_note'); ?>
                     </div>
 
-                    <div class="mb-4">
-                        <h5><?php echo TranslationManager::t('user.branch_assignments'); ?></h5>
-                        <p class="text-muted small"><?php echo TranslationManager::t('user.select_branches'); ?></p>
-
-                        <?php
-                        // Load branches and user branch assignments
-                        require_once get_setting('base_path', '/var/www/html') . 'admin/models/Branch.php';
-                        $branch_model = new Branch();
-                        $branches = $branch_model->read(true); // Get only active branches
-                        $user_branches = $branch_model->getUserBranches($user['id']);
-
-                        // Create an array of assigned branch IDs for easier checking
-                        $assigned_branch_ids = array_column($user_branches, 'id');
-                        // Get primary branch ID
-                        $primary_branch_id = null;
-                        foreach ($user_branches as $ub) {
-                            if ($ub['is_primary']) {
-                                $primary_branch_id = $ub['id'];
-                                break;
-                            }
-                        }
-
-                        if (!empty($branches)):
-                        ?>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo TranslationManager::t('branch.name'); ?></th>
-                                            <th><?php echo TranslationManager::t('branch.location'); ?></th>
-                                            <th class="text-center"><?php echo TranslationManager::t('assign'); ?></th>
-                                            <th class="text-center"><?php echo TranslationManager::t('primary'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($branches as $branch):
-                                            $is_assigned = in_array($branch['id'], $assigned_branch_ids);
-                                            $is_primary = ($primary_branch_id == $branch['id']);
-                                        ?>
-                                            <tr>
-                                                <td><?php echo htmlspecialchars($branch['name']); ?></td>
-                                                <td><?php echo htmlspecialchars($branch['city_name'] ?? $branch['address']); ?></td>
-                                                <td class="text-center">
-                                                    <div class="form-check d-flex justify-content-center">
-                                                        <input class="form-check-input branch-checkbox" type="checkbox" name="branch_ids[]" value="<?php echo $branch['id']; ?>" id="branch_<?php echo $branch['id']; ?>" <?php echo $is_assigned ? 'checked' : ''; ?>>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="form-check d-flex justify-content-center">
-                                                        <input class="form-check-input primary-branch-radio" type="radio" name="primary_branch_id" value="<?php echo $branch['id']; ?>" id="primary_<?php echo $branch['id']; ?>" <?php echo $is_primary ? 'checked' : ''; ?> <?php echo $is_assigned ? '' : 'disabled'; ?>>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <?php else: ?>
-                            <div class="alert alert-info">
-                                <?php echo TranslationManager::t('branch.no_branches'); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                    <?php render_hook('users.edit.form.sections', $user); ?>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="<?php echo admin_url('users'); ?>" class="btn btn-secondary me-md-2">

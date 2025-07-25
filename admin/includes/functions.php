@@ -204,24 +204,6 @@ function get_notification() {
 }
 
 /**
- * Log activity
- */
-function log_activity($user_id, $action, $details = '') {
-    global $db;
-    
-    try {
-        $stmt = $db->prepare("
-            INSERT INTO activity_logs (user_id, action, details, ip_address, created_at) 
-            VALUES (?, ?, ?, ?, NOW())
-        ");
-        $stmt->execute([$user_id, $action, $details, $_SERVER['REMOTE_ADDR']]);
-    } catch (Exception $e) {
-        // Log error silently
-        error_log("Activity log error: " . $e->getMessage());
-    }
-}
-
-/**
  * Generate order number
  */
 function generate_order_number() {
@@ -415,6 +397,102 @@ function render_hook($hook_name, ...$args) {
         foreach ($view_hooks[$hook_name] as $callback) {
             call_user_func_array($callback, $args);
         }
+    }
+}
+
+$logic_hooks = [];
+
+function add_logic_hook($hook_name, $callback) {
+    global $logic_hooks;
+    if (!isset($logic_hooks[$hook_name])) {
+        $logic_hooks[$hook_name] = [];
+    }
+    $logic_hooks[$hook_name][] = $callback;
+}
+
+function run_logic_hook($hook_name, ...$args) {
+    global $logic_hooks;
+    if (isset($logic_hooks[$hook_name])) {
+        foreach ($logic_hooks[$hook_name] as $callback) {
+            call_user_func_array($callback, $args);
+        }
+    }
+}
+
+$global_hooks = [];
+
+function add_global_hook($hook_name, $callback) {
+    global $global_hooks;
+    if (!isset($global_hooks[$hook_name])) {
+        $global_hooks[$hook_name] = [];
+    }
+    $global_hooks[$hook_name][] = $callback;
+}
+
+function run_hook($hook_name, ...$args) {
+    global $global_hooks;
+    if (isset($global_hooks[$hook_name])) {
+        foreach ($global_hooks[$hook_name] as $callback) {
+            call_user_func_array($callback, $args);
+        }
+    }
+}
+
+function log_action($module, $table_name, $action, $record_id, $old_data = null, $new_data = null) {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("
+        INSERT INTO activity_logs (user_id, module, table_name, action, record_id, old_data, new_data)
+        VALUES (:user_id, :module, :table_name, :action, :record_id, :old_data, :new_data)
+    ");
+    $stmt->execute([
+        ':user_id' => $_SESSION['user_id'] ?? null,
+        ':module' => $module,
+        ':table_name' => $table_name,
+        ':action' => $action,
+        ':record_id' => $record_id,
+        ':old_data' => $old_data ? json_encode($old_data) : null,
+        ':new_data' => $new_data ? json_encode($new_data) : null
+    ]);
+}
+
+function restore_action($log_id) {
+    $db = Database::getInstance()->getConnection();
+
+    // Usa il modello per recuperare il log
+    $model = new ActivityLog();
+    $log = $model->getLogById($log_id);
+
+    if (!$log) {
+        return ['success' => false, 'message' => TranslationManager::t('system.error.log_not_found')];
+    }
+
+    // Controlla che ci sia la tabella e i dati
+    if (empty($log['table_name'])) {
+        return ['success' => false, 'message' => TranslationManager::t('system.error.no_table_for_restore')];
+    }
+
+    // Azioni consentite per il restore
+    if ($log['action'] !== 'update') {
+        return ['success' => false, 'message' => TranslationManager::t('system.error.restore_not_allowed')];
+    }
+
+    // Decodifica old_data per ripristino
+    $old_data = json_decode($log['old_data'], true);
+    if (!$old_data || !is_array($old_data)) {
+        return ['success' => false, 'message' => TranslationManager::t('system.error.no_data_to_restore')];
+    }
+
+    try {
+        // Costruisci la query UPDATE
+        $columns = array_keys($old_data);
+        $set = implode(', ', array_map(fn($col) => "$col = ?", $columns));
+
+        $stmt = $db->prepare("UPDATE {$log['table_name']} SET $set WHERE id = ?");
+        $stmt->execute(array_merge(array_values($old_data), [$log['record_id']]));
+
+        return ['success' => true, 'message' => TranslationManager::t('system.success.restore_done')];
+    } catch (Exception $e) {
+        return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
     }
 }
 ?>

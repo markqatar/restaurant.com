@@ -1,16 +1,16 @@
-function deleteGroup(userId, titleText, confirmText, yesText, cancelText) {
+function deleteGroup(groupId) {
     Swal.fire({
-        title: titleText,
-        text: confirmText,
+        title: USER_GROUPS_VARS.translations.confirmTitle,
+        text: USER_GROUPS_VARS.translations.confirmText,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: yesText,
-        cancelButtonText: cancelText
+        confirmButtonText: USER_GROUPS_VARS.translations.yesDelete,
+        cancelButtonText: USER_GROUPS_VARS.translations.cancel
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = `<?php echo admin_url('user-groups', 'delete'); ?>/${userId}`;
+            window.location.href = `${USER_GROUPS_VARS.deleteUrl}`+groupId;
         }
     });
 }
