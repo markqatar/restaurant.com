@@ -1,8 +1,4 @@
-<?php require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php'; ?>
-
-<!-- Select2 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+<?php require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php'; ?>
 
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -95,14 +91,8 @@
                     
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="state_id" class="form-label">Stato/Regione</label>
-                            <select class="form-select select2" id="state_id" name="state_id">
-                                <option value="">Seleziona Stato</option>
-                                <?php foreach ($states as $state): ?>
-                                <option value="<?php echo $state['id']; ?>">
-                                    <?php echo htmlspecialchars($state['name']); ?>
-                                </option>
-                                <?php endforeach; ?>
+                            <label for="country_id" class="form-label">Stato/Regione</label>
+                            <select class="form-select select2" id="country_id" name="country_id">
                             </select>
                         </div>
                     </div>
@@ -145,63 +135,11 @@
 </div>
 
 <!-- Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<script>
-$(document).ready(function() {
-    // Initialize Select2
-    $('.select2').select2({
-        theme: 'bootstrap-5',
-        placeholder: function() {
-            return $(this).data('placeholder') || 'Seleziona...';
-        }
-    });
-    
-    // State change handler
-    $('#state_id').change(function() {
-        const stateId = $(this).val();
-        const citySelect = $('#city_id');
-        
-        citySelect.empty().append('<option value="">Caricamento città...</option>').prop('disabled', true);
-        
-        if (stateId) {
-            // Initialize city select with search
-            citySelect.select2('destroy');
-            citySelect.select2({
-                theme: 'bootstrap-5',
-                placeholder: 'Cerca e seleziona città...',
-                ajax: {
-                    url: 'branches/get-cities',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            state_id: stateId,
-                            q: params.term || ''
-                        };
-                    },
-                    processResults: function(data) {
-                        return {
-                            results: data.map(function(city) {
-                                return {
-                                    id: city.id,
-                                    text: city.name
-                                };
-                            })
-                        };
-                    },
-                    cache: true
-                },
-                minimumInputLength: 0
-            });
-            
-            citySelect.prop('disabled', false);
-        } else {
-            citySelect.empty().append('<option value="">Prima seleziona lo stato</option>');
-            citySelect.prop('disabled', true);
-        }
-    });
-});
-</script>
+<?php
+$pageScripts = [
+    get_setting('site_url', 'http://localhost') . '/admin/modules/shop/views/branches/js/create.js',
+];
+?>
 
 <?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

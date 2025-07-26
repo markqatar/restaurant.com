@@ -27,7 +27,9 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                     <i class="fas fa-users-cog me-2"></i><?php echo TranslationManager::t('user.groups'); ?> - <?php echo TranslationManager::t('btn.add_new'); ?>
                 </h1>
                 <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
-                    <a href="user-groups.php" class="btn btn-outline-secondary">
+                    <a 
+                    href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups'; ?>"
+                    class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back_to_list'); ?>
                     </a>
                 </div>

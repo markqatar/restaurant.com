@@ -59,6 +59,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <?php
                                 $permissionModel = new Permission();
                                 $resources = $permissionModel->getResources();
+
                                 $groupPermissions = isset($user_group['permissions']) ? $user_group['permissions'] : [];
                                 $groupPermissionIds = array_map(function ($perm) {
                                     return $perm['id'];

@@ -157,16 +157,24 @@ class Permission
      */
     public function getResources()
     {
-        return [
-            'users',
-            'branches',
-            'suppliers',
-            'products',
-            'orders',
-            'reports'
-        ];
-    }
+        $modulesPath = get_setting('base_path') . 'admin/modules/';
+        $resources = [];
 
+        if (is_dir($modulesPath)) {
+            foreach (scandir($modulesPath) as $module) {
+                if ($module === '.' || $module === '..') {
+                    continue;
+                }
+
+                $fullPath = $modulesPath . $module;
+                if (is_dir($fullPath)) {
+                    $resources[] = strtolower($module);
+                }
+            }
+        }
+
+        return $resources;
+    }
     /**
      * Get available actions
      */

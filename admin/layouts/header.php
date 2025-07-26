@@ -49,10 +49,9 @@ $langCode = $currentLanguage;
   <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/metismenu/metisMenu.min.css" rel="stylesheet">
   <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
 
-  <?php if ($currentPage == 'branches.php' || $currentPage == 'users.php'): ?>
-    <!-- DataTable CSS -->
-    <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-  <?php endif; ?>
+  <link href="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 
   <title><?php echo TranslationManager::t('Restaurant Management System'); ?></title>
 
@@ -135,7 +134,7 @@ $langCode = $currentLanguage;
                   <a class="dropdown-item border-bottom py-2" href="javascript:;">
                     <div class="d-flex align-items-center gap-3">
                       <div class="">
-                        <img src="<?php echo $siteUrl;?>/admin/assets/images/avatars/default.png" class="rounded-circle" width="45" height="45" alt="">
+                        <img src="<?php echo $siteUrl; ?>/admin/assets/images/avatars/default.png" class="rounded-circle" width="45" height="45" alt="">
                       </div>
                       <div class="">
                         <h5 class="notify-title">Congratulations Jhon</h5>
@@ -240,7 +239,7 @@ $langCode = $currentLanguage;
           <li class="nav-item dropdown dropdown-large">
             <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
               <div class="user-img">
-                <?php 
+                <?php
                 $userAvatar = isset($userPrefs['avatar']) ? $userPrefs['avatar'] : 'default.png';
                 $avatarPath = $siteUrl . '/admin/assets/images/avatars/' . $userAvatar;
                 ?>

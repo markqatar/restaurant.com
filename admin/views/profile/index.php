@@ -1,6 +1,6 @@
 <?php
 $pageTitle = $data['pageTitle'];
-include get_setting('base_path', '/var/www/html') . 'admin/includes/header.php';
+include get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 
 ?>
 

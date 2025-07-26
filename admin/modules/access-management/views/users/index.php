@@ -8,7 +8,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'users', 'create')): ?>
-            <a href="<?php echo admin_url('users', 'create'); ?>" class="btn btn-primary me-2">
+            <a href="<?php echo module_admin_url("access-management/users/create"); ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('user.new_user'); ?>
             </a>
         <?php endif; ?>

@@ -7,7 +7,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         <i class="fas fa-user-edit me-2"></i><?php echo TranslationManager::t('user.edit_user'); ?>
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
-        <a href="<?php echo admin_url('users'); ?>" class="btn btn-outline-secondary">
+        <a href="<?php echo module_admin_url("/access-management/users"); ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back_to_list'); ?>
         </a>
     </div>

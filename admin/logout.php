@@ -1,9 +1,5 @@
 <?php
 require_once __DIR__ . '/../includes/session.php';
-// Log the logout activity
-if (is_logged_in()) {
-    log_action($_SESSION['user_id'], 'logout', 'User logged out');
-}
 
 // Destroy session
 session_destroy();

@@ -1,6 +1,6 @@
 <?php
 $page_title = t('add_room');
-include __DIR__ . '/../../admin/includes/header.php';
+include __DIR__ . '/../../admin/layouts/header.php';
 ?>
 
 <div class="container-fluid px-4">

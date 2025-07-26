@@ -1,6 +1,7 @@
 <?php
 // Include branch helper functions
-require_once 'branch_helpers.php';
+require_once 'helpers/branches_helper.php';
+require_once 'helpers/select2_helper.php';
 
 // Include URL helper functions
 require_once __DIR__ . '/../../includes/url_functions.php';

@@ -1,5 +1,5 @@
 <?php
-require_once '../admin/includes/header.php';
+require_once '../admin/layouts/header.php';
 ?>
 
 <div class="container-fluid">

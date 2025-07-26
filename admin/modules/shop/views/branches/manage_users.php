@@ -1,4 +1,4 @@
-<?php require_once get_setting('base_path', '/var/www/html') . 'admin/includes/header.php'; ?>
+<?php require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php'; ?>
 
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
