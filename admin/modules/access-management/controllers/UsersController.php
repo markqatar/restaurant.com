@@ -58,7 +58,7 @@ class UsersController
         $user = $this->user_model->readOne($id);
         if (!$user) {
             send_notification(TranslationManager::t('msg.not_found'), 'danger');
-            redirect('users.php');
+            redirect(get_setting('site_url') . '/admin/access-management/users');
         }
         $userGroupModel = new UserGroup();
         $userGroups = $userGroupModel->getActive();
@@ -104,9 +104,9 @@ class UsersController
                             $this->user_model->assignToGroup($newUserId, (int) $_POST['group_id']);
                         }
                         log_action('access-management', 'users', 'create', $newUserId, null, $data);
-                        run_logic_hook('user.after_create', $newUserId, $_POST);
+                        HookManager::triggerEvent('user.after_create', $newUserId, $_POST);
                         send_notification(TranslationManager::t('msg.created_successfully'), 'success');
-                        redirect(get_setting('site_url') . '/admin/users');
+                        redirect(get_setting('site_url') . '/admin/access-management/users');
                     } else {
                         send_notification(TranslationManager::t('msg.error_occurred'), 'danger');
                     }
@@ -119,7 +119,7 @@ class UsersController
                 }
             }
 
-            redirect(get_setting('site_url') . '/admin/users/create');
+            redirect(get_setting('site_url') . '/admin/access-management/users/create');
         }
     }
 
@@ -158,10 +158,10 @@ class UsersController
                     }
 
                     log_action('access-management', 'users', 'update', $id, $old_data, $data);
-                    run_logic_hook('user.after_update', $id, $_POST);
+                    HookManager::triggerEvent('user.after_update', $id, $_POST);
                     $this->db->commit();
                     send_notification(TranslationManager::t('msg.updated_successfully'), 'success');
-                    redirect('../admin/access-management/users');
+                    redirect(get_setting('site_url') . '/admin/access-management/users');
                 } else {
                     $this->db->rollBack();
                     send_notification(TranslationManager::t('msg.error_occurred'), 'danger');
@@ -197,7 +197,7 @@ class UsersController
             send_notification(TranslationManager::t('msg.db_error') . ': ' . $e->getMessage(), 'danger');
         }
 
-        redirect('../admin/users.php');
+        redirect(get_setting('site_url') . '/admin/access-management/users');
     }
 
     /**

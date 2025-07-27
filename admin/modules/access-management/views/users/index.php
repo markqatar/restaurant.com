@@ -73,7 +73,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                         <th><?php echo TranslationManager::t('user.username'); ?></th>
                         <th><?php echo TranslationManager::t('user.full_name'); ?></th>
                         <th><?php echo TranslationManager::t('email'); ?></th>
-                        <?php render_hook('users.table.columns'); ?>
+                        <?php HookManager::executeHook('users.table.columns'); ?>
                         <th><?php echo TranslationManager::t('user.groups'); ?></th>
                         <th><?php echo TranslationManager::t('status'); ?></th>
                         <th><?php echo TranslationManager::t('created'); ?></th>
@@ -95,7 +95,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                     <?php echo htmlspecialchars($user['email']); ?>
                                 </a>
                             </td>
-                            <?php render_hook('users.table.rows', $user); ?>
+                            <?php HookManager::executeHook('users.table.rows', $user); ?>
                             <td>
                                 <?php if ($user['user_groups']): ?>
                                     <?php foreach (explode(', ', $user['user_groups']) as $group): ?>

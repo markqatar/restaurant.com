@@ -165,7 +165,7 @@ class BranchesController
 
         try {
             if ($this->branch_model->delete($id)) {
-                log_action($_SESSION['user_id'], 'delete_branch', 'Deleted branch ID: ' . $id);
+                //log_action($_SESSION['user_id'], 'delete_branch', 'Deleted branch ID: ' . $id);
                 send_notification('Filiale eliminata con successo', 'success');
             } else {
                 send_notification('Errore nell\'eliminazione', 'danger');

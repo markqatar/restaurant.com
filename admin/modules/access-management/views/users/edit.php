@@ -77,24 +77,25 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             </div>
                         </div>
                     </div>
-<div class="mb-3">
-    <label for="group_id" class="form-label"><?php echo TranslationManager::t('user.group'); ?></label>
-    <select class="form-select" id="group_id" name="group_id">
-        <option value=""><?php echo TranslationManager::t('form.select_option'); ?></option>
-        <?php foreach ($userGroups as $group): ?>
-            <option value="<?php echo $group['id']; ?>" 
-                <?php echo (in_array($group['id'], array_column($assignedGroups, 'id'))) ? 'selected' : ''; ?>>
-                <?php echo htmlspecialchars($group['name']); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-</div>
+                    <div class="mb-3">
+                        <label for="group_id" class="form-label"><?php echo TranslationManager::t('user.group'); ?></label>
+                        <select class="form-select" id="group_id" name="group_id">
+                            <option value=""><?php echo TranslationManager::t('form.select_option'); ?></option>
+                            <?php foreach ($userGroups as $group): ?>
+                                <option value="<?php echo $group['id']; ?>" 
+                                    <?php echo (in_array($group['id'], array_column($assignedGroups, 'id'))) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($group['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
                         <strong><?php echo TranslationManager::t('msg.info'); ?>:</strong> <?php echo TranslationManager::t('user.password_note'); ?>
                     </div>
 
-                    <?php render_hook('users.edit.form.sections', $user); ?>
+                    <?php HookManager::executeHook('users.edit.form.sections', $user); ?>
+
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users'; ?>" class="btn btn-secondary me-md-2">
@@ -151,53 +152,22 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         </div>
     </div>
 </div>
-
 <script>
-    function resetPassword(userId) {
-        confirmAction('<?php echo addslashes(TranslationManager::t('user.confirm_reset_password')); ?>')
-            .then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users/reset_password'; ?>/' + userId;
-                }
-            });
-    }
-
-    function deleteUser(userId) {
-        confirmDelete('<?php echo addslashes(TranslationManager::t('user.confirm_delete')); ?>')
-            .then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users/delete'; ?>/' + userId;
-                }
-            });
-    }
-
-    // Branch selection logic
-    document.querySelectorAll('.branch-checkbox').forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            const branchId = this.value;
-            const primaryRadio = document.getElementById('primary_' + branchId);
-
-            if (this.checked) {
-                primaryRadio.disabled = false;
-
-                // If this is the first branch selected, automatically set as primary
-                const checkedBoxes = document.querySelectorAll('.branch-checkbox:checked');
-                if (checkedBoxes.length === 1) {
-                    primaryRadio.checked = true;
-                }
-            } else {
-                primaryRadio.disabled = true;
-                primaryRadio.checked = false;
-
-                // If there's only one branch left selected, make it primary
-                const checkedBoxes = document.querySelectorAll('.branch-checkbox:checked');
-                if (checkedBoxes.length === 1) {
-                    const lastBranchId = checkedBoxes[0].value;
-                    document.getElementById('primary_' + lastBranchId).checked = true;
-                }
-            }
-        });
-    });
+    const USERS_ACTIONS_VARS = {
+        urls: {
+            resetPasswordBase: '<?php echo get_setting("site_url", "http://localhost") . "/admin/access-management/users/reset_password/"; ?>',
+            deleteUserBase: '<?php echo get_setting("site_url", "http://localhost") . "/admin/access-management/users/delete/"; ?>'
+        },
+        translations: {
+            confirmResetPassword: '<?php echo addslashes(TranslationManager::t("user.confirm_reset_password")); ?>',
+            confirmDelete: '<?php echo addslashes(TranslationManager::t("user.confirm_delete")); ?>'
+        }
+    };
 </script>
+<?php
+$pageScripts = [
+    get_setting('site_url', 'http://localhost') . '/admin/modules/access-management/views/users/js/edit.js',
+];
+?>
 
 <?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

@@ -1,5 +1,6 @@
 <?php
 // Process language changes first, before any output
+require_once __DIR__ . '/includes/functions.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 require_once __DIR__ . '/../includes/session.php';
 
@@ -87,9 +88,12 @@ try {
     $low_stock_items = [];
     $expiring_items = [];
 }
+require_once get_setting('base_path', '/var/www/html') . 'admin/modules/system/controllers/TranslationManager.php';
 
-include 'includes/header.php';
-?>
+// Inizializza il sistema di traduzioni
+TranslationManager::init();
+
+include get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php'; ?>
 
 <div class="container-fluid">
     <div class="row">        
@@ -375,4 +379,4 @@ const orderTypeChart = new Chart(orderTypeCtx, {
 });
 </script>
 
-<?php include 'includes/footer.php'; ?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

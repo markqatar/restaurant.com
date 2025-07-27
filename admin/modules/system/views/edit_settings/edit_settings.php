@@ -114,7 +114,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($languages as $lang): ?>
+                        <?php foreach ($systemLanguages as $lang): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($lang['code']); ?></td>
                                 <td><?php echo htmlspecialchars($lang['name']); ?></td>
@@ -167,6 +167,18 @@
               <option value="RTL">RTL</option>
             </select>
           </div>
+          <div class="mb-3 form-check">
+            <input class="form-check-input" type="checkbox" id="is_active_admin" name="is_active_admin" value="1">
+            <label class="form-check-label" for="is_active_admin">
+              <?php echo TranslationManager::t('active_for_admin'); ?>
+            </label>
+          </div>
+          <div class="mb-3 form-check">
+            <input class="form-check-input" type="checkbox" id="is_active_public" name="is_active_public" value="1">
+            <label class="form-check-label" for="is_active_public">
+              <?php echo TranslationManager::t('active_for_public'); ?>
+            </label>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success"><?php echo TranslationManager::t('btn.save'); ?></button>
@@ -176,26 +188,18 @@
   </div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const deleteButtons = document.querySelectorAll('.delete-language');
-    deleteButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const code = this.getAttribute('data-code');
-            Swal.fire({
-                title: '<?php echo TranslationManager::t('delete_language'); ?>',
-                text: code,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: '<?php echo TranslationManager::t('delete'); ?>'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '<?php echo get_setting("site_url"); ?>/admin/system/SystemConfig/deleteLanguage/' + code;
-                }
-            });
-        });
-    });
-});
+    const LANGUAGE_CONFIG_VARS = {
+        deleteUrlBase: '<?php echo get_setting("site_url"); ?>/admin/system/SystemConfig/deleteLanguage/',
+        translations: {
+            deleteLanguageTitle: '<?php echo TranslationManager::t("delete_language"); ?>',
+            deleteButton: '<?php echo TranslationManager::t("delete"); ?>'
+        }
+    };
 </script>
+<?php
+$pageScripts = [
+    get_setting('site_url', 'http://localhost') . '/admin/modules/system/views/edit_settings/js/edit_settings.js',
+];
+?>
+
 <?php require_once get_setting('base_path') . 'admin/layouts/footer.php'; ?>

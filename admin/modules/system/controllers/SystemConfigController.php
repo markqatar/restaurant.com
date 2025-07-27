@@ -19,14 +19,9 @@ class SystemConfigController
         }
 
         $settings = $this->config_model->getAllSettings();
-        $languages = get_available_languages_from_db('admin'); // Carica lingue dal DB
+        $systemLanguages = get_available_languages_from_db('admin'); // Carica lingue dal DB
         $page_title = TranslationManager::t('system.configuration');
-
-        load_admin_view('edit_settings', [
-            'page_title' => $page_title,
-            'settings' => $settings,
-            'languages' => $languages
-        ], 'system');
+        include __DIR__ . '/../views/edit_settings/edit_settings.php';
     }
 
     public function update()

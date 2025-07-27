@@ -293,30 +293,6 @@ function public_module_path($path = '', $targetModule = null) {
     return $base . ltrim($path, '/');
 }
 
-/**
- * Carica una vista dal modulo Admin
- *
- * @param string $view Nome della vista (es: 'settings/index')
- * @param array $data Dati da passare alla vista
- * @param string|null $targetModule Nome del modulo (opzionale)
- */
-function load_admin_view($view, $data = [], $targetModule = null) {
-    global $module;
-
-    $moduleName = $targetModule ?? $module;
-
-    // Convertiamo in percorso file
-    $filePath = admin_module_path('views/' . $view . '.php', $moduleName);
-
-    if (!file_exists($filePath)) {
-        die("❌ View not found: $filePath");
-    }
-
-    // Estrae variabili dall'array $data
-    extract($data);
-
-    include $filePath;
-}
 
 /**
  * Carica una vista dal modulo Public

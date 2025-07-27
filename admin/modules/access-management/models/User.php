@@ -49,7 +49,6 @@ class User
                     ':language' => $data['default_language'] ?? 'en',
                     ':avatar' => $data['avatar'] ?? 'default.png'
                 ]);
-
                 // Log action
                 log_action('access-management', $this->table, 'create', $userId, null, $data);
 

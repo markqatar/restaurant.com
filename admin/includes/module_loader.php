@@ -139,17 +139,16 @@ function sort_modules_by_dependencies($modules)
 function register_module_hooks($modules)
 {
     foreach ($modules as $module) {
-        if (isset($module['hooks'])) {
-            foreach ($module['hooks'] as $hook => $callback) {
-                add_view_hook($hook, $callback);
+    if (!empty($module['hooks_files'])) {
+        foreach ($module['hooks_files'] as $type => $file) {
+            if (file_exists($file)) {
+                $hooks = include $file;
+                foreach ($hooks as $hook_name => $callback) {
+                    HookManager::register($hook_name, $callback);
+                }
             }
         }
-        // Hook per logica
-        if (isset($module['logicHooks'])) {
-            foreach ($module['logicHooks'] as $hook => $callback) {
-                add_logic_hook($hook, $callback);
-            }
-        }
+    }
     }
 }
 
