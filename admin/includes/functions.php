@@ -496,4 +496,11 @@ function restore_action($log_id) {
         return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
     }
 }
+
+function get_active_admin_languages() {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("SELECT code, name, direction FROM languages WHERE is_active_admin = 1 ORDER BY name ASC");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>

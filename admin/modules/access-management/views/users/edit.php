@@ -7,7 +7,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         <i class="fas fa-user-edit me-2"></i><?php echo TranslationManager::t('user.edit_user'); ?>
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
-        <a href="<?php echo module_admin_url("/access-management/users"); ?>" class="btn btn-outline-secondary">
+        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users'; ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back_to_list'); ?>
         </a>
     </div>
@@ -77,7 +77,18 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             </div>
                         </div>
                     </div>
-
+<div class="mb-3">
+    <label for="group_id" class="form-label"><?php echo TranslationManager::t('user.group'); ?></label>
+    <select class="form-select" id="group_id" name="group_id">
+        <option value=""><?php echo TranslationManager::t('form.select_option'); ?></option>
+        <?php foreach ($userGroups as $group): ?>
+            <option value="<?php echo $group['id']; ?>" 
+                <?php echo (in_array($group['id'], array_column($assignedGroups, 'id'))) ? 'selected' : ''; ?>>
+                <?php echo htmlspecialchars($group['name']); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
                         <strong><?php echo TranslationManager::t('msg.info'); ?>:</strong> <?php echo TranslationManager::t('user.password_note'); ?>
@@ -86,7 +97,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                     <?php render_hook('users.edit.form.sections', $user); ?>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="<?php echo admin_url('users'); ?>" class="btn btn-secondary me-md-2">
+                        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users'; ?>" class="btn btn-secondary me-md-2">
                             <i class="fas fa-times me-1"></i><?php echo TranslationManager::t('cancel'); ?>
                         </a>
                         <button type="submit" class="btn btn-primary">
@@ -146,7 +157,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         confirmAction('<?php echo addslashes(TranslationManager::t('user.confirm_reset_password')); ?>')
             .then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = `<?php echo admin_url('users', 'reset_password'); ?>/${userId}`;
+                    window.location.href = '<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users/reset_password'; ?>/' + userId;
                 }
             });
     }
@@ -155,7 +166,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         confirmDelete('<?php echo addslashes(TranslationManager::t('user.confirm_delete')); ?>')
             .then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = `<?php echo admin_url('users', 'delete'); ?>/${userId}`;
+                    window.location.href = '<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users/delete'; ?>/' + userId;
                 }
             });
     }

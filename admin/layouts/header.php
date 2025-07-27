@@ -261,7 +261,7 @@ $langCode = $currentLanguage;
                 </div>
               </div>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="<?php echo $siteUrl; ?>/admin/profile.php">
+              <a class="dropdown-item" href="<?php echo $siteUrl; ?>/admin/access-management/profile">
                 <div class="d-flex align-items-center">
                   <div>
                     <ion-icon name="person-outline"></ion-icon>
@@ -317,7 +317,7 @@ $langCode = $currentLanguage;
       }
 
       // Save to database
-      fetch('../../admin/controllers/PreferencesController.php', {
+      fetch('<?php echo get_setting('site_url', 'http://localhost.com')?>/admin/access-management/preferences', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -354,7 +354,7 @@ $langCode = $currentLanguage;
           const language = this.getAttribute('data-lang');
 
           // Save to database and reload page
-          fetch('../../admin/controllers/PreferencesController.php', {
+          fetch('<?php echo get_setting('site_url', 'http://localhost.com')?>/admin/access-management/preferences', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

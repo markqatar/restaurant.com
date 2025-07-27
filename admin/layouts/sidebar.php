@@ -1,6 +1,6 @@
 <?php
 // Dynamic sidebar that uses database menu items
-require_once get_setting('base_path', '/var/www/html') . 'admin/modules/admin-menu/models/AdminMenu.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/modules/system/models/AdminMenu.php';
 require_once admin_module_path('/models/Permission.php', 'access-management');
 // Get user permissions
 $userPermissions = [];
@@ -117,16 +117,38 @@ function isMenuActive($item) {
             <i class="material-icons-outlined" id="theme-icon">light_mode</i>  
           </a>
         </div>
-        <div class="dropdown dropup-center dropup dropdown-laungauge">
-          <a class="dropdown-toggle dropdown-toggle-nocaret footer-icon" href="javascript:;" data-bs-toggle="dropdown"><img src="<?php echo get_setting('site_url', 'http://localhost')?>/admin/assets/images/county/02.png" width="22" alt="">
+        <?php
+        $currentLang = $_SESSION['language'] ?? 'en';
+        $languages = get_active_admin_languages();
+        ?>
+
+        <div class="dropdown dropup-center dropup dropdown-language">
+          <a class="dropdown-toggle dropdown-toggle-nocaret footer-icon" href="javascript:;" data-bs-toggle="dropdown">
+            <?php
+            // Trova la lingua corrente dal DB (default English)
+            $currentFlag = 'en.svg';
+            foreach ($languages as $lang) {
+                if ($lang['code'] === $currentLang) {
+                    $currentFlag = $lang['code'] . '.svg';
+                    break;
+                }
+            }
+            ?>
+            <img src="<?php echo get_setting('site_url'); ?>/admin/assets/images/country/<?php echo $currentFlag; ?>" width="22" alt="">
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="en"><img src="<?php echo get_setting('site_url', 'http://localhost')?>/admin/assets/images/county/01.png" width="20" alt=""><span class="ms-2">English</span></a>
-            </li>
-            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="it"><img src="<?php echo get_setting('site_url', 'http://localhost')?>/admin/assets/images/county/02.png" width="20" alt=""><span class="ms-2">Italiano</span></a>
-            </li>
-            <li><a class="dropdown-item d-flex align-items-center py-2 language-selector" href="javascript:;" data-lang="ar"><img src="<?php echo get_setting('site_url', 'http://localhost')?>/admin/assets/images/county/08.png" width="20" alt=""><span class="ms-2">العربية</span></a>
-            </li>
+            <?php foreach ($languages as $lang): ?>
+              <li>
+                <a class="dropdown-item d-flex align-items-center py-2 language-selector <?php echo $currentLang === $lang['code'] ? 'active' : ''; ?>"
+                  href="javascript:;" data-lang="<?php echo $lang['code']; ?>">
+                  <img src="<?php echo get_setting('site_url'); ?>/admin/assets/images/country/<?php echo $lang['code']; ?>.svg" width="20" alt="">
+                  <span class="ms-2"><?php echo htmlspecialchars($lang['name']); ?></span>
+                  <?php if ($currentLang === $lang['code']): ?>
+                    <i class="fas fa-check text-success ms-auto"></i>
+                  <?php endif; ?>
+                </a>
+              </li>
+            <?php endforeach; ?>
           </ul>
         </div>
         <div class="dropdown dropup-center dropup dropdown-help">

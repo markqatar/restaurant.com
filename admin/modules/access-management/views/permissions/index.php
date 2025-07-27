@@ -20,7 +20,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'permissions', 'create')): ?>
-            <a href="<?php echo module_admin_url("access-management/permissions/create"); ?>" class="btn btn-primary me-2">
+            <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/permissions/create'; ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('btn.add_new'); ?>
             </a>
         <?php endif; ?>
@@ -84,8 +84,6 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                         <th><?php echo TranslationManager::t('module'); ?></th>
                         <th><?php echo TranslationManager::t('action'); ?></th>
                         <th><?php echo TranslationManager::t('user.groups'); ?></th>
-                        <th><?php echo TranslationManager::t('description'); ?></th>
-                        <th><?php echo TranslationManager::t('actions'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,23 +101,6 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                         <span class="text-muted"><?php echo TranslationManager::t('msg.no_data'); ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td><span class="text-muted">-</span></td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <?php if (has_permission($_SESSION['user_id'], 'permissions', 'update')): ?>
-                                            <a href="<?php echo module_admin_url("access-management/permissions/edit" . $permission['id']); ?>" 
-                                               class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                        <?php endif; ?>
-                                        <?php if (has_permission($_SESSION['user_id'], 'permissions', 'delete')): ?>
-                                            <button onclick="deletePermission(<?php echo $permission['id']; ?>)" 
-                                                    class="btn btn-sm btn-outline-danger" title="<?php echo TranslationManager::t('delete'); ?>">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        <?php endif; ?>
-                                    </div>
-                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -134,16 +115,4 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         </div>
     </div>
 </div>
-
-<script>
-    function deletePermission(permissionId) {
-        confirmDelete('<?php echo addslashes(TranslationManager::t('msg.confirm_delete')); ?>')
-            .then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '<?php echo module_admin_url("access-management/permissions/delete"); ?>/' + permissionId;
-                }
-            });
-    }
-</script>
-
 <?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

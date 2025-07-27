@@ -1,187 +1,177 @@
 <?php
+
 return [
 
-    // Navigation & Menu
-    'dashboard' => 'لوحة التحكم',
-    'users' => 'المستخدمون',
-    'products' => 'المنتجات',
-    'orders' => 'الطلبات',
-    'suppliers' => 'الموردون',
-    'branches' => 'الفروع',
-    'reports' => 'التقارير',
-    'settings' => 'الإعدادات',
-    'logout' => 'تسجيل الخروج',
-    'profile' => 'الملف الشخصي',
-
-    // Error messages
-    'error' => [
-        '404_title' => 'الصفحة غير موجودة',
-        '404_message' => 'الصفحة التي تبحث عنها غير موجودة. يرجى التحقق من العنوان أو العودة إلى لوحة التحكم.',
+    // ===========================
+    // الأزرار والإجراءات العامة
+    // ===========================
+    'btn' => [
+        'add_new' => 'إضافة جديد',
+        'refresh' => 'تحديث',
     ],
 
-    'page_not_found' => 'الصفحة غير موجودة',
-    'back_to_dashboard' => 'العودة إلى لوحة التحكم',
+    'create' => 'إنشاء',
+    'edit' => 'تعديل',
+    'delete' => 'حذف',
+    'save' => 'حفظ',
+    'cancel' => 'إلغاء',
+    'back_to_list' => 'العودة إلى القائمة',
+    'yes_delete' => 'نعم، احذف',
 
-    // User Management
+    // ===========================
+    // الرسائل
+    // ===========================
+    'msg' => [
+        'info' => 'معلومات',
+        'error' => 'حدث خطأ',
+        'warning' => 'تحذير',
+        'no_data' => 'لا توجد بيانات متاحة',
+        'confirm_delete' => 'هل أنت متأكد أنك تريد حذف هذا العنصر؟',
+        'confirm_delete_text' => 'لا يمكن التراجع عن هذا الإجراء.',
+    ],
+
+    // ===========================
+    // النماذج
+    // ===========================
+    'required_field' => 'حقل إلزامي',
+    'form' => [
+        'required' => '(إلزامي)',
+        'optional' => '(اختياري)',
+        'select_option' => 'اختر خياراً',
+        'enter_value' => 'أدخل قيمة',
+    ],
+
+    // ===========================
+    // إدارة المستخدمين
+    // ===========================
     'user' => [
         'management' => 'إدارة المستخدمين',
+        'user_list' => 'قائمة المستخدمين',
         'new_user' => 'مستخدم جديد',
         'edit_user' => 'تعديل المستخدم',
-        'user_list' => 'قائمة المستخدمين',
-        'total_users' => 'إجمالي المستخدمين',
-        'active_users' => 'المستخدمون النشطون',
-        'username' => 'اسم المستخدم',
-        'first_name' => 'الاسم الأول',
-        'last_name' => 'اسم العائلة',
-        'full_name' => 'الاسم الكامل',
-        'groups' => 'مجموعات المستخدمين',
-        'permissions' => 'الأذونات',
-        'no_groups' => 'لا توجد مجموعات',
-        'user_data' => 'بيانات المستخدم',
+        'save_changes' => 'حفظ التغييرات',
         'account_info' => 'معلومات الحساب',
-        'user_id' => 'معرف المستخدم',
-        'created_on' => 'تم الإنشاء في',
-        'last_modified' => 'آخر تعديل',
         'quick_actions' => 'إجراءات سريعة',
         'reset_password' => 'إعادة تعيين كلمة المرور',
         'delete_user' => 'حذف المستخدم',
+        'confirm_reset_password' => 'هل أنت متأكد أنك تريد إعادة تعيين كلمة مرور هذا المستخدم؟',
+        'confirm_delete' => 'هل أنت متأكد أنك تريد حذف هذا المستخدم؟',
+        'confirm_delete_text' => 'حذف المستخدم إجراء دائم ولا يمكن التراجع عنه.',
+        'password_note' => 'اترك حقول كلمة المرور فارغة للاحتفاظ بكلمة المرور الحالية.',
+        'username' => 'اسم المستخدم',
+        'full_name' => 'الاسم الكامل',
+        'first_name' => 'الاسم الأول',
+        'last_name' => 'اسم العائلة',
+        'user_id' => 'معرّف المستخدم',
+        'created_on' => 'تم الإنشاء في',
+        'last_modified' => 'آخر تعديل',
         'user_active' => 'المستخدم نشط',
-        'save_changes' => 'حفظ التغييرات',
-        'password_note' => 'لأسباب أمنية، لا يمكن تعديل كلمة المرور من هذا القسم. استخدم وظيفة "إعادة تعيين كلمة المرور" إذا لزم الأمر.',
-        'confirm_delete' => 'هل أنت متأكد من رغبتك في حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.',
-        'confirm_reset_password' => 'هل أنت متأكد من رغبتك في إعادة تعيين كلمة مرور هذa المستخدم؟ سيتم إرسال كلمة مرور مؤقتة.',
+        'status' => 'الحالة',
+        'no_groups' => 'لا توجد مجموعات',
+        'groups' => 'مجموعات المستخدمين',
+        'permissions' => 'الأذونات',
+        'permissions_assigned' => 'الأذونات المعينة',
+        'branch_assignments' => 'تعيينات الفروع',
+        'select_branches' => 'حدد الفروع لتعيين هذا المستخدم.',
+        'total_users' => 'إجمالي المستخدمين',
+        'active_users' => 'المستخدمون النشطون',
     ],
 
-    // Branch Management
+    // ===========================
+    // مجموعات المستخدمين
+    // ===========================
+    'user_groups' => [
+        'total_groups' => 'إجمالي المجموعات',
+        'confirm_delete' => 'هل أنت متأكد أنك تريد حذف هذه المجموعة؟',
+        'confirm_delete_text' => 'سيؤدي حذف المجموعة إلى إزالة جميع الأذونات الخاصة بها.',
+    ],
+
+    // ===========================
+    // الأذونات
+    // ===========================
+    'permissions' => 'الأذونات',
+
+    // ===========================
+    // الموارد
+    // ===========================
+    'resource' => 'المورد',
+    'permissions_label' => 'الأذونات',
+    'module' => 'الوحدة',
+    'action' => 'الإجراء',
+
+    // ===========================
+    // الحقول الشائعة
+    // ===========================
+    'name' => 'الاسم',
+    'description' => 'الوصف',
+    'email' => 'البريد الإلكتروني',
+    'phone' => 'الهاتف',
+    'users' => 'المستخدمون',
+    'created' => 'تم الإنشاء',
+    'actions' => 'الإجراءات',
+
+    // ===========================
+    // الحالة
+    // ===========================
+    'status' => 'الحالة',
+    'active' => 'نشط',
+    'inactive' => 'غير نشط',
+
+    // ===========================
+    // الفروع
+    // ===========================
     'branch' => [
-        'management' => 'إدارة الفروع',
-        'new_branch' => 'فرع جديد',
-        'edit_branch' => 'تعديل الفرع',
-        'branch_list' => 'قائمة الفروع',
-        'branch_name' => 'اسم الفرع',
-        'branch_code' => 'كود الفرع',
-        'manager' => 'المدير',
+        'name' => 'اسم الفرع',
         'location' => 'الموقع',
-        'contact_info' => 'معلومات الاتصال',
-        'total_branches' => 'إجمالي الفروع',
-        'active_branches' => 'الفروع النشطة',
-        'manage_users' => 'إدارة المستخدمين',
-        'confirm_delete_title' => 'تأكيد الحذف',
-        'confirm_delete_message' => 'هل أنت متأكد من رغبتك في حذف الفرع',
-        'delete_warning' => 'هذا الإجراء سيؤدي أيضاً إلى إزالة جميع تعيينات المستخدمين.',
+        'no_branches' => 'لا توجد فروع متاحة.',
     ],
 
-    // Supplier Management
-    'supplier' => [
-        'management' => 'إدارة الموردين',
-        'new_supplier' => 'مورد جديد',
-        'edit_supplier' => 'تعديل المورد',
-        'supplier_list' => 'قائمة الموردين',
-        'supplier_name' => 'اسم المورد',
-        'company' => 'الشركة',
-        'contact_person' => 'شخص الاتصال',
-        'total_suppliers' => 'إجمالي الموردين',
-        'active_suppliers' => 'الموردون النشطون',
-        'city' => 'المدينة',
-        'country' => 'البلد',
-        'confirm_delete' => 'هل أنت متأكد من رغبتك في حذف هذا المورد؟ ستؤدي هذه العملية أيضًا إلى حذف جميع جهات الاتصال المرتبطة ولا يمكن التراجع عنها.',
+    // ===========================
+    // التعيينات
+    // ===========================
+    'assign' => 'تعيين',
+    'primary' => 'أساسي',
+
+    // ===========================
+    // Profile Management
+    // ===========================
+    'profile' => [
+        'page_title' => 'الملف الشخصي',
+
+        'current_password_required' => 'كلمة المرور الحالية مطلوبة.',
+        'new_password_required' => 'كلمة المرور الجديدة مطلوبة.',
+        'password_min_length' => 'يجب أن تكون كلمة المرور 6 أحرف على الأقل.',
+        'passwords_do_not_match' => 'كلمتا المرور غير متطابقتين.',
+        'current_password_incorrect' => 'كلمة المرور الحالية غير صحيحة.',
+        'password_updated_successfully' => 'تم تحديث كلمة المرور بنجاح.',
+        'failed_to_update_password' => 'فشل تحديث كلمة المرور.',
+
+        'username_required' => 'اسم المستخدم مطلوب.',
+        'username_min_length' => 'يجب أن يحتوي اسم المستخدم على 3 أحرف على الأقل.',
+        'username_already_exists' => 'اسم المستخدم موجود بالفعل.',
+        'username_updated_successfully' => 'تم تحديث اسم المستخدم بنجاح.',
+        'failed_to_update_username' => 'فشل تحديث اسم المستخدم.',
+
+        'invalid_image_format' => 'تنسيق الصورة غير صالح. المسموح: JPG, JPEG, PNG, GIF.',
+        'avatar_updated_successfully' => 'تم تحديث صورة الملف الشخصي بنجاح.',
+        'failed_to_update_avatar' => 'فشل تحديث صورة الملف الشخصي.',
+        'failed_to_upload_avatar' => 'فشل تحميل صورة الملف الشخصي.',
+        'error_uploading_file' => 'خطأ في تحميل الملف',
+        'avatar_removed_successfully' => 'تمت إزالة صورة الملف الشخصي بنجاح.',
+        'failed_to_remove_avatar' => 'فشل إزالة صورة الملف الشخصي.',
     ],
+    'profile' => 'Profile',
+    'user.avatar' => 'User Avatar',
+    'update_profile_picture' => 'Update Profile Picture',
+    'upload_avatar' => 'Upload Avatar',
+    'remove_avatar' => 'Remove Avatar',
+    'username' => 'Username',
+    'password' => 'Password',
+    'update_username' => 'Update Username',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password',
+    'confirm_new_password' => 'Confirm New Password',
+    'update_password' => 'Update Password',
 
-    // Product Management
-    'product' => [
-        'management' => 'إدارة المنتجات',
-        'new_product' => 'منتج جديد',
-        'edit_product' => 'تعديل المنتج',
-        'product_list' => 'قائمة المنتجات',
-        'product_name' => 'اسم المنتج',
-        'category' => 'الفئة',
-        'price' => 'السعر',
-        'stock' => 'المخزون',
-        'barcode' => 'الرمز الشريطي',
-    ],
-
-    // Order Management
-    'order' => [
-        'management' => 'إدارة الطلبات',
-        'new_order' => 'طلب جديد',
-        'edit_order' => 'تعديل الطلب',
-        'order_list' => 'قائمة الطلبات',
-        'order_number' => 'رقم الطلب',
-        'customer' => 'العميل',
-        'total' => 'المجموع',
-        'order_date' => 'تاريخ الطلب',
-        'delivery_date' => 'تاريخ التسليم',
-    ],
-
-    // Buttons & Actions
-    'btn' => [
-        'refresh' => 'تحديث',
-        'add_new' => 'إضافة جديد',
-        'view' => 'عرض',
-        'modify' => 'تعديل',
-        'remove' => 'إزالة',
-        'confirm' => 'تأكيد',
-        'close' => 'إغلاق',
-    ],
-
-    // Messages
-    'msg' => [
-        'success' => 'تمت العملية بنجاح',
-        'error' => 'حدث خطأ',
-        'warning' => 'تحذير',
-        'info' => 'معلومات',
-        'no_data' => 'لا توجد بيانات متاحة',
-        'loading' => 'جاري التحميل...',
-        'saved' => 'تم الحفظ بنجاح',
-        'deleted' => 'تم الحذف بنجاح',
-        'updated' => 'تم التحديث بنجاح',
-    ],
-
-    // Forms
-    'form' => [
-        'required' => 'مطلوب',
-        'optional' => 'اختياري',
-        'select_option' => 'اختر خياراً',
-        'enter_value' => 'أدخل القيمة',
-        'choose_file' => 'اختر ملف',
-    ],
-
-    // Additional missing translations
-    'password' => 'كلمة المرور',
-    'min_characters' => 'الحد الأدنى للأحرف',
-    'instructions' => 'التعليمات',
-    'important_info' => 'معلومات مهمة',
-    'security' => 'الأمان',
-    'ensure_secure_passwords' => 'تأكد من استخدام كلمات مرور آمنة وتعيين الأذونات الضرورية فقط.',
-    'fields_marked_required' => 'الحقول المميزة بـ * مطلوبة',
-    'username_must_be_unique' => 'يجب أن يكون اسم المستخدم فريداً في النظام',
-    'password_min_length' => 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل',
-    'assign_groups_after_creation' => 'بعد الإنشاء، يمكنك تعيين المستخدم للمجموعات',
-    'validation_error' => 'خطأ في التحقق',
-    'fill_required_fields' => 'يرجى ملء جميع الحقول المطلوبة',
-
-    // Delivery Areas Management
-    'add_delivery_area' => 'إضافة منطقة توصيل',
-    'edit_delivery_area' => 'تعديل منطقة التوصيل',
-    'area_name' => 'اسم المنطقة',
-    'area_name_required' => 'اسم المنطقة مطلوب',
-    'branch_required' => 'تحديد الفرع مطلوب',
-    'no_branch' => 'لا يوجد فرع',
-    'delivery_area_created' => 'تم إنشاء منطقة التوصيل بنجاح',
-    'delivery_area_updated' => 'تم تحديث منطقة التوصيل بنجاح',
-    'delivery_area_deleted' => 'تم حذف منطقة التوصيل بنجاح',
-    'delivery_area_not_found' => 'لم يتم العثور على منطقة التوصيل',
-    'error_creating_delivery_area' => 'خطأ في إنشاء منطقة التوصيل',
-    'error_updating_delivery_area' => 'خطأ في تحديث منطقة التوصيل',
-    'error_deleting_delivery_area' => 'خطأ في حذف منطقة التوصيل',
-    'delete_delivery_area_confirm' => 'هل أنت متأكد من رغبتك في حذف منطقة التوصيل "%s"؟',
-    'branch' => 'الفرع',
-    'created_at' => 'تاريخ الإنشاء',
-    'id' => 'ID',
-    'back' => 'عودة',
-    'invalid_request' => 'طلب غير صالح',
-    'no_permission' => 'ليس لديك إذن للوصول إلى هذه الصفحة',
-    'confirm_delete' => 'تأكيد الحذف',
-    'yes_delete' => 'نعم، احذف',
 
 ];

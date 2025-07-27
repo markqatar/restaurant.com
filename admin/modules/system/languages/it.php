@@ -1,43 +1,45 @@
 <?php
 return [
-    'system' => [
-        'configuration' => 'Configurazione di Sistema',
-        'global_settings_tab' => 'Impostazioni Globali',
-        'languages_tab' => 'Lingue',
-        'global_settings' => 'Impostazioni Globali',
-        'site_name' => 'Nome del Sito',
-        'site_url' => 'URL del Sito',
-        'logo' => 'Logo',
-        'currency' => 'Valuta',
-        'timezone' => 'Fuso Orario',
-        'date_format_admin' => 'Formato Data (Admin)',
-        'date_format_public' => 'Formato Data (Pubblico)',
-        'languages' => 'Lingue',
-        'add_language' => 'Aggiungi Lingua',
-        'delete_language' => 'Elimina Lingua',
-        'code' => 'Codice',
-        'name' => 'Nome',
-        'direction' => 'Direzione',
-        'admin' => 'Admin',
-        'public' => 'Pubblico',
-        'actions' => 'Azioni',
-        'save' => 'Salva',
-        'delete' => 'Elimina',
-        'rtl' => 'Da Destra a Sinistra',
-        'ltr' => 'Da Sinistra a Destra',
+    'configuration' => 'Configurazione di Sistema',
+    'global_settings_tab' => 'Impostazioni Globali',
+    'languages_tab' => 'Lingue',
+    'site_name' => 'Nome Sito',
+    'site_url' => 'URL Sito',
+    'logo' => 'Logo',
+    'currency' => 'Valuta',
+    'timezone' => 'Fuso Orario',
+    'date_format_admin' => 'Formato Data Admin',
+    'date_format_public' => 'Formato Data Pubblico',
+    'website_enabled' => 'Sito Abilitato',
+    'add_language' => 'Aggiungi Lingua',
+    'code' => 'Codice',
+    'name' => 'Nome',
+    'direction' => 'Direzione',
+    'admin' => 'Admin',
+    'public' => 'Pubblico',
+    'actions' => 'Azioni',
+    'delete_language' => 'Elimina Lingua',
 
-        // Success messages
-        'success' => [
-            'settings_updated' => 'Impostazioni aggiornate con successo',
-            'language_added' => 'Lingua aggiunta con successo',
-            'language_deleted' => 'Lingua eliminata con successo',
-        ],
+    'modal' => [
+        'direction_ltr' => 'LTR',
+        'direction_rtl' => 'RTL'
+    ],
 
-        // Error messages
-        'error' => [
-            'settings_update_failed' => 'Errore durante l\'aggiornamento delle impostazioni',
-            'language_add_failed' => 'Errore durante l\'aggiunta della lingua',
-            'language_delete_failed' => 'Errore durante l\'eliminazione della lingua',
-        ]
+    'success' => [
+        'settings_updated' => 'Impostazioni aggiornate con successo',
+        'language_added' => 'Lingua aggiunta con successo',
+        'language_deleted' => 'Lingua eliminata con successo',
+        'logo_deleted' => 'Logo eliminato con successo'
+    ],
+
+    'error' => [
+        'invalid_csrf' => 'Token di sicurezza non valido',
+        'settings_update_failed' => 'Aggiornamento impostazioni fallito',
+        'language_add_failed' => 'Aggiunta lingua fallita',
+        'language_delete_failed' => 'Eliminazione lingua fallita',
+        'unauthorized' => 'Accesso non autorizzato',
+        'no_logo' => 'Nessun logo da eliminare',
+        'delete_failed' => 'Eliminazione file logo fallita',
+        'update_failed' => 'Aggiornamento database fallito'
     ]
 ];

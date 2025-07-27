@@ -1,7 +1,5 @@
 <?php
 require_once admin_module_path('/models/SystemConfig.php');
-require_once get_setting('base_path') . 'admin/includes/functions.php';
-require_once get_setting('base_path') . 'admin/modules/system/controllers/TranslationManager.php';
 
 class SystemConfigController
 {
@@ -49,7 +47,8 @@ class SystemConfigController
                 'currency' => sanitize_input($_POST['currency']),
                 'timezone' => sanitize_input($_POST['timezone']),
                 'date_format_admin' => sanitize_input($_POST['date_format_admin']),
-                'date_format_public' => sanitize_input($_POST['date_format_public'])
+                'date_format_public' => sanitize_input($_POST['date_format_public']),
+                'website_enabled' => isset($_POST['website_enabled']) ? 1 : 0
             ];
 
             if (isset($_FILES['logo']) && $_FILES['logo']['error'] === 0) {

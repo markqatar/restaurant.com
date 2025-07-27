@@ -1,73 +1,91 @@
 <?php
 require_once admin_module_path('/models/User.php');
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/functions.php';
+require_once admin_module_path('/models/UserGroup.php');
 
-class UsersController {
+class UsersController
+{
     private $user_model;
     private $db;
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->user_model = new User();
         $database = Database::getInstance();
         $this->db = $database->getConnection();
+        TranslationManager::loadModuleTranslations('access-management');
     }
-    
-    // Display users list
-    public function index() {
-        // Check permission
+
+    /**
+     * Display list of users
+     */
+    public function index()
+    {
         if (!has_permission($_SESSION['user_id'], 'users', 'view')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
-        
+
         $users = $this->user_model->read();
         $total_users = $this->user_model->count();
-        
-        $page_title = "Gestione Utenti";
+
+        $page_title = TranslationManager::t('users.page_title');
         include admin_module_path('/views/users/index.php');
     }
-    
-    // Show create user form
-    public function create() {
+
+    /**
+     * Show create user form
+     */
+    public function create()
+    {
         if (!has_permission($_SESSION['user_id'], 'users', 'create')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
-        
-        $page_title = "Nuovo Utente";
+        $userGroupModel = new UserGroup();
+        $userGroups = $userGroupModel->getActive();
+
+        $page_title = TranslationManager::t('users.create_title');
         include __DIR__ . '/../views/users/create.php';
     }
-    
-    // Show edit user form
-    public function edit($id) {
+
+    /**
+     * Show edit user form
+     */
+    public function edit($id)
+    {
         if (!has_permission($_SESSION['user_id'], 'users', 'update')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
-        
+
         $user = $this->user_model->readOne($id);
         if (!$user) {
-            send_notification('Utente non trovato', 'danger');
+            send_notification(TranslationManager::t('msg.not_found'), 'danger');
             redirect('users.php');
         }
-        
-        $page_title = "Modifica Utente";
+        $userGroupModel = new UserGroup();
+        $userGroups = $userGroupModel->getActive();
+        $assignedGroups = $this->user_model->getUserGroups($id); // Aggiungeremo questa funzione in User.php
+
+
+        $page_title = TranslationManager::t('users.edit_title');
         include __DIR__ . '/../views/users/edit.php';
     }
-    
-    // Store new user
-    public function store() {
+
+    /**
+     * Store new user
+     */
+    public function store()
+    {
         if (!has_permission($_SESSION['user_id'], 'users', 'create')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
-        
+
         if ($_POST) {
-            // Verify CSRF token
             if (!verify_csrf_token($_POST['csrf_token'])) {
-                send_notification('Token di sicurezza non valido', 'danger');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/users/create');
+                send_notification(TranslationManager::t('msg.invalid_token'), 'danger');
+                redirect(get_setting('site_url') . '/admin/users/create');
             }
-            
-            // Validate input
+
             $errors = $this->validateUserData($_POST);
-            
+
             if (empty($errors)) {
                 $data = [
                     'username' => sanitize_input($_POST['username']),
@@ -78,43 +96,48 @@ class UsersController {
                     'phone' => sanitize_input($_POST['phone']),
                     'is_active' => isset($_POST['is_active']) ? 1 : 0
                 ];
-                
+
                 try {
                     $newUserId = $this->user_model->create($data);
                     if ($newUserId) {
+                        if (!empty($_POST['group_id'])) {
+                            $this->user_model->assignToGroup($newUserId, (int) $_POST['group_id']);
+                        }
                         log_action('access-management', 'users', 'create', $newUserId, null, $data);
                         run_logic_hook('user.after_create', $newUserId, $_POST);
-                        send_notification(TranslationManager::t('user.created_successfully'), 'success');
-                        redirect(get_setting('site_url', 'http://localhost') . '/admin/users');
+                        send_notification(TranslationManager::t('msg.created_successfully'), 'success');
+                        redirect(get_setting('site_url') . '/admin/users');
                     } else {
-                        send_notification('Errore nella creazione dell\'utente', 'danger');
+                        send_notification(TranslationManager::t('msg.error_occurred'), 'danger');
                     }
                 } catch (Exception $e) {
-                    send_notification('Errore database: ' . $e->getMessage(), 'danger');
+                    send_notification(TranslationManager::t('msg.db_error') . ': ' . $e->getMessage(), 'danger');
                 }
             } else {
                 foreach ($errors as $error) {
-                    send_notification($error, 'danger');
+                    send_notification(TranslationManager::t($error), 'danger');
                 }
             }
 
-            redirect(get_setting('site_url', 'http://localhost') . '/admin/users/create');
+            redirect(get_setting('site_url') . '/admin/users/create');
         }
     }
-    
-    // Update user
-    public function update($id) {
+
+    /**
+     * Update user
+     */
+    public function update($id)
+    {
         if (!has_permission($_SESSION['user_id'], 'users', 'update')) {
             redirect('../admin/unauthorized.php');
         }
-        
+
         if ($_POST) {
-            // Verify CSRF token
             if (!verify_csrf_token($_POST['csrf_token'])) {
-                send_notification('Token di sicurezza non valido', 'danger');
-                redirect('users.php?action=edit&id=' . $id);
+                send_notification(TranslationManager::t('msg.invalid_token'), 'danger');
+                redirect(get_setting('site_url') . '/admin/access-management/users/edit/' . $id);
             }
-            
+
             $data = [
                 'username' => sanitize_input($_POST['username']),
                 'email' => sanitize_input($_POST['email']),
@@ -123,81 +146,91 @@ class UsersController {
                 'phone' => sanitize_input($_POST['phone']),
                 'is_active' => isset($_POST['is_active']) ? 1 : 0
             ];
-            
+
             try {
                 $this->db->beginTransaction();
                 $old_data = $this->user_model->readOne($id);
 
                 if ($this->user_model->update($id, $data)) {
+                    $this->user_model->removeAllGroups($id);
+                    if (!empty($_POST['group_id'])) {
+                        $this->user_model->assignToGroup($id, (int) $_POST['group_id']);
+                    }
+
                     log_action('access-management', 'users', 'update', $id, $old_data, $data);
                     run_logic_hook('user.after_update', $id, $_POST);
                     $this->db->commit();
-                    send_notification(TranslationManager::t('user.updated_successfully'), 'success');
+                    send_notification(TranslationManager::t('msg.updated_successfully'), 'success');
                     redirect('../admin/access-management/users');
                 } else {
                     $this->db->rollBack();
-                    send_notification(TranslationManager::t('error.updating_user'), 'danger');
+                    send_notification(TranslationManager::t('msg.error_occurred'), 'danger');
                 }
             } catch (Exception $e) {
                 $this->db->rollBack();
-                send_notification(TranslationManager::t('error.database') . ': ' . $e->getMessage(), 'danger');
+                send_notification(TranslationManager::t('msg.db_error') . ': ' . $e->getMessage(), 'danger');
             }
         }
-        
-        redirect('../admin/users.php?action=edit&id=' . $id);
+
+                redirect(get_setting('site_url') . '/admin/access-management/users/edit/' . $id);
     }
-    
-    // Delete user
-    public function delete($id) {
+
+    /**
+     * Delete user
+     */
+    public function delete($id)
+    {
         if (!has_permission($_SESSION['user_id'], 'users', 'delete')) {
             redirect('../admin/unauthorized.php');
         }
-        
+
         try {
             $old_data = $this->user_model->readOne($id);
 
             if ($this->user_model->delete($id)) {
                 log_action('access-management', 'users', 'delete', $id, $old_data, null);
-                send_notification('Utente eliminato con successo', 'success');
+                send_notification(TranslationManager::t('msg.deleted_successfully'), 'success');
             } else {
-                send_notification('Errore nell\'eliminazione', 'danger');
+                send_notification(TranslationManager::t('msg.error_occurred'), 'danger');
             }
         } catch (Exception $e) {
-            send_notification('Errore database: ' . $e->getMessage(), 'danger');
+            send_notification(TranslationManager::t('msg.db_error') . ': ' . $e->getMessage(), 'danger');
         }
-        
+
         redirect('../admin/users.php');
     }
-    
-    // Validate user data
-    private function validateUserData($data, $user_id = null) {
+
+    /**
+     * Validate user input
+     */
+    private function validateUserData($data, $user_id = null)
+    {
         $errors = [];
-        
+
         if (empty($data['username'])) {
-            $errors[] = 'Il nome utente è obbligatorio';
+            $errors[] = 'validation.username_required';
         }
-        
+
         if (empty($data['email'])) {
-            $errors[] = 'L\'email è obbligatoria';
+            $errors[] = 'validation.email_required';
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Formato email non valido';
+            $errors[] = 'validation.email_invalid';
         }
-        
+
         if (empty($data['first_name'])) {
-            $errors[] = 'Il nome è obbligatorio';
+            $errors[] = 'validation.first_name_required';
         }
-        
+
         if (empty($data['last_name'])) {
-            $errors[] = 'Il cognome è obbligatorio';
+            $errors[] = 'validation.last_name_required';
         }
-        
+
         if (!$user_id && empty($data['password'])) {
-            $errors[] = 'La password è obbligatoria';
+            $errors[] = 'validation.password_required';
         } elseif (!empty($data['password']) && strlen($data['password']) < 6) {
-            $errors[] = 'La password deve essere di almeno 6 caratteri';
+            $errors[] = 'validation.password_min';
         }
-        
+
         return $errors;
     }
 }
-?>

@@ -1,231 +1,176 @@
 <?php
+
 return [
 
-    // Navigation & Menu
-    'dashboard' => 'Dashboard',
-    'users' => 'Utenti',
-    'products' => 'Prodotti',
-    'orders' => 'Ordini',
-    'suppliers' => 'Fornitori',
-    'branches' => 'Filiali',
-    'reports' => 'Rapporti',
-    'settings' => 'Impostazioni',
-    'logout' => 'Esci',
-    'profile' => 'Profilo',
-
-    // Error messages
-    'error' => [
-        '404_title' => 'Pagina Non Trovata',
-        '404_message' => 'La pagina che stai cercando non è stata trovata. Controlla l\'URL o torna alla dashboard.',
-    ],
-
-    'page_not_found' => 'Pagina Non Trovata',
-    'back_to_dashboard' => 'Torna alla Dashboard',
-
-    // User Management
-    'user' => [
-        'management' => 'Gestione Utenti',
-        'new_user' => 'Nuovo Utente',
-        'edit_user' => 'Modifica Utente',
-        'user_list' => 'Lista Utenti',
-        'total_users' => 'Totale Utenti',
-        'active_users' => 'Utenti Attivi',
-        'username' => 'Username',
-        'first_name' => 'Nome',
-        'last_name' => 'Cognome',
-        'full_name' => 'Nome Completo',
-        'groups' => 'Gruppi Utenti',
-        'permissions' => 'Permessi',
-        'no_groups' => 'Nessun Gruppo',
-        'user_data' => 'Dati Utente',
-        'account_info' => 'Informazioni Account',
-        'user_id' => 'ID Utente',
-        'created_on' => 'Creato il',
-        'last_modified' => 'Ultima modifica',
-        'quick_actions' => 'Azioni Rapide',
-        'reset_password' => 'Reset Password',
-        'delete_user' => 'Elimina Utente',
-        'user_active' => 'Utente Attivo',
-        'save_changes' => 'Salva Modifiche',
-        'password_note' => 'Per motivi di sicurezza, la password non può essere modificata da questa sezione. Utilizzare la funzione "Reset Password" se necessario.',
-        'confirm_delete' => 'Sei sicuro di voler eliminare questo utente? Questa azione non può essere annullata.',
-        'confirm_reset_password' => 'Sei sicuro di voler resettare la password di questo utente? Verrà inviata una nuova password temporanea.',
-    ],
-
-    // Branch Management
-    'branch' => [
-        'management' => 'Gestione Filiali',
-        'new_branch' => 'Nuova Filiale',
-        'edit_branch' => 'Modifica Filiale',
-        'branch_list' => 'Lista Filiali',
-        'branch_name' => 'Nome Filiale',
-        'branch_code' => 'Codice Filiale',
-        'manager' => 'Responsabile',
-        'location' => 'Ubicazione',
-        'contact_info' => 'Informazioni di Contatto',
-        'total_branches' => 'Totale Filiali',
-        'active_branches' => 'Filiali Attive',
-        'manage_users' => 'Gestisci Utenti',
-        'confirm_delete_title' => 'Conferma Eliminazione',
-        'confirm_delete_message' => 'Sei sicuro di voler eliminare la filiale',
-        'delete_warning' => 'Questa azione rimuoverà anche tutte le assegnazioni utenti.',
-    ],
-
-    // Supplier Management
-    'supplier' => [
-        'management' => 'Gestione Fornitori',
-        'new_supplier' => 'Nuovo Fornitore',
-        'edit_supplier' => 'Modifica Fornitore',
-        'supplier_list' => 'Lista Fornitori',
-        'supplier_name' => 'Nome Fornitore',
-        'company' => 'Azienda',
-        'contact_person' => 'Persona di Contatto',
-        'total_suppliers' => 'Totale Fornitori',
-        'active_suppliers' => 'Fornitori Attivi',
-        'city' => 'Città',
-        'country' => 'Paese',
-        'confirm_delete' => 'Sei sicuro di voler eliminare questo fornitore? Questa azione eliminerà anche tutti i contatti associati e non può essere annullata.',
-    ],
-
-    // Product Management
-    'product' => [
-        'management' => 'Gestione Prodotti',
-        'new_product' => 'Nuovo Prodotto',
-        'edit_product' => 'Modifica Prodotto',
-        'product_list' => 'Lista Prodotti',
-        'product_name' => 'Nome Prodotto',
-        'category' => 'Categoria',
-        'price' => 'Prezzo',
-        'stock' => 'Scorta',
-        'barcode' => 'Codice a Barre',
-    ],
-
-    // Order Management
-    'order' => [
-        'management' => 'Gestione Ordini',
-        'new_order' => 'Nuovo Ordine',
-        'edit_order' => 'Modifica Ordine',
-        'order_list' => 'Lista Ordini',
-        'order_number' => 'Numero Ordine',
-        'customer' => 'Cliente',
-        'total' => 'Totale',
-        'order_date' => 'Data Ordine',
-        'delivery_date' => 'Data Consegna',
-    ],
-
-    // Buttons & Actions
+    // ===========================
+    // Pulsanti e Azioni Generiche
+    // ===========================
     'btn' => [
-        'refresh' => 'Aggiorna',
         'add_new' => 'Aggiungi Nuovo',
-        'view' => 'Visualizza',
-        'modify' => 'Modifica',
-        'remove' => 'Rimuovi',
-        'confirm' => 'Conferma',
-        'close' => 'Chiudi',
+        'refresh' => 'Aggiorna',
     ],
 
-    // Messages
+    'create' => 'Crea',
+    'edit' => 'Modifica',
+    'delete' => 'Elimina',
+    'save' => 'Salva',
+    'cancel' => 'Annulla',
+    'back_to_list' => 'Torna alla Lista',
+    'yes_delete' => 'Sì, Elimina',
+
+    // ===========================
+    // Messaggi
+    // ===========================
     'msg' => [
-        'success' => 'Operazione completata con successo',
+        'info' => 'Informazioni',
         'error' => 'Si è verificato un errore',
         'warning' => 'Attenzione',
-        'info' => 'Informazione',
         'no_data' => 'Nessun dato disponibile',
-        'loading' => 'Caricamento...',
-        'saved' => 'Salvato con successo',
-        'deleted' => 'Eliminato con successo',
-        'updated' => 'Aggiornato con successo',
+        'confirm_delete' => 'Sei sicuro di voler eliminare questo elemento?',
+        'confirm_delete_text' => 'Questa azione non può essere annullata.',
     ],
 
-    // Forms
+    // ===========================
+    // Moduli Form
+    // ===========================
+    'required_field' => 'Campo obbligatorio',
     'form' => [
-        'required' => 'Obbligatorio',
-        'optional' => 'Opzionale',
+        'required' => '(Obbligatorio)',
+        'optional' => '(Opzionale)',
         'select_option' => 'Seleziona un\'opzione',
-        'enter_value' => 'Inserisci valore',
-        'choose_file' => 'Scegli file',
+        'enter_value' => 'Inserisci un valore',
     ],
 
-    // Additional missing translations
+    // ===========================
+    // Gestione Utenti
+    // ===========================
+    'user' => [
+        'management' => 'Gestione Utenti',
+        'user_list' => 'Lista Utenti',
+        'new_user' => 'Nuovo Utente',
+        'edit_user' => 'Modifica Utente',
+        'save_changes' => 'Salva Modifiche',
+        'account_info' => 'Informazioni Account',
+        'quick_actions' => 'Azioni Rapide',
+        'reset_password' => 'Reimposta Password',
+        'delete_user' => 'Elimina Utente',
+        'confirm_reset_password' => 'Sei sicuro di voler reimpostare la password di questo utente?',
+        'confirm_delete' => 'Sei sicuro di voler eliminare questo utente?',
+        'confirm_delete_text' => 'L\'eliminazione di un utente è permanente e non può essere annullata.',
+        'password_note' => 'Lascia i campi password vuoti per mantenere la password attuale.',
+        'username' => 'Nome Utente',
+        'full_name' => 'Nome Completo',
+        'first_name' => 'Nome',
+        'last_name' => 'Cognome',
+        'user_id' => 'ID Utente',
+        'created_on' => 'Creato il',
+        'last_modified' => 'Ultima Modifica',
+        'user_active' => 'Utente Attivo',
+        'status' => 'Stato',
+        'no_groups' => 'Nessun Gruppo Assegnato',
+        'groups' => 'Gruppi Utente',
+        'permissions' => 'Permessi',
+        'permissions_assigned' => 'Permessi Assegnati',
+        'branch_assignments' => 'Assegnazioni Filiali',
+        'select_branches' => 'Seleziona le filiali da assegnare all\'utente.',
+        'total_users' => 'Totale Utenti',
+        'active_users' => 'Utenti Attivi',
+    ],
+
+    // ===========================
+    // Gruppi Utente
+    // ===========================
+    'user_groups' => [
+        'total_groups' => 'Totale Gruppi',
+        'confirm_delete' => 'Sei sicuro di voler eliminare questo gruppo?',
+        'confirm_delete_text' => 'Eliminando un gruppo verranno rimossi tutti i suoi permessi.',
+    ],
+
+    // ===========================
+    // Permessi
+    // ===========================
+    'permissions' => 'Permessi',
+
+    // ===========================
+    // Risorse e Collegati
+    // ===========================
+    'resource' => 'Risorsa',
+    'permissions_label' => 'Permessi',
+    'module' => 'Modulo',
+    'action' => 'Azione',
+
+    // ===========================
+    // Campi Comuni
+    // ===========================
+    'name' => 'Nome',
+    'description' => 'Descrizione',
+    'email' => 'Email',
+    'phone' => 'Telefono',
+    'users' => 'Utenti',
+    'created' => 'Creato',
+    'actions' => 'Azioni',
+
+    // ===========================
+    // Stato
+    // ===========================
+    'status' => 'Stato',
+    'active' => 'Attivo',
+    'inactive' => 'Inattivo',
+
+    // ===========================
+    // Filiali
+    // ===========================
+    'branch' => [
+        'name' => 'Nome Filiale',
+        'location' => 'Località',
+        'no_branches' => 'Nessuna filiale disponibile.',
+    ],
+
+    // ===========================
+    // Assegnazioni
+    // ===========================
+    'assign' => 'Assegna',
+    'primary' => 'Principale',
+
+    // ===========================
+    // Profile Management
+    // ===========================
+    'profile' => [
+        'page_title' => 'Profilo Utente',
+
+        'current_password_required' => 'La password attuale è obbligatoria.',
+        'new_password_required' => 'La nuova password è obbligatoria.',
+        'password_min_length' => 'La password deve contenere almeno 6 caratteri.',
+        'passwords_do_not_match' => 'Le password non coincidono.',
+        'current_password_incorrect' => 'La password attuale non è corretta.',
+        'password_updated_successfully' => 'Password aggiornata con successo.',
+        'failed_to_update_password' => 'Impossibile aggiornare la password.',
+
+        'username_required' => 'Il nome utente è obbligatorio.',
+        'username_min_length' => 'Il nome utente deve contenere almeno 3 caratteri.',
+        'username_already_exists' => 'Il nome utente esiste già.',
+        'username_updated_successfully' => 'Nome utente aggiornato con successo.',
+        'failed_to_update_username' => 'Impossibile aggiornare il nome utente.',
+
+        'invalid_image_format' => 'Formato immagine non valido. Consentiti: JPG, JPEG, PNG, GIF.',
+        'avatar_updated_successfully' => 'Immagine del profilo aggiornata con successo.',
+        'failed_to_update_avatar' => 'Impossibile aggiornare l\'immagine del profilo.',
+        'failed_to_upload_avatar' => 'Impossibile caricare l\'immagine del profilo.',
+        'error_uploading_file' => 'Errore durante il caricamento del file',
+        'avatar_removed_successfully' => 'Immagine del profilo rimossa con successo.',
+        'failed_to_remove_avatar' => 'Impossibile rimuovere l\'immagine del profilo.',
+    ],
+    'profile' => 'Profilo',
+    'user.avatar' => 'Avatar Utente',
+    'update_profile_picture' => 'Aggiorna Immagine Profilo',
+    'upload_avatar' => 'Carica Avatar',
+    'remove_avatar' => 'Rimuovi Avatar',
+    'username' => 'Nome utente',
     'password' => 'Password',
-    'min_characters' => 'Caratteri minimi',
-    'instructions' => 'Istruzioni',
-    'important_info' => 'Informazioni Importanti',
-    'security' => 'Sicurezza',
-    'ensure_secure_passwords' => 'Assicurati di utilizzare password sicure e di assegnare solo i permessi necessari.',
-    'fields_marked_required' => 'I campi contrassegnati con * sono obbligatori',
-    'username_must_be_unique' => 'L\'username deve essere unico nel sistema',
-    'password_min_length' => 'La password deve essere di almeno 6 caratteri',
-    'assign_groups_after_creation' => 'Dopo la creazione, sarà possibile assegnare l\'utente ai gruppi',
-    'validation_error' => 'Errore Validazione',
-    'fill_required_fields' => 'Per favore, compila tutti i campi obbligatori',
-
-    // Impostazioni specifiche
-    'general_settings' => 'Impostazioni Generali',
-    'site_name' => 'Nome Sito',
-    'site_url' => 'URL Sito',
-    'site_logo' => 'Logo Sito',
-    'upload_logo' => 'Carica Logo',
-    'current_logo' => 'Logo Attuale',
-    'no_logo' => 'Nessun logo caricato',
-    'rooms_management' => 'Gestione Sale',
-    'tables_management' => 'Gestione Tavoli',
-    'room' => 'Sala',
-    'rooms' => 'Sale',
-    'table' => 'Tavolo',
-    'tables' => 'Tavoli',
-    'add_room' => 'Aggiungi Sala',
-    'edit_room' => 'Modifica Sala',
-    'add_table' => 'Aggiungi Tavolo',
-    'edit_table' => 'Modifica Tavolo',
-    'room_name' => 'Nome Sala',
-    'room_description' => 'Descrizione Sala',
-    'table_name' => 'Nome Tavolo',
-    'seats' => 'Posti',
-    'select_branch' => 'Seleziona Filiale',
-    'select_room' => 'Seleziona Sala',
-    'room_examples' => 'Esempi: Sala Principale, Terrazza, Balcone, Sala Privata, Giardino, ecc.',
-    'table_examples' => 'Esempi: Tavolo 1, A1, Terrazza-1, ecc.',
-
-    // Messaggi per nuove funzionalità
-    'msg.settings_updated_successfully' => 'Impostazioni aggiornate con successo',
-    'msg.room_created_successfully' => 'Sala creata con successo',
-    'msg.room_updated_successfully' => 'Sala aggiornata con successo',
-    'msg.room_deleted_successfully' => 'Sala eliminata con successo',
-    'msg.table_created_successfully' => 'Tavolo creato con successo',
-    'msg.table_updated_successfully' => 'Tavolo aggiornato con successo',
-    'msg.table_deleted_successfully' => 'Tavolo eliminato con successo',
-    'msg.cannot_delete_room_has_tables' => 'Non è possibile eliminare una sala che contiene tavoli',
-    'msg.required_fields' => 'Campi obbligatori mancanti',
-    'msg.invalid_token' => 'Token di sicurezza non valido',
-    'msg.not_found' => 'Elemento non trovato',
-    'msg.created_successfully' => 'Creato con successo',
-    'msg.updated_successfully' => 'Aggiornato con successo',
-    'msg.deleted_successfully' => 'Eliminato con successo',
-    'msg.error_occurred' => 'Si è verificato un errore',
-
-    // Gestione Zone di Consegna
-    'add_delivery_area' => 'Aggiungi Zona di Consegna',
-    'edit_delivery_area' => 'Modifica Zona di Consegna',
-    'area_name' => 'Nome Zona',
-    'area_name_required' => 'Il nome della zona è obbligatorio',
-    'branch_required' => 'La selezione della filiale è obbligatoria',
-    'no_branch' => 'Nessuna Filiale',
-    'delivery_area_created' => 'Zona di consegna creata con successo',
-    'delivery_area_updated' => 'Zona di consegna aggiornata con successo',
-    'delivery_area_deleted' => 'Zona di consegna eliminata con successo',
-    'delivery_area_not_found' => 'Zona di consegna non trovata',
-    'error_creating_delivery_area' => 'Errore nella creazione della zona di consegna',
-    'error_updating_delivery_area' => 'Errore nell\'aggiornamento della zona di consegna',
-    'error_deleting_delivery_area' => 'Errore nell\'eliminazione della zona di consegna',
-    'delete_delivery_area_confirm' => 'Sei sicuro di voler eliminare la zona di consegna "%s"?',
-    'branch' => 'Filiale',
-    'created_at' => 'Creato il',
-    'id' => 'ID',
-    'back' => 'Indietro',
-    'invalid_request' => 'Richiesta non valida',
-    'no_permission' => 'Non hai i permessi per accedere a questa pagina',
-    'confirm_delete' => 'Conferma Eliminazione',
-    'yes_delete' => 'Sì, Elimina',
+    'update_username' => 'Aggiorna Nome Utente',
+    'current_password' => 'Password Attuale',
+    'new_password' => 'Nuova Password',
+    'confirm_new_password' => 'Conferma Nuova Password',
+    'update_password' => 'Aggiorna Password',
 
 ];

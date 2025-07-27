@@ -1,5 +1,4 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
 require_once admin_module_path('/models/UserGroup.php');
 
 class UserGroupsController
@@ -9,41 +8,40 @@ class UserGroupsController
     public function __construct()
     {
         $this->userGroupModel = new UserGroup();
+        TranslationManager::loadModuleTranslations('access-management');
     }
 
     public function index()
     {
-        // Get all user groups with user count
         $user_groups = $this->userGroupModel->getAll();
         $total_groups = count($user_groups);
 
+        $page_title = TranslationManager::t('user_groups.page_title');
         include __DIR__ . '/../views/user-groups/index.php';
     }
 
     public function create()
     {
-        // Get all permissions for the form
         require_once __DIR__ . '/../models/Permission.php';
         $permissionModel = new Permission();
         $resources = $permissionModel->getResources();
 
+        $page_title = TranslationManager::t('user_groups.create_title');
         include __DIR__ . '/../views/user-groups/create.php';
     }
 
     public function store()
     {
         if ($_POST) {
-            // Validate CSRF token
             if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
                 set_notification(TranslationManager::t('msg.invalid_token'), 'error');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups/create');
+                redirect(get_setting('site_url') . '/admin/access-management/userGroups/create');
                 return;
             }
 
-            // Validate required fields
             if (empty($_POST['name'])) {
-                set_notification(TranslationManager::t('msg.required_field') . ': ' . TranslationManager::t('name'), 'error');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups/create');
+                set_notification(TranslationManager::t('msg.required_field') . ': ' . TranslationManager::t('fields.name'), 'error');
+                redirect(get_setting('site_url') . '/admin/access-management/userGroups/create');
                 return;
             }
 
@@ -54,16 +52,15 @@ class UserGroupsController
 
             $groupId = $this->userGroupModel->create($data);
             if ($groupId) {
-                // Handle permissions assignment
                 if (!empty($_POST['permissions'])) {
                     $this->userGroupModel->assignPermissions($groupId, $_POST['permissions']);
                 }
 
                 set_notification(TranslationManager::t('msg.created_successfully'), 'success');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups');
+                redirect(get_setting('site_url') . '/admin/access-management/userGroups');
             } else {
                 set_notification(TranslationManager::t('msg.error_occurred'), 'error');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups/create');
+                redirect(get_setting('site_url') . '/admin/access-management/userGroups/create');
             }
         }
     }
@@ -73,33 +70,31 @@ class UserGroupsController
         $user_group = $this->userGroupModel->getById($id);
         if (!$user_group) {
             set_notification(TranslationManager::t('msg.not_found'), 'error');
-            redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups');
+            redirect(get_setting('site_url') . '/admin/access-management/userGroups');
             return;
         }
 
-        // Get all permissions and assigned permissions for the form
         require_once __DIR__ . '/../models/Permission.php';
         $permissionModel = new Permission();
         $resources = $permissionModel->getResources();
         $user_group['permissions'] = $this->userGroupModel->getPermissions($id);
 
+        $page_title = TranslationManager::t('user_groups.edit_title');
         include __DIR__ . '/../views/user-groups/edit.php';
     }
 
     public function update($id)
     {
         if ($_POST) {
-            // Validate CSRF token
             if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
                 set_notification(TranslationManager::t('msg.invalid_token'), 'error');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/user-groups/edit/' . $id);
+                redirect(get_setting('site_url') . '/admin/access-management/user-groups/edit/' . $id);
                 return;
             }
 
-            // Validate required fields
             if (empty($_POST['name'])) {
-                set_notification(TranslationManager::t('msg.required_field') . ': ' . TranslationManager::t('name'), 'error');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/user-groups/edit/' . $id);
+                set_notification(TranslationManager::t('msg.required_field') . ': ' . TranslationManager::t('fields.name'), 'error');
+                redirect(get_setting('site_url') . '/admin/access-management/user-groups/edit/' . $id);
                 return;
             }
 
@@ -109,15 +104,14 @@ class UserGroupsController
             ];
 
             if ($this->userGroupModel->update($id, $data)) {
-                // Handle permissions assignment
                 $permissions = $_POST['permissions'] ?? [];
                 $this->userGroupModel->assignPermissions($id, $permissions);
 
                 set_notification(TranslationManager::t('msg.updated_successfully'), 'success');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups');
+                redirect(get_setting('site_url') . '/admin/access-management/userGroups');
             } else {
                 set_notification(TranslationManager::t('msg.error_occurred'), 'error');
-                redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/user-groups/edit/' . $id);
+                redirect(get_setting('site_url') . '/admin/access-management/user-groups/edit/' . $id);
             }
         }
     }
@@ -127,13 +121,13 @@ class UserGroupsController
         $result = $this->userGroupModel->delete($id);
 
         if (is_array($result) && isset($result['error'])) {
-            set_notification($result['error'], 'error');
+            set_notification(TranslationManager::t('user_groups.delete_error_in_use'), 'error');
         } else if ($result) {
             set_notification(TranslationManager::t('msg.deleted_successfully'), 'success');
         } else {
             set_notification(TranslationManager::t('msg.error_occurred'), 'error');
         }
 
-        redirect(get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups');
+        redirect(get_setting('site_url') . '/admin/access-management/userGroups');
     }
 }

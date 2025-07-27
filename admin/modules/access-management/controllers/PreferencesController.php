@@ -1,24 +1,28 @@
 <?php
-require_once __DIR__ . '/../models/UserPreferences.php';
-require_once __DIR__ . '/../../includes/session.php';
+require_once admin_module_path('/models/UserPreferences.php');
 
 class PreferencesController {
     private $userPreferencesModel;
     
     public function __construct() {
         $this->userPreferencesModel = new UserPreferences();
+        TranslationManager::loadModuleTranslations('access-management');
+
     }
     
+    /**
+     * Update theme preference
+     */
     public function updateTheme() {
         if (!isset($_SESSION['user_id'])) {
-            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.user_not_logged_in')]);
             return;
         }
         
         $theme = $_POST['theme'] ?? '';
         
         if (!in_array($theme, ['light', 'dark'])) {
-            echo json_encode(['success' => false, 'message' => 'Invalid theme']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.invalid_theme')]);
             return;
         }
         
@@ -26,15 +30,18 @@ class PreferencesController {
         
         if ($result) {
             $_SESSION['theme'] = $theme;
-            echo json_encode(['success' => true, 'message' => 'Theme updated successfully']);
+            echo json_encode(['success' => true, 'message' => TranslationManager::t('msg.theme_updated_successfully')]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to update theme']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.failed_to_update_theme')]);
         }
     }
     
+    /**
+     * Update language preference
+     */
     public function updateLanguage() {
         if (!isset($_SESSION['user_id'])) {
-            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.user_not_logged_in')]);
             return;
         }
         
@@ -42,7 +49,7 @@ class PreferencesController {
         
         $allowedLanguages = ['en', 'it', 'fr', 'es', 'de', 'ar'];
         if (!in_array($language, $allowedLanguages)) {
-            echo json_encode(['success' => false, 'message' => 'Invalid language']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.invalid_language')]);
             return;
         }
         
@@ -50,22 +57,25 @@ class PreferencesController {
         
         if ($result) {
             $_SESSION['language'] = $language;
-            echo json_encode(['success' => true, 'message' => 'Language updated successfully']);
+            echo json_encode(['success' => true, 'message' => TranslationManager::t('msg.language_updated_successfully')]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to update language']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.failed_to_update_language')]);
         }
     }
     
+    /**
+     * Update avatar
+     */
     public function updateAvatar() {
         if (!isset($_SESSION['user_id'])) {
-            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.user_not_logged_in')]);
             return;
         }
         
         $avatar = $_POST['avatar'] ?? '';
         
         if (empty($avatar)) {
-            echo json_encode(['success' => false, 'message' => 'Invalid avatar']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.invalid_avatar')]);
             return;
         }
         
@@ -73,9 +83,9 @@ class PreferencesController {
         
         if ($result) {
             $_SESSION['avatar'] = $avatar;
-            echo json_encode(['success' => true, 'message' => 'Avatar updated successfully']);
+            echo json_encode(['success' => true, 'message' => TranslationManager::t('msg.avatar_updated_successfully')]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to update avatar']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.failed_to_update_avatar')]);
         }
     }
 }
@@ -97,8 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $controller->updateAvatar();
             break;
         default:
-            echo json_encode(['success' => false, 'message' => 'Invalid action']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('msg.invalid_action')]);
     }
     exit;
 }
-?>

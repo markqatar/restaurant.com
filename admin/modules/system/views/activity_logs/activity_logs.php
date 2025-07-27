@@ -12,6 +12,7 @@
                     <th>ID</th>
                     <th><?php echo TranslationManager::t('user'); ?></th>
                     <th><?php echo TranslationManager::t('module'); ?></th>
+                    <th><?php echo TranslationManager::t('table'); ?></th>
                     <th><?php echo TranslationManager::t('action'); ?></th>
                     <th><?php echo TranslationManager::t('record_id'); ?></th>
                     <th><?php echo TranslationManager::t('date'); ?></th>

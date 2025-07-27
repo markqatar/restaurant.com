@@ -76,7 +76,7 @@
 
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-1"></i><?php echo TranslationManager::t('save'); ?>
+                        <i class="fas fa-save me-1"></i><?php echo TranslationManager::t('btn.save'); ?>
                     </button>
                 </div>
             </form>
@@ -125,7 +125,7 @@
 
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> <?php echo TranslationManager::t('save'); ?>
+                        <i class="fas fa-save"></i> <?php echo TranslationManager::t('btn.save'); ?>
                     </button>
                 </div>
             </form>
@@ -161,7 +161,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success"><?php echo TranslationManager::t('save'); ?></button>
+          <button type="submit" class="btn btn-success"><?php echo TranslationManager::t('btn.save'); ?></button>
         </div>
       </form>
     </div>

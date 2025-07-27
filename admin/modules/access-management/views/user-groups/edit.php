@@ -13,7 +13,8 @@ if (session_status() === PHP_SESSION_NONE) {
         <i class="fas fa-users-cog me-2"></i><?php echo TranslationManager::t('user.groups'); ?> - <?php echo TranslationManager::t('edit'); ?>
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
-        <a href="<?php echo admin_url('user-groups'); ?>" class="btn btn-outline-secondary">
+        
+        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups'; ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back_to_list'); ?>
         </a>
     </div>
@@ -90,7 +91,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="<?php echo admin_url('user-groups'); ?>" class="btn btn-secondary me-md-2">
+                        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups'; ?>" class="btn btn-secondary me-md-2">
                             <i class="fas fa-times me-1"></i><?php echo TranslationManager::t('cancel'); ?>
                         </a>
                         <button type="submit" class="btn btn-primary">

@@ -6,30 +6,8 @@ class UserPreferences {
     public function __construct() {
         $database = Database::getInstance();
         $this->db = $database->getConnection();
-        
-        // Create table if it doesn't exist
-        $this->createTable();
     }
     
-    private function createTable() {
-        $sql = "CREATE TABLE IF NOT EXISTS user_preferences (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT NOT NULL,
-            theme VARCHAR(20) DEFAULT 'light',
-            language VARCHAR(10) DEFAULT 'en',
-            avatar VARCHAR(255) DEFAULT 'default.png',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-            UNIQUE KEY unique_user_pref (user_id)
-        )";
-        
-        try {
-            $this->db->exec($sql);
-        } catch (PDOException $e) {
-            error_log("Error creating user_preferences table: " . $e->getMessage());
-        }
-    }
     
     public function getUserPreferences($userId) {
         $stmt = $this->db->prepare("SELECT * FROM user_preferences WHERE user_id = ?");

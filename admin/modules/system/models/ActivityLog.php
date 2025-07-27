@@ -7,7 +7,7 @@ class ActivityLog {
     public function getLogs($start, $length, $search = null) {
         $db = Database::getInstance()->getConnection();
         $query = "
-            SELECT l.id, l.module, l.action, l.record_id, l.table_name, l.created_at, u.username
+            SELECT l.id, l.module, l.table_name, l.action, l.record_id, l.table_name, l.created_at, u.username
             FROM activity_logs l
             LEFT JOIN users u ON u.id = l.user_id
             WHERE 1

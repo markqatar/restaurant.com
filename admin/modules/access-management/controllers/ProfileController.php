@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../../includes/session.php';
-require_once __DIR__ . '/../models/User.php';
-require_once __DIR__ . '/../models/UserPreferences.php';
+require_once admin_module_path('/models/User.php');
+require_once admin_module_path('/models/UserPreferences.php');
 
 class ProfileController {
     private $userModel;
@@ -12,7 +11,8 @@ class ProfileController {
     public function __construct() {
         $this->userModel = new User();
         $this->preferencesModel = new UserPreferences();
-        
+        TranslationManager::loadModuleTranslations('access-management');
+
         // Check if user is logged in
         if (!isset($_SESSION['user_id'])) {
             header('Location: login.php');
@@ -48,10 +48,10 @@ class ProfileController {
             'preferences' => $preferences,
             'errors' => $this->errors,
             'success' => $this->success,
-            'pageTitle' => 'User Profile'
+            'pageTitle' => TranslationManager::t('profile.page_title')
         ];
-        
-        return $data;
+
+        include admin_module_path('/views/profile/index.php');
     }
     
     private function updatePassword() {
@@ -62,32 +62,32 @@ class ProfileController {
         
         // Validation
         if (empty($currentPassword)) {
-            $this->errors[] = 'Current password is required';
+            $this->errors[] = TranslationManager::t('profile.current_password_required');
         }
         
         if (empty($newPassword)) {
-            $this->errors[] = 'New password is required';
+            $this->errors[] = TranslationManager::t('profile.new_password_required');
         } elseif (strlen($newPassword) < 6) {
-            $this->errors[] = 'Password must be at least 6 characters';
+            $this->errors[] = TranslationManager::t('profile.password_min_length');
         }
         
         if ($newPassword !== $confirmPassword) {
-            $this->errors[] = 'New passwords do not match';
+            $this->errors[] = TranslationManager::t('profile.passwords_do_not_match');
         }
         
         // Verify current password
         if (empty($this->errors)) {
             if (!$this->userModel->verifyPassword($userId, $currentPassword)) {
-                $this->errors[] = 'Current password is incorrect';
+                $this->errors[] = TranslationManager::t('profile.current_password_incorrect');
             }
         }
         
         // Update password if no errors
         if (empty($this->errors)) {
             if ($this->userModel->changePassword($userId, $newPassword)) {
-                $this->success[] = 'Password updated successfully';
+                $this->success[] = TranslationManager::t('profile.password_updated_successfully');
             } else {
-                $this->errors[] = 'Failed to update password';
+                $this->errors[] = TranslationManager::t('profile.failed_to_update_password');
             }
         }
     }
@@ -98,15 +98,15 @@ class ProfileController {
         
         // Validation
         if (empty($username)) {
-            $this->errors[] = 'Username is required';
+            $this->errors[] = TranslationManager::t('profile.username_required');
         } elseif (strlen($username) < 3) {
-            $this->errors[] = 'Username must be at least 3 characters';
+            $this->errors[] = TranslationManager::t('profile.username_min_length');
         }
         
         // Check if username exists
         if (empty($this->errors)) {
             if ($this->userModel->usernameExists($username, $userId)) {
-                $this->errors[] = 'Username already exists';
+                $this->errors[] = TranslationManager::t('profile.username_already_exists');
             }
         }
         
@@ -114,9 +114,9 @@ class ProfileController {
         if (empty($this->errors)) {
             if ($this->userModel->updateUsername($userId, $username)) {
                 $_SESSION['username'] = $username;
-                $this->success[] = 'Username updated successfully';
+                $this->success[] = TranslationManager::t('profile.username_updated_successfully');
             } else {
-                $this->errors[] = 'Failed to update username';
+                $this->errors[] = TranslationManager::t('profile.failed_to_update_username');
             }
         }
     }
@@ -124,8 +124,7 @@ class ProfileController {
     private function updateAvatar() {
         $userId = $_SESSION['user_id'];
         
-        // Make sure avatars directory exists
-        $avatarsDir = __DIR__ . '/../admin/assets/images/avatars/';
+        $avatarsDir = get_setting('base_path') . '/admin/assets/images/avatars/';
         if (!is_dir($avatarsDir)) {
             mkdir($avatarsDir, 0755, true);
         }
@@ -134,28 +133,25 @@ class ProfileController {
             $fileInfo = pathinfo($_FILES['avatar']['name']);
             $extension = strtolower($fileInfo['extension']);
             
-            // Validate file type
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if (!in_array($extension, $allowedExtensions)) {
-                $this->errors[] = 'Only JPG, PNG, and GIF images are allowed';
+                $this->errors[] = TranslationManager::t('profile.invalid_image_format');
             } else {
-                // Generate unique filename
                 $newFilename = 'avatar_' . $userId . '_' . time() . '.' . $extension;
                 $destination = $avatarsDir . $newFilename;
                 
                 if (move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
-                    // Update user preferences
                     if ($this->preferencesModel->updateAvatar($userId, $newFilename)) {
-                        $this->success[] = 'Avatar updated successfully';
+                        $this->success[] = TranslationManager::t('profile.avatar_updated_successfully');
                     } else {
-                        $this->errors[] = 'Failed to update avatar in database';
+                        $this->errors[] = TranslationManager::t('profile.failed_to_update_avatar');
                     }
                 } else {
-                    $this->errors[] = 'Failed to upload avatar';
+                    $this->errors[] = TranslationManager::t('profile.failed_to_upload_avatar');
                 }
             }
-        } else if ($_FILES['avatar']['error'] !== UPLOAD_ERR_NO_FILE) {
-            $this->errors[] = 'Error uploading file: ' . $_FILES['avatar']['error'];
+        } elseif ($_FILES['avatar']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $this->errors[] = TranslationManager::t('profile.error_uploading_file') . ': ' . $_FILES['avatar']['error'];
         }
     }
     
@@ -163,10 +159,9 @@ class ProfileController {
         $userId = $_SESSION['user_id'];
         
         if ($this->preferencesModel->updateAvatar($userId, '/images/defaultavatar.jpg')) {
-            $this->success[] = 'Avatar removed successfully';
+            $this->success[] = TranslationManager::t('profile.avatar_removed_successfully');
         } else {
-            $this->errors[] = 'Failed to remove avatar';
+            $this->errors[] = TranslationManager::t('profile.failed_to_remove_avatar');
         }
     }
 }
-?>

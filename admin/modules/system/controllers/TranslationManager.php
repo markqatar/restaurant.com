@@ -22,14 +22,13 @@ class TranslationManager
 
     public static function loadModuleTranslations($moduleName)
     {
-        $lang = self::$currentLang;
+        $lang = self::$currentLang ?? 'en';
         $file = get_setting('base_path') . "admin/modules/{$moduleName}/languages/{$lang}.php";
         if (file_exists($file)) {
             $moduleTranslations = include $file;
-            self::$translations = array_merge(self::$translations, $moduleTranslations);
+            self::$translations = array_replace_recursive(self::$translations, $moduleTranslations);
         }
     }
-
     public static function t($key)
     {
         $keys = explode('.', $key);

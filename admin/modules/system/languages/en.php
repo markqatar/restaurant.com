@@ -1,43 +1,45 @@
 <?php
 return [
-    'system' => [
-        'configuration' => 'System Configuration',
-        'global_settings_tab' => 'Global Settings',
-        'languages_tab' => 'Languages',
-        'global_settings' => 'Global Settings',
-        'site_name' => 'Site Name',
-        'site_url' => 'Site URL',
-        'logo' => 'Logo',
-        'currency' => 'Currency',
-        'timezone' => 'Timezone',
-        'date_format_admin' => 'Date Format (Admin)',
-        'date_format_public' => 'Date Format (Public)',
-        'languages' => 'Languages',
-        'add_language' => 'Add Language',
-        'delete_language' => 'Delete Language',
-        'code' => 'Code',
-        'name' => 'Name',
-        'direction' => 'Direction',
-        'admin' => 'Admin',
-        'public' => 'Public',
-        'actions' => 'Actions',
-        'save' => 'Save',
-        'delete' => 'Delete',
-        'rtl' => 'Right to Left',
-        'ltr' => 'Left to Right',
+    'configuration' => 'System Configuration',
+    'global_settings_tab' => 'Global Settings',
+    'languages_tab' => 'Languages',
+    'site_name' => 'Site Name',
+    'site_url' => 'Site URL',
+    'logo' => 'Logo',
+    'currency' => 'Currency',
+    'timezone' => 'Timezone',
+    'date_format_admin' => 'Admin Date Format',
+    'date_format_public' => 'Public Date Format',
+    'website_enabled' => 'Website Enabled',
+    'add_language' => 'Add Language',
+    'code' => 'Code',
+    'name' => 'Name',
+    'direction' => 'Direction',
+    'admin' => 'Admin',
+    'public' => 'Public',
+    'actions' => 'Actions',
+    'delete_language' => 'Delete Language',
 
-        // Success messages
-        'success' => [
-            'settings_updated' => 'Settings updated successfully',
-            'language_added' => 'Language added successfully',
-            'language_deleted' => 'Language deleted successfully',
-        ],
+    'modal' => [
+        'direction_ltr' => 'LTR',
+        'direction_rtl' => 'RTL'
+    ],
 
-        // Error messages
-        'error' => [
-            'settings_update_failed' => 'Error while updating settings',
-            'language_add_failed' => 'Failed to add language',
-            'language_delete_failed' => 'Failed to delete language',
-        ]
+    'success' => [
+        'settings_updated' => 'Settings updated successfully',
+        'language_added' => 'Language added successfully',
+        'language_deleted' => 'Language deleted successfully',
+        'logo_deleted' => 'Logo deleted successfully'
+    ],
+
+    'error' => [
+        'invalid_csrf' => 'Invalid security token',
+        'settings_update_failed' => 'Failed to update settings',
+        'language_add_failed' => 'Failed to add language',
+        'language_delete_failed' => 'Failed to delete language',
+        'unauthorized' => 'Unauthorized access',
+        'no_logo' => 'No logo to delete',
+        'delete_failed' => 'Failed to delete logo file',
+        'update_failed' => 'Failed to update database'
     ]
 ];

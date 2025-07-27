@@ -9,7 +9,7 @@ class UserGroup {
     }
     
     /**
-     * Get all user groups
+     * Get all user groups with user count
      */
     public function getAll() {
         try {
@@ -32,7 +32,7 @@ class UserGroup {
     /**
      * Get user group by ID with its permissions
      */
-        public function getById($id) {
+    public function getById($id) {
         try {
             $stmt = $this->db->prepare("
                 SELECT ug.*, 
@@ -46,7 +46,7 @@ class UserGroup {
             $group = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($group) {
-                // Get permissions for this group
+                // Fetch permissions for this group
                 $stmt = $this->db->prepare("
                     SELECT p.id, p.module, p.action 
                     FROM permissions AS p
@@ -65,7 +65,6 @@ class UserGroup {
         }
     }
 
-    
     /**
      * Create new user group
      */
@@ -81,7 +80,10 @@ class UserGroup {
             ]);
             
             if ($result) {
-                return $this->db->lastInsertId();
+                $groupId = $this->db->lastInsertId();
+                // Log creation
+                log_action('access-management', 'user_groups', 'create', $groupId, null, $data);
+                return $groupId;
             }
             
             return false;
@@ -96,6 +98,7 @@ class UserGroup {
      */
     public function update($id, $data) {
         try {
+            $old_data = $this->getById($id);
             $this->db->beginTransaction();
             
             // Update group info
@@ -112,24 +115,14 @@ class UserGroup {
             
             // Update permissions if provided
             if (isset($data['permissions'])) {
-                // Delete existing permissions
-                $stmt = $this->db->prepare("DELETE FROM permissions WHERE group_id = ?");
-                $stmt->execute([$id]);
-                
-                // Insert new permissions
-                if (!empty($data['permissions'])) {
-                    $stmt = $this->db->prepare("
-                        INSERT INTO permissions (module, action, group_id) 
-                        VALUES (?, ?, ?)
-                    ");
-                    
-                    foreach ($data['permissions'] as $permission) {
-                        $stmt->execute([$permission['module'], $permission['action'], $id]);
-                    }
-                }
+                // Delete old permissions (handled via assignPermissions)
             }
             
             $this->db->commit();
+
+            // Log update
+            log_action('access-management', 'user_groups', 'update', $id, $old_data, $data);
+
             return true;
         } catch (PDOException $e) {
             $this->db->rollBack();
@@ -143,6 +136,8 @@ class UserGroup {
      */
     public function delete($id) {
         try {
+            $old_data = $this->getById($id);
+
             // Check if group is in use
             $stmt = $this->db->prepare("
                 SELECT COUNT(*) FROM user_group_assignments 
@@ -155,10 +150,15 @@ class UserGroup {
                 return ['error' => 'Cannot delete user group: it is currently assigned to users'];
             }
             
-            // Delete the group (permissions will be deleted automatically due to foreign key constraint)
+            // Delete the group
             $stmt = $this->db->prepare("DELETE FROM user_groups WHERE id = ?");
-            return $stmt->execute([$id]);
+            $result = $stmt->execute([$id]);
+
+            if ($result) {
+                log_action('access-management', 'user_groups', 'delete', $id, $old_data, null);
+            }
             
+            return $result;
         } catch (PDOException $e) {
             error_log("Error deleting user group: " . $e->getMessage());
             return false;
@@ -207,6 +207,7 @@ class UserGroup {
      */
     public function assignPermissions($groupId, $permissionIds) {
         try {
+            $old_permissions = $this->getPermissions($groupId);
             // First, remove all existing permissions for this group
             $this->removeAllPermissions($groupId);
             
@@ -221,6 +222,9 @@ class UserGroup {
                     $stmt->execute([$groupId, $permissionId]);
                 }
             }
+
+            // Log action
+            log_action('access-management', 'user_group_permissions', 'assign_permissions', $groupId, $old_permissions, $permissionIds);
             
             return true;
         } catch (PDOException $e) {
@@ -242,3 +246,4 @@ class UserGroup {
         }
     }
 }
+?>

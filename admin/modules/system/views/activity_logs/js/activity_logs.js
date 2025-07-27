@@ -7,7 +7,7 @@ $(document).ready(function () {
             type: 'POST'
         },
         columns: [
-            { data: 0 }, { data: 1 }, { data: 2 }, { data: 3 }, { data: 4 }, { data: 5 }, { data: 6 }
+            { data: 0 }, { data: 1 }, { data: 2 }, { data: 3 }, { data: 4 }, { data: 5 }, { data: 6 }, { data: 7 }
         ]
     });
 
@@ -23,8 +23,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.post(ACTIVITY_LOGS_VARS.restoreUrl, {
-                    log_id: id,
-                    csrf_token: ACTIVITY_LOGS_VARS.csrfToken
+                    log_id: id
                 }, function (response) {
                     Swal.fire(response.success ? ACTIVITY_LOGS_VARS.translations.success : ACTIVITY_LOGS_VARS.translations.error, response.message, response.success ? 'success' : 'error');
                     table.ajax.reload();
@@ -36,8 +35,7 @@ $(document).ready(function () {
     $(document).on('click', '.view-details', function () {
         var id = $(this).data('id');
         $.post(ACTIVITY_LOGS_VARS.logDetailsUrl, {
-            log_id: id,
-            csrf_token: ACTIVITY_LOGS_VARS.csrfToken
+            log_id: id
         }, function (response) {
             if (response.success) {
                 $('#logOldData').text(JSON.stringify(response.old_data, null, 2));

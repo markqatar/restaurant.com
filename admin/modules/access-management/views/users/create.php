@@ -108,50 +108,8 @@ if (!function_exists('get_csrf_token')) {
                         <h5><?php echo TranslationManager::t('user.branch_assignments'); ?></h5>
                         <p class="text-muted small"><?php echo TranslationManager::t('user.select_branches'); ?></p>
 
-                        <?php
-                        // Load branches
-                        require_once get_setting('base_path', '/var/www/html') . 'admin/models/Branch.php';
-                        $branch_model = new Branch();
-                        $branches = $branch_model->read(true); // Get only active branches
+                    <?php render_hook('users.create.form.sections'); ?>
 
-                        if (!empty($branches)):
-                        ?>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo TranslationManager::t('branch.name'); ?></th>
-                                            <th><?php echo TranslationManager::t('branch.location'); ?></th>
-                                            <th class="text-center"><?php echo TranslationManager::t('assign'); ?></th>
-                                            <th class="text-center"><?php echo TranslationManager::t('primary'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($branches as $branch): ?>
-                                            <tr>
-                                                <td><?php echo htmlspecialchars($branch['name']); ?></td>
-                                                <td><?php echo htmlspecialchars($branch['city_name'] ?? $branch['address']); ?></td>
-                                                <td class="text-center">
-                                                    <div class="form-check d-flex justify-content-center">
-                                                        <input class="form-check-input branch-checkbox" type="checkbox" name="branch_ids[]" value="<?php echo $branch['id']; ?>" id="branch_<?php echo $branch['id']; ?>">
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="form-check d-flex justify-content-center">
-                                                        <input class="form-check-input primary-branch-radio" type="radio" name="primary_branch_id" value="<?php echo $branch['id']; ?>" id="primary_<?php echo $branch['id']; ?>" disabled>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <?php else: ?>
-                            <div class="alert alert-info">
-                                <?php echo TranslationManager::t('branch.no_branches'); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
 
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-outline-secondary" onclick="history.back()">

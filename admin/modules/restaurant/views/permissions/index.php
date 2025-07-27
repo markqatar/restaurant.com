@@ -21,7 +21,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'permissions', 'create')): ?>
-            <a href="<?php echo admin_url('permissions', 'create'); ?>" class="btn btn-primary me-2">
+            <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/permissions/create'; ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('btn.add_new'); ?>
             </a>
         <?php endif; ?>

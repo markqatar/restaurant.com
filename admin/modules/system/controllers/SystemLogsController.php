@@ -29,6 +29,7 @@ class SystemLogsController
                     $log['id'],
                     htmlspecialchars($log['username']),
                     htmlspecialchars($log['module']),
+                    htmlspecialchars($log['table_name']),
                     htmlspecialchars($log['action']),
                     $log['record_id'],
                     format_date($log['created_at']),
@@ -55,11 +56,6 @@ class SystemLogsController
     }
     public function restore()
     {
-        if (!verify_csrf_token($_POST['csrf_token'])) {
-            echo json_encode(['success' => false, 'message' => TranslationManager::t('invalid_token')]);
-            exit;
-        }
-
         if (!has_permission($_SESSION['user_id'], 'system_logs', 'restore')) {
             echo json_encode(['success' => false, 'message' => TranslationManager::t('unauthorized')]);
             exit;
@@ -71,11 +67,6 @@ class SystemLogsController
 
     public function getLogDetails()
     {
-        if (!verify_csrf_token($_POST['csrf_token'])) {
-            echo json_encode(['success' => false, 'message' => 'Invalid token']);
-            return;
-        }
-
         $model = new ActivityLog();
         $log = $model->getLogById($_POST['log_id']);
 
@@ -86,8 +77,8 @@ class SystemLogsController
 
         echo json_encode([
             'success' => true,
-            'old_data' => json_decode($log['old_data'], true),
-            'new_data' => json_decode($log['new_data'], true)
+            'old_data' => !empty($log['old_data']) ? json_decode($log['old_data'], true) : [],
+            'new_data' => !empty($log['new_data']) ? json_decode($log['new_data'], true) : []
         ]);
     }
 }

@@ -3,6 +3,7 @@
 class Permission
 {
     private $db;
+    private $table = 'permissions';
 
     public function __construct()
     {
@@ -11,7 +12,7 @@ class Permission
     }
 
     /**
-     * Get all permissions
+     * Get all permissions with related user groups
      */
     public function getAll()
     {
@@ -66,15 +67,22 @@ class Permission
         try {
             $name = $data['module'] . ' - ' . $data['action'];
             $stmt = $this->db->prepare("
-                INSERT INTO permissions (name, module, action, description, created_at, updated_at) 
+                INSERT INTO {$this->table} (name, module, action, description, created_at, updated_at) 
                 VALUES (?, ?, ?, ?, NOW(), NOW())
             ");
-            return $stmt->execute([
+            $result = $stmt->execute([
                 $name,
                 $data['module'],
                 $data['action'],
                 $data['description'] ?? null
             ]);
+
+            if ($result) {
+                $id = $this->db->lastInsertId();
+                log_action('access-management', $this->table, 'create', $id, null, $data);
+            }
+
+            return $result;
         } catch (PDOException $e) {
             error_log("Error creating permission: " . $e->getMessage());
             return false;
@@ -87,19 +95,26 @@ class Permission
     public function update($id, $data)
     {
         try {
+            $old_data = $this->getById($id);
             $name = $data['module'] . ' - ' . $data['action'];
             $stmt = $this->db->prepare("
-                UPDATE permissions 
+                UPDATE {$this->table} 
                 SET name = ?, module = ?, action = ?, description = ?, updated_at = NOW()
                 WHERE id = ?
             ");
-            return $stmt->execute([
+            $result = $stmt->execute([
                 $name,
                 $data['module'],
                 $data['action'],
                 $data['description'] ?? null,
                 $id
             ]);
+
+            if ($result) {
+                log_action('access-management', $this->table, 'update', $id, $old_data, $data);
+            }
+
+            return $result;
         } catch (PDOException $e) {
             error_log("Error updating permission: " . $e->getMessage());
             return false;
@@ -112,7 +127,7 @@ class Permission
     public function delete($id)
     {
         try {
-            // Check if permission is in use
+            $old_data = $this->getById($id);
             $stmt = $this->db->prepare("
                 SELECT COUNT(*) FROM user_group_permissions 
                 WHERE permission_id = ?
@@ -124,9 +139,14 @@ class Permission
                 return ['error' => 'Cannot delete permission: it is currently assigned to user groups'];
             }
 
-            // Delete the permission
-            $stmt = $this->db->prepare("DELETE FROM permissions WHERE id = ?");
-            return $stmt->execute([$id]);
+            $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = ?");
+            $result = $stmt->execute([$id]);
+
+            if ($result) {
+                log_action('access-management', $this->table, 'delete', $id, $old_data, null);
+            }
+
+            return $result;
         } catch (PDOException $e) {
             error_log("Error deleting permission: " . $e->getMessage());
             return false;
@@ -140,7 +160,7 @@ class Permission
     {
         try {
             $stmt = $this->db->prepare("
-                SELECT * FROM permissions 
+                SELECT * FROM {$this->table} 
                 WHERE module = ? 
                 ORDER BY action ASC
             ");
@@ -153,7 +173,7 @@ class Permission
     }
 
     /**
-     * Get available resources
+     * Get available resources (modules)
      */
     public function getResources()
     {
@@ -175,6 +195,7 @@ class Permission
 
         return $resources;
     }
+
     /**
      * Get available actions
      */
@@ -189,7 +210,7 @@ class Permission
     }
 
     /**
-     * Get user permissions
+     * Get user permissions (module/action list for a user)
      */
     public function getUserPermissions($user_id)
     {
@@ -200,7 +221,7 @@ class Permission
                 JOIN user_group_permissions ugp ON p.id = ugp.permission_id
                 JOIN user_group_assignments uga ON uga.group_id = ugp.user_group_id
                 JOIN users u ON u.id = uga.user_id
-                WHERE u.id = ? and u.is_active =1
+                WHERE u.id = ? AND u.is_active = 1
             ");
             $stmt->execute([$user_id]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
