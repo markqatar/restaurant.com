@@ -257,7 +257,7 @@ class BranchesController
         $keyword = $_GET['q'] ?? '';
 
         if ($state_id) {
-            $cities = $this->branch_model->getCitiesByState($state_id, $keyword);
+            $cities = $this->branch_model->getCitiesByCountry($state_id, $keyword);
             header('Content-Type: application/json');
             echo json_encode($cities);
         } else {

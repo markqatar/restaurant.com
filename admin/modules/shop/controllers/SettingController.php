@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../models/Setting.php';
 require_once __DIR__ . '/../models/Room.php';
 require_once __DIR__ . '/../models/Table.php';
