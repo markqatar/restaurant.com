@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Luracast Restler 5 Forms</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="examples/resources/highlight.css">
+<link rel="stylesheet" type="text/css" href="examples/resources/style.css"/>
+<script src="examples/resources/highlight.pack.js"></script>
+<script type="text/javascript" src="examples/resources/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23777019-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body>
+<nav class="floating-menu">
+<ul>
+<li><a title="Restler Home" target="_blank" href="https://luracast.com/products/restler/"><img src="examples/resources/home.png" width="16" height="16"/> Home</a></li>
+<li><a class="active" title="Getting Started with Restler" href="index.html#luracast-restler"><img src="examples/resources/documentation.png" width="16" height="16"/> Documentation</a></li>
+<li><a href="examples/index.html"><img src="examples/resources/examples.png" width="16" height="16"/> Examples</a></li>
+<li><a title="Share your knowledge by answering user questions in Stack Overflow." target="_blank" href="http://bit.ly/Restler-QA"><img src="examples/resources/stackoverflow.png" width="16" height="16"/> Support</a></li>
+<li><a title="Contribute and Fork Restler on GitHub" target="_blank" href="http://bit.ly/LuracastRestler"><img src="examples/resources/github.png" width="16" height="16"/> Source</a></li>
+<li><a title="Get updated on Twitter" target="_blank" href="http://twitter.com/Luracast"><img src="examples/resources/twitter.png" width="16" height="16"/> Update</a></li>
+<li><a title="Keep in touch on Facebook" target="_blank" href="https://www.facebook.com/Luracast"><img src="examples/resources/facebook.png" width="16" height="16"/> Connect</a></li>
+</ul>
+</nav>
+<nav id="left">
+        <img src="examples/resources/restler.svg" width="126"
+            height="126" title="Luracast Restler 5" />
+        <h3>
+            <a href="index.html#top">V5 Docs</a>
+        </h3>
+        <ul>
+        <li>Switch to
+            <ul><li><a href="https://restler3.luracast.com" title="Restler 3">Version 3</a></li></ul>
+            <ul><li><a href="https://restler4.luracast.com" title="Restler 4">Version 4</a></li></ul>
+            <ul><li><a href="https://restler5.luracast.com" title="Restler 5">Version 5</a></li></ul>
+        </li>
+        <br/>
+            <li><a href="index.html#features" title="Feature List">Features</a></li>
+            <li><a href="index.html#git-repository-and-the-branches" title="Git Repository and the Branches">Branches</a></li>
+            <li><a href="index.html#test-drive" title="Install">Test Drive</a></li>
+            <li><a href="index.html#quick-start-guide" title="Documentation">Getting Started</a></li>
+            <li><a href="index.html#change-log" title="What has changed?">Change Log</a></li>
+            <li><a href="annotations.html#supported-annotations" title="Supported Annotations">Annotations</a>
+            </li>
+            <li><a href="compose.html#compose" title="Compose">Compose</a>
+            </li>
+            <li><a href="forms.html#forms" title="Forms">Forms</a>
+                <ul><li><a href="forms.html#label" title="Forms - @label">@label</a></li></ul>
+                <ul><li><a href="forms.html#field" title="Forms - @field">@field</a></li></ul>
+                <ul><li><a href="forms.html#message" title="Forms - @message">@message</a></li></ul>
+                <ul><li><a href="forms.html#emmet-templates" title="Forms - Emmet Templates">Emmet Templates</a></li></ul>
+            </li>
+            <li><a href="param.html#param-and--var" title="@param and @var">Param</a>
+            </li>
+            <li><a href="security.html#security-policy" title="Security Policy">Security</a>
+            </li>
+            <li><a href="stages.html#stages" title="Stages">Stages</a>
+            </li>
+
+        </ul>
+    </nav>
+<article>
+
+<p><a id="forms" class="anchor"></a></p>
+<h1>Forms</h1>
+
+<p>Forms class generates html forms from http method and target url.</p>
+
+<p>Following attributes can be used for customizing the generated forms.</p>
+
+<p><a id="label" class="anchor"></a></p>
+<h2>@label</h2>
+
+<p><a id="with--param" class="anchor"></a></p>
+<h3>With @param</h3>
+
+<p><strong>Syntax:</strong></p>
+
+<pre><code>@param type $name [Description] {@label Custom Name}
+</code></pre>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>@param string $name [Description] {@label Customer's Name}
+</code></pre>
+
+<p>Restler automatically creates a label for each param by using camelCasing and underscore in parameter names. For example <code>$firstName</code>, <code>$first_name</code> to <code>First Name</code>. If you want to override and specify a label yourself use the above annotation.</p>
+
+<hr>
+
+<p><a id="with--return" class="anchor"></a></p>
+<h3>With @return</h3>
+
+<p><strong>Syntax:</strong></p>
+
+<pre><code>@return type {@label Custom Name}
+</code></pre>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>@return array {@label Sign In}
+</code></pre>
+
+<p>Restler by default uses <code>Submit</code> as the default text for form submit buttons. You can customize that using the above annotation.</p>
+
+<p><a id="field" class="anchor"></a></p>
+<h2>@field</h2>
+
+<p><strong>Syntax:</strong></p>
+
+<pre><code>@param type $name [Description] {@field InputType}
+</code></pre>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>@param int $age [Description] {@field number} {@min 6} {@max 22}
+</code></pre>
+
+<p>Html field type used for capturing the value. 
+Some possible values are,
+ - input
+ - checkbox (for boolean)
+ - radio (requires @choice)
+ - password
+ - select (requires @choice)
+ - text
+ - hidden</p>
+
+<p>When not specified, it will try to guess the field type</p>
+
+<p><a id="message" class="anchor"></a></p>
+<h2>@message</h2>
+
+<p><strong>Syntax:</strong></p>
+
+<pre><code>@param type $name [Description] {@message text}
+</code></pre>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>@param int $age [Description] {@message age restriction requires age between 6 and 22} {@min 6} {@max 22}
+</code></pre>
+
+<p>Custom error message to display when validation fails.</p>
+
+<p><a id="emmet-templates" class="anchor"></a></p>
+<h2>Emmet Templates</h2>
+
+<p><a id="form---input---textarea---radio---select---submit--and--fieldset" class="anchor"></a></p>
+<h3>@form, @input, @textarea, @radio, @select, @submit, and @fieldset</h3>
+
+<p>Allows you to customize how a form element rendering from the selected form style.
+Use Emmet syntax for that purpose. Take a look at FormStyles.php for an example.</p>
+
+</article id="top">
+<script>hljs.initHighlighting();</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Luracast Restler 5 Compose</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="examples/resources/highlight.css">
+<link rel="stylesheet" type="text/css" href="examples/resources/style.css"/>
+<script src="examples/resources/highlight.pack.js"></script>
+<script type="text/javascript" src="examples/resources/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23777019-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body>
+<nav class="floating-menu">
+<ul>
+<li><a title="Restler Home" target="_blank" href="https://luracast.com/products/restler/"><img src="examples/resources/home.png" width="16" height="16"/> Home</a></li>
+<li><a class="active" title="Getting Started with Restler" href="index.html#luracast-restler"><img src="examples/resources/documentation.png" width="16" height="16"/> Documentation</a></li>
+<li><a href="examples/index.html"><img src="examples/resources/examples.png" width="16" height="16"/> Examples</a></li>
+<li><a title="Share your knowledge by answering user questions in Stack Overflow." target="_blank" href="http://bit.ly/Restler-QA"><img src="examples/resources/stackoverflow.png" width="16" height="16"/> Support</a></li>
+<li><a title="Contribute and Fork Restler on GitHub" target="_blank" href="http://bit.ly/LuracastRestler"><img src="examples/resources/github.png" width="16" height="16"/> Source</a></li>
+<li><a title="Get updated on Twitter" target="_blank" href="http://twitter.com/Luracast"><img src="examples/resources/twitter.png" width="16" height="16"/> Update</a></li>
+<li><a title="Keep in touch on Facebook" target="_blank" href="https://www.facebook.com/Luracast"><img src="examples/resources/facebook.png" width="16" height="16"/> Connect</a></li>
+</ul>
+</nav>
+<nav id="left">
+        <img src="examples/resources/restler.svg" width="126"
+            height="126" title="Luracast Restler 5" />
+        <h3>
+            <a href="index.html#top">V5 Docs</a>
+        </h3>
+        <ul>
+        <li>Switch to
+            <ul><li><a href="https://restler3.luracast.com" title="Restler 3">Version 3</a></li></ul>
+            <ul><li><a href="https://restler4.luracast.com" title="Restler 4">Version 4</a></li></ul>
+            <ul><li><a href="https://restler5.luracast.com" title="Restler 5">Version 5</a></li></ul>
+        </li>
+        <br/>
+            <li><a href="index.html#features" title="Feature List">Features</a></li>
+            <li><a href="index.html#git-repository-and-the-branches" title="Git Repository and the Branches">Branches</a></li>
+            <li><a href="index.html#test-drive" title="Install">Test Drive</a></li>
+            <li><a href="index.html#quick-start-guide" title="Documentation">Getting Started</a></li>
+            <li><a href="index.html#change-log" title="What has changed?">Change Log</a></li>
+            <li><a href="annotations.html#supported-annotations" title="Supported Annotations">Annotations</a>
+            </li>
+            <li><a href="compose.html#compose" title="Compose">Compose</a>
+                <ul><li><a href="compose.html#what-does-it-do" title="Compose - What Does It Do?">What Does It Do?</a></li></ul>
+                <ul><li><a href="compose.html#how-does-it-work" title="Compose - How Does It Work?">How Does It Work?</a></li></ul>
+                <ul><li><a href="compose.html#how-to-customize" title="Compose - How To Customize">How To Customize</a></li></ul>
+                <ul><li><a href="compose.html#taking-full-control" title="Compose - Taking Full Control">Taking Full Control</a></li></ul>
+            </li>
+            <li><a href="forms.html#forms" title="Forms">Forms</a>
+            </li>
+            <li><a href="param.html#param-and--var" title="@param and @var">Param</a>
+            </li>
+            <li><a href="security.html#security-policy" title="Security Policy">Security</a>
+            </li>
+            <li><a href="stages.html#stages" title="Stages">Stages</a>
+            </li>
+
+        </ul>
+    </nav>
+<article>
+
+<p><a id="compose" class="anchor"></a></p>
+<h1>Compose</h1>
+
+<p><a id="what-does-it-do" class="anchor"></a></p>
+<h2>What does it do?</h2>
+
+<p><code>iCompose</code> interface is the answer to the following questions:</p>
+
+<ul>
+<li>What should restler return for an api call?</li>
+<li>Exactly what a particular api method returns or wrap it in some default properties?</li>
+<li>How should we convert an exception thrown into a clean error response?</li>
+<li>Should we include the debug information along with the error response? how much and how?</li>
+</ul>
+
+<p><a id="how-does-it-work" class="anchor"></a></p>
+<h2>How does it work?</h2>
+
+<p>An implementation of iCompose interface is used to compose both success and error responses with two different methods:</p>
+
+<ul>
+<li>response method gets the return value of the api method, which can be returned directly or wrapped in a standard
+structure</li>
+<li>exception thrown is sent to the message method, which can format the exception into a error response</li>
+</ul>
+
+<pre><code class="php">namespace Luracast\Restler;
+
+interface iCompose {
+    /**
+     * @param mixed $result can be a primitive or array or object
+     */
+    public function response($result);
+
+    public function message(RestException $exception);
+}
+</code></pre>
+
+<p><a id="how-to-customize" class="anchor"></a></p>
+<h2>How to customize</h2>
+
+<p>There is a default implementation of this interface named <code>Compose</code> returns the success response as such, it formats the
+error message as follows</p>
+
+<p>if your exception is as follows</p>
+
+<pre><code class="php">throw new RestException(
+  400, 
+  'invalid user', 
+  ['error_code' =&gt; 12002]
+);
+</code></pre>
+
+<p>The error response in production mode is</p>
+
+<pre><code class="json">{
+  "error": {
+    "code": 400,
+    "message": "Bad Request: invalid user",
+    "error_code": 12002
+  }
+}
+</code></pre>
+
+<p><em>Note:-</em> the third parameter of RestException is an array of properties which is appended to the response</p>
+
+<p>Additional debug information is returned when restler is running in debug mode. It can be turned off by
+using <code>Compose::$includeDebugInfo=false;</code> otherwise the response will be</p>
+
+<pre><code class="php">{
+  "error": {
+    "code": 400,
+    "message": "Bad Request: invalid user",
+    "error_code": 12002
+  },
+  "debug": {
+    "source": "VerifyUser.php:115 at validate stage",
+    "stages": {
+      "success": [
+        "get",
+        "route",
+        "negotiate",
+        "validate"
+      ],
+      "failure": [
+        "call",
+        "message"
+      ]
+    }
+  }
+}
+</code></pre>
+
+<p><a id="taking-full-control" class="anchor"></a></p>
+<h2>Taking full control</h2>
+
+<p>You can replace the default iCompose implementation with the following configuration</p>
+
+<pre><code class="php">Luracast\Restler\Defaults::$composeClass = 'MyOwnCompose';
+</code></pre>
+
+<p>Take a look at the <code>Luracast\Restler\Compose</code> class. Ideally just copy and paste the code from that
+and make your changes.</p>
+
+<p>For example, your response method could be the following to provide a success property and data property.</p>
+
+<pre><code class="php">class MyOwnCompose {
+    public function response($result)
+    {
+        return ['success' =&gt; true, 'data' =&gt; $result];
+    }
+    //...
+}
+</code></pre>
+
+</article id="top">
+<script>hljs.initHighlighting();</script>
+</body>
+</html>

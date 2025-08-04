@@ -1,0 +1,88 @@
+{
+    "name":"luracast/restler",
+    "description":"Restler is a simple and effective multi-format Web API Server framework written in PHP. Just deal with your business logic in php, Restler will take care of the REST!",
+    "type":"library",
+    "keywords":["server","api","framework","REST"],
+    "homepage":"https://luracast.com/products/restler/",
+    "license":"LGPL-2.1-or-later",
+    "authors":[
+        {
+            "name":"Luracast",
+            "email":"arul@luracast.com"
+        }
+    ],
+    "suggest":{
+        "guzzlehttp/guzzle":"RESTful api HTTP client framework (see require-dev for details)",
+        "behat/behat":"Behaviour driven development testing framework (see require-dev for details)",
+        "rodneyrehm/plist":"If you need Apple plist binary/xml format",
+        "zendframework/zendamf":"If you need AMF format",
+        "symfony/yaml":"If you need YAML format",
+        "twig/twig":"If you want to use twig templates with Html format",
+        "mustache/mustache":"If you want to use mustache/handlebar templates with Html format",
+        "illuminate/view":"If you want to use laravel blade templates with Html format",
+        "bshaffer/oauth2-server-php":"If you want to use OAuth2 for authentication"
+    },
+    "require":{
+        "php": ">=5.4",
+        "ext-json": "*"
+    },
+    "require-dev":{
+        "ext-libxml": "*",
+        "guzzlehttp/guzzle":"~7",
+        "bshaffer/oauth2-server-php":"dev-master",
+        "behat/behat": "^3.10@dev",
+        "rize/uri-template": "dev-master",
+        "illuminate/view": "^8 || ^7",
+        "twig/twig": "^3",
+        "mustache/mustache": "dev-main"
+    },
+    "repositories":[
+        {
+            "type":"vcs",
+            "url":"https://github.com/zendframework/ZendAmf.git"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "Luracast\\Restler\\":"src/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "public/examples/common",
+            "public/examples/_001_helloworld",
+            "public/examples/_002_minimal",
+            "public/examples/_003_multiformat",
+            "public/examples/_004_error_response",
+            "public/examples/_005_protected_api",
+            "public/examples/_006_routing",
+            "public/examples/_007_crud",
+            "public/examples/_008_documentation",
+            "public/examples/_009_rate_limiting",
+            "public/examples/_010_access_control",
+            "public/examples/_011_versioning",
+            "public/examples/_012_vendor_mime",
+            "public/examples/_013_html",
+            "public/examples/_014_oauth2_client",
+            "public/examples/_015_oauth2_server",
+            "public/examples/_016_forms",
+            "public/tests/param",
+            "public/tests/request_data"
+        ]
+    },
+    "config": {
+        "process-timeout": 0
+    },
+    "minimum-stability": "dev",
+    "conflict": {
+        "restler/framework":"3.*"
+    },
+    "scripts": {
+        "test": "@php behat --stop-on-failure --profile=default --colors",
+        "serve": "@php -S localhost:8080 -t public server.php"
+    },
+    "scripts-descriptions": {
+        "test": "Runs behat tests",
+        "serve": "Starts php built-in web server"
+    }
+}

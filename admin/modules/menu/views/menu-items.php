@@ -6,7 +6,7 @@ require_once '../includes/functions.php';
 
 // Check if user is logged in and has permission
 if (!isset($_SESSION['user_id']) || !has_permission($_SESSION['user_id'], 'menu_items', 'view')) {
-    header('Location: login.php');
+    redirect('/admin/login');
     exit;
 }
 

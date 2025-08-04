@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Luracast Restler 5 Stages</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="examples/resources/highlight.css">
+<link rel="stylesheet" type="text/css" href="examples/resources/style.css"/>
+<script src="examples/resources/highlight.pack.js"></script>
+<script type="text/javascript" src="examples/resources/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23777019-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body>
+<nav class="floating-menu">
+<ul>
+<li><a title="Restler Home" target="_blank" href="https://luracast.com/products/restler/"><img src="examples/resources/home.png" width="16" height="16"/> Home</a></li>
+<li><a class="active" title="Getting Started with Restler" href="index.html#luracast-restler"><img src="examples/resources/documentation.png" width="16" height="16"/> Documentation</a></li>
+<li><a href="examples/index.html"><img src="examples/resources/examples.png" width="16" height="16"/> Examples</a></li>
+<li><a title="Share your knowledge by answering user questions in Stack Overflow." target="_blank" href="http://bit.ly/Restler-QA"><img src="examples/resources/stackoverflow.png" width="16" height="16"/> Support</a></li>
+<li><a title="Contribute and Fork Restler on GitHub" target="_blank" href="http://bit.ly/LuracastRestler"><img src="examples/resources/github.png" width="16" height="16"/> Source</a></li>
+<li><a title="Get updated on Twitter" target="_blank" href="http://twitter.com/Luracast"><img src="examples/resources/twitter.png" width="16" height="16"/> Update</a></li>
+<li><a title="Keep in touch on Facebook" target="_blank" href="https://www.facebook.com/Luracast"><img src="examples/resources/facebook.png" width="16" height="16"/> Connect</a></li>
+</ul>
+</nav>
+<nav id="left">
+        <img src="examples/resources/restler.svg" width="126"
+            height="126" title="Luracast Restler 5" />
+        <h3>
+            <a href="index.html#top">V5 Docs</a>
+        </h3>
+        <ul>
+        <li>Switch to
+            <ul><li><a href="https://restler3.luracast.com" title="Restler 3">Version 3</a></li></ul>
+            <ul><li><a href="https://restler4.luracast.com" title="Restler 4">Version 4</a></li></ul>
+            <ul><li><a href="https://restler5.luracast.com" title="Restler 5">Version 5</a></li></ul>
+        </li>
+        <br/>
+            <li><a href="index.html#features" title="Feature List">Features</a></li>
+            <li><a href="index.html#git-repository-and-the-branches" title="Git Repository and the Branches">Branches</a></li>
+            <li><a href="index.html#test-drive" title="Install">Test Drive</a></li>
+            <li><a href="index.html#quick-start-guide" title="Documentation">Getting Started</a></li>
+            <li><a href="index.html#change-log" title="What has changed?">Change Log</a></li>
+            <li><a href="annotations.html#supported-annotations" title="Supported Annotations">Annotations</a>
+            </li>
+            <li><a href="compose.html#compose" title="Compose">Compose</a>
+            </li>
+            <li><a href="forms.html#forms" title="Forms">Forms</a>
+            </li>
+            <li><a href="param.html#param-and--var" title="@param and @var">Param</a>
+            </li>
+            <li><a href="security.html#security-policy" title="Security Policy">Security</a>
+            </li>
+            <li><a href="stages.html#stages" title="Stages">Stages</a>
+            </li>
+
+        </ul>
+    </nav>
+<article>
+
+<p><a id="stages" class="anchor"></a></p>
+<h1>Stages</h1>
+
+<p><a id="stages-of-handling-a-request-in-restler" class="anchor"></a></p>
+<h3>Stages of handling a request in restler</h3>
+
+<p>When restler receives a request it handles it in the following stages:</p>
+
+<ol>
+<li>
+<strong>get</strong>: Restler identifies request method, url, data and format</li>
+<li>
+<strong>route</strong>: Finding out a matching route for the request</li>
+<li>
+<strong>negotiate</strong> Applies content negotiation as requested by the api client.</li>
+<li>
+<strong>preAuthFilter</strong>: If there is a filer applicable to the route before authentication it is applied.</li>
+<li>
+<strong>Authenticate</strong>: If the selected route requires authentication it is applied.</li>
+<li>
+<strong>postAuthFilter</strong>: If there is a filer applicable to the route after successful authentication it is applied.</li>
+<li>
+<strong>validate</strong>: Applies validation for each and every parameter as defined through the phpdoc comments.</li>
+<li>
+<strong>call</strong>: Finally calls the php method with the validated parameters.</li>
+<li>
+<strong>message</strong>: Return value of the above call sent as the response in the selected format.</li>
+</ol>
+
+<p>A successful request goes through all the above stages. Whereas a failed request runs until the stage of the failure
+and then returns a composed failure message taking the fail fast approach for improved performance.</p>
+
+<p>We can subscribe to any of the following events to listen to them.</p>
+
+<table>
+<thead>
+<tr>
+  <th>method</th>
+  <th>signature</th>
+  <th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>onGet</td>
+  <td>onGet(Callable $function)</td>
+  <td>fired before reading the request details</td>
+</tr>
+<tr>
+  <td>onRoute</td>
+  <td>onRoute(Callable $function)</td>
+  <td>fired before finding the api method</td>
+</tr>
+<tr>
+  <td>onNegotiate</td>
+  <td>onNegotiate(Callable $function)</td>
+  <td>fired before content negotiation</td>
+</tr>
+<tr>
+  <td>onPreAuthFilter</td>
+  <td>onPreAuthFilter(Callable $function)</td>
+  <td>fired before pre auth filtering</td>
+</tr>
+<tr>
+  <td>onAuthenticate</td>
+  <td>onAuthenticate(Callable $function)</td>
+  <td>fired before auth</td>
+</tr>
+<tr>
+  <td>onPostAuthFilter</td>
+  <td>onPostAuthFilter(Callable $function)</td>
+  <td>fired before post auth filtering onValidate()</td>
+</tr>
+<tr>
+  <td>onValidate</td>
+  <td>onValidate(Callable $function)</td>
+  <td>fired before validation</td>
+</tr>
+<tr>
+  <td>onCall</td>
+  <td>onCall(Callable $function)</td>
+  <td>fired before api method call</td>
+</tr>
+<tr>
+  <td>onCompose</td>
+  <td>onCompose(Callable $function)</td>
+  <td>fired before composing response</td>
+</tr>
+<tr>
+  <td>onRespond</td>
+  <td>onRespond(Callable $function)</td>
+  <td>fired before sending response</td>
+</tr>
+<tr>
+  <td>onComplete</td>
+  <td>onComplete(Callable $function)</td>
+  <td>fired after sending response</td>
+</tr>
+<tr>
+  <td>onMessage</td>
+  <td>onMessage(Callable $function)</td>
+  <td>fired before composing error response</td>
+</tr>
+</tbody>
+</table>
+
+<p>These methods are available both statically and dynamically at runtime. so both the following examples are valid.</p>
+
+<p><a id="usage-examples" class="anchor"></a></p>
+<h3>Usage Examples:</h3>
+
+<p><a id="1--logging-successful-api-responses" class="anchor"></a></p>
+<h4>1. Logging successful api responses</h4>
+
+<p>We can use <code>onComplete</code> method for logging.</p>
+
+<pre><code class="php">require_once '../vendor/autoload.php';
+
+use Luracast\Restler\Restler;
+use Luracast\Restler\User;
+
+$r = new Restler();
+
+$r-&gt;onComplete(function () use ($r) {
+    $log = array(
+        'api'     =&gt;json_encode($r-&gt;apiMethodInfo-&gt;parameters),
+        'ip'      =&gt; User::getIpAddress(),
+        'route'   =&gt; $r-&gt;apiMethodInfo-&gt;className.'::'.$r-&gt;apiMethodInfo-&gt;methodName,
+        'method'  =&gt; $r-&gt;requestMethod,
+        'parameters' =&gt; json_encode($r-&gt;apiMethodInfo-&gt;parameters)
+    );
+    print_r($log); //your logging function here!
+});
+
+$r-&gt;addAPIClass('Say');
+$r-&gt;handle();
+</code></pre>
+
+<p><a id="2--lazily-setting-form-style" class="anchor"></a></p>
+<h4>2. Lazily setting form style.</h4>
+
+<pre><code class="php">require_once '../vendor/autoload.php';
+
+use Luracast\Restler\Restler;
+use Luracast\Restler\UI\Forms;
+use Luracast\Restler\UI\Foundation5Form;
+
+//no dependency on restler instance so it can be called statically
+Restler::onCall(function () { 
+    Forms::setStyles(new Foundation5Form());
+});
+
+$r = new Restler();
+$r-&gt;addAPIClass('Something');
+$r-&gt;handle();
+</code></pre>
+
+</article id="top">
+<script>hljs.initHighlighting();</script>
+</body>
+</html>

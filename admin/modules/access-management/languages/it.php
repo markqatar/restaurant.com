@@ -56,7 +56,7 @@ return [
         'delete_user' => 'Elimina Utente',
         'confirm_reset_password' => 'Sei sicuro di voler reimpostare la password di questo utente?',
         'confirm_delete' => 'Sei sicuro di voler eliminare questo utente?',
-        'confirm_delete_text' => 'L\'eliminazione di un utente è permanente e non può essere annullata.',
+        'confirm_delete_text' => 'Eliminazione di un utente è permanente e non può essere annullata.',
         'password_note' => 'Lascia i campi password vuoti per mantenere la password attuale.',
         'username' => 'Nome Utente',
         'full_name' => 'Nome Completo',

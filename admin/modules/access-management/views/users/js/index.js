@@ -1,16 +1,16 @@
-function deleteUser(userId, titleText, confirmText, yesText, cancelText) {
+function deleteUser(userId) {
     Swal.fire({
-        title: titleText,
-        text: confirmText,
+        title: USERS_VARS.translations.confirmTitle,
+        text: USERS_VARS.translations.confirmText,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: yesText,
-        cancelButtonText: cancelText
+        confirmButtonText: USERS_VARS.translations.yesDelete,
+        cancelButtonText: USERS_VARS.translations.cancel
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.reload;
+            window.location.href = `${USERS_VARS.deleteUrl}`+userId;
         }
     });
 }

@@ -1,12 +1,7 @@
 <?php
-session_start();
-require_once '../config/database.php';
-require_once '../controllers/ArticleController.php';
-require_once '../includes/functions.php';
-
 // Check if user is logged in and has permission
 if (!isset($_SESSION['user_id']) || !has_permission($_SESSION['user_id'], 'articles', 'create')) {
-    header('Location: login.php');
+    header('Location: /admin/login');
     exit;
 }
 

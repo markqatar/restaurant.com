@@ -185,11 +185,6 @@ class BranchesController
         }
 
         $branch = $this->branch_model->readOne($id);
-        if (!$branch) {
-            send_notification('Filiale non trovata', 'danger');
-            redirect(get_setting('site_url', 'http://localhost') . '/admin/branches');
-        }
-
         $branch_users = $this->branch_model->getBranchUsers($id);
         $all_users = $this->getAllUsers();
 
@@ -246,22 +241,6 @@ class BranchesController
             } catch (Exception $e) {
                 echo json_encode(['success' => false, 'message' => $e->getMessage()]);
             }
-        }
-        exit;
-    }
-
-    // AJAX: Get cities by state
-    public function getCities()
-    {
-        $state_id = $_GET['state_id'] ?? null;
-        $keyword = $_GET['q'] ?? '';
-
-        if ($state_id) {
-            $cities = $this->branch_model->getCitiesByCountry($state_id, $keyword);
-            header('Content-Type: application/json');
-            echo json_encode($cities);
-        } else {
-            echo json_encode([]);
         }
         exit;
     }

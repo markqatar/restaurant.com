@@ -1,0 +1,81 @@
+{
+    "packages": [
+        {
+            "name": "luracast/restler",
+            "version": "5.0.13",
+            "version_normalized": "5.0.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Luracast/Restler.git",
+                "reference": "069b5c55ef5153ce628d9382604ded570d6bac48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Luracast/Restler/zipball/069b5c55ef5153ce628d9382604ded570d6bac48",
+                "reference": "069b5c55ef5153ce628d9382604ded570d6bac48",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.4"
+            },
+            "conflict": {
+                "restler/framework": "3.*"
+            },
+            "require-dev": {
+                "behat/behat": "^3.10@dev",
+                "bshaffer/oauth2-server-php": "dev-master",
+                "ext-libxml": "*",
+                "guzzlehttp/guzzle": "~7",
+                "illuminate/view": "^8 || ^7",
+                "mustache/mustache": "dev-main",
+                "rize/uri-template": "dev-master",
+                "twig/twig": "^3"
+            },
+            "suggest": {
+                "behat/behat": "Behaviour driven development testing framework (see require-dev for details)",
+                "bshaffer/oauth2-server-php": "If you want to use OAuth2 for authentication",
+                "guzzlehttp/guzzle": "RESTful api HTTP client framework (see require-dev for details)",
+                "illuminate/view": "If you want to use laravel blade templates with Html format",
+                "mustache/mustache": "If you want to use mustache/handlebar templates with Html format",
+                "rodneyrehm/plist": "If you need Apple plist binary/xml format",
+                "symfony/yaml": "If you need YAML format",
+                "twig/twig": "If you want to use twig templates with Html format",
+                "zendframework/zendamf": "If you need AMF format"
+            },
+            "time": "2023-11-30T08:06:08+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Luracast\\Restler\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Luracast",
+                    "email": "arul@luracast.com"
+                }
+            ],
+            "description": "Restler is a simple and effective multi-format Web API Server framework written in PHP. Just deal with your business logic in php, Restler will take care of the REST!",
+            "homepage": "https://luracast.com/products/restler/",
+            "keywords": [
+                "api",
+                "framework",
+                "rest",
+                "server"
+            ],
+            "support": {
+                "issues": "https://github.com/Luracast/Restler/issues",
+                "source": "https://github.com/Luracast/Restler/tree/5.0.13"
+            },
+            "install-path": "../luracast/restler"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

@@ -125,12 +125,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                     <?php endif; ?>
 
                                     <?php if (has_permission($_SESSION['user_id'], 'users', 'delete') && $user['id'] != $_SESSION['user_id']): ?>
-                                        <button onclick="deleteUser(<?php echo $user['id']; ?>,
-                                        '<?php echo addslashes(TranslationManager::t('user.confirm_delete')); ?>',
-                                        '<?php echo addslashes(TranslationManager::t('user.confirm_delete_text')); ?>',
-                                        '<?php echo addslashes(TranslationManager::t('yes_delete')); ?>',
-                                        '<?php echo addslashes(TranslationManager::t('cancel')); ?>'
-                                        )"
+                                        <button onclick="deleteUser(<?php echo $user['id']; ?>)"
                                             class="btn btn-sm btn-outline-danger" title="<?php echo TranslationManager::t('delete'); ?>">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -144,6 +139,19 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         </div>
     </div>
 </div>
+
+<script>
+    const USERS_VARS = {
+        deleteUrl: '<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/users/delete/'; ?>',
+        translations: {
+            confirmTitle: '<?php echo TranslationManager::t("user.confirm_delete"); ?>',
+            confirmText: '<?php echo TranslationManager::t("user.confirm_delete_text"); ?>',
+            yesDelete: '<?php echo TranslationManager::t("yes_delete"); ?>',
+            cancel: '<?php echo TranslationManager::t("cancel"); ?>'
+        }
+    };
+</script>
+
 <?php
 $pageScripts = [
     get_setting('site_url', 'http://localhost') . '/admin/modules/access-management/views/users/js/index.js',

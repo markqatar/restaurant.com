@@ -14,7 +14,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Check if user is logged in (you may want to add this)
 // if (!is_logged_in()) {
-//     redirect('login.php');
+//         redirect('/admin/login');
+
 // }
 
 // Function to get CSRF token (if not defined in functions.php)

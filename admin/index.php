@@ -6,7 +6,7 @@ require_once __DIR__ . '/../includes/session.php';
 
 // Check if user is logged in
 if (!is_logged_in()) {
-    redirect('login.php');
+    redirect('/admin/login');
 }
 
 $page_title = "Dashboard - Restaurant Management";

@@ -1,19 +1,15 @@
 <?php require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php'; ?>
 
-<!-- Select2 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
-
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">
             <i class="fas fa-edit"></i> Modifica Filiale
         </h1>
         <div>
-            <a href="branches/manage-users/<?php echo $branch['id']; ?>" class="btn btn-info btn-sm">
+            <a href="<?php echo get_setting('site_url') ?>/admin/shop/branches/manageusers/<?php echo $branch['id']; ?>" class="btn btn-info btn-sm">
                 <i class="fas fa-users"></i> Gestisci Utenti
             </a>
-            <a href="branches" class="btn btn-secondary btn-sm">
+            <a href="<?php echo get_setting('site_url') ?>/admin/shop/branches" class="btn btn-secondary btn-sm">
                 <i class="fas fa-arrow-left"></i> Torna all'Elenco
             </a>
         </div>
@@ -164,9 +160,6 @@
     </div>
 </div>
 
-<!-- Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <script>
 $(document).ready(function() {
     // Initialize Select2
@@ -178,47 +171,45 @@ $(document).ready(function() {
     });
     
     // State change handler
-    $('#state_id').change(function() {
+    $('#state_id').change(function () {
         const stateId = $(this).val();
         const citySelect = $('#city_id');
-        
+
+        citySelect.empty().append('<option value="">Caricamento città...</option>').prop('disabled', true);
+
         if (stateId) {
             // Initialize city select with search
             citySelect.select2('destroy');
-            citySelect.select2({
-                theme: 'bootstrap-5',
-                placeholder: 'Cerca e seleziona città...',
+            $('#city_id').select2({
                 ajax: {
-                    url: 'branches/get-cities',
+                    url: '/admin/system/cities/select2',
                     dataType: 'json',
                     delay: 250,
-                    data: function(params) {
+                    data: function (params) {
                         return {
-                            state_id: stateId,
-                            q: params.term || ''
+                            q: params.term,
+                            page: params.page || 1,
+                            country_id: $('#country_id').val() // ID della country selezionata
                         };
                     },
-                    processResults: function(data) {
+                    processResults: function (data) {
                         return {
-                            results: data.map(function(city) {
-                                return {
-                                    id: city.id,
-                                    text: city.name
-                                };
-                            })
+                            results: data.results,
+                            pagination: data.pagination
                         };
-                    },
-                    cache: true
+                    }
                 },
-                minimumInputLength: 0
+                placeholder: 'Seleziona una città',
+                minimumInputLength: 1
             });
-            
+
             citySelect.prop('disabled', false);
         } else {
             citySelect.empty().append('<option value="">Prima seleziona lo stato</option>');
             citySelect.prop('disabled', true);
         }
     });
+
     
     // Initialize cities if state is already selected
     if ($('#state_id').val() && !$('#city_id').val()) {

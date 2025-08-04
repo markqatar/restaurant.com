@@ -225,7 +225,7 @@ $current_theme = $_SESSION['theme'] ?? 'light';
                     </li>
                     <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="auth/login.php">
+                        <a class="nav-link" href="admin/login">
                             <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
                     </li>

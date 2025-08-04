@@ -124,27 +124,7 @@ class Branch {
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    // Get cities by country with search
-    public function getCitiesByCountry($country_id, $keyword = '') {
-        $query = "SELECT id, name FROM cities 
-                  WHERE country_id = :country_id";
         
-        $params = [':country_id' => $country_id];
-        
-        if (!empty($keyword)) {
-            $query .= " AND name LIKE :keyword";
-            $params[':keyword'] = '%' . $keyword . '%';
-        }
-        
-        $query .= " ORDER BY name LIMIT 100";
-        
-        $stmt = $this->db->prepare($query);
-        $stmt->execute($params);
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
     // Assign user to branch
     public function assignUser($user_id, $branch_id, $is_primary = false) {
         // If setting as primary, remove primary from other assignments for this user

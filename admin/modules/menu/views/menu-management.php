@@ -4,7 +4,7 @@ require_once __DIR__ . '/../controllers/AdminMenuController.php';
 
 // Check if user is logged in
 if (!is_logged_in()) {
-    redirect('login.php');
+    redirect('/admin/login');
 }
 
 $controller = new AdminMenuController();

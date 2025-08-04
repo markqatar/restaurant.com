@@ -27,6 +27,26 @@ $path_parts = explode('/', trim($request_uri, '/'));
 // error_log("Request URI: " . $request_uri);
 // error_log("Path parts: " . print_r($path_parts, true));
 
+// Handle API routes
+if (!empty($path_parts[0]) && $path_parts[0] === 'api') {
+    // Carica il front controller delle API
+    require_once __DIR__ . '/api/index.php';
+    exit;
+}
+
+// ✅ Caso speciale: login
+if (count($path_parts) === 2 && $path_parts[1] === 'login') {
+    require_once __DIR__ . '/admin/login.php';
+    exit;
+}
+
+// ✅ Caso speciale: logout
+if (count($path_parts) === 2 && $path_parts[1] === 'logout') {
+    session_destroy();
+    redirect(get_setting('site_url') . '/admin/login');
+    exit;
+}
+
 // Handle admin routes
 if (!empty($path_parts[0]) && $path_parts[0] === 'admin') {
 

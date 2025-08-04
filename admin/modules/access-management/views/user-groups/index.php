@@ -113,8 +113,8 @@ if (session_status() === PHP_SESSION_NONE) {
     const USER_GROUPS_VARS = {
         deleteUrl: '<?php echo get_setting('site_url', 'http://localhost') . '/admin/access-management/userGroups/delete/'; ?>',
         translations: {
-            confirmTitle: '<?php echo TranslationManager::t("user.confirm_delete"); ?>',
-            confirmText: '<?php echo TranslationManager::t("user.confirm_delete_text"); ?>',
+            confirmTitle: '<?php echo TranslationManager::t("user_groups.confirm_delete"); ?>',
+            confirmText: '<?php echo TranslationManager::t("user_groups.confirm_delete_text"); ?>',
             yesDelete: '<?php echo TranslationManager::t("yes_delete"); ?>',
             cancel: '<?php echo TranslationManager::t("cancel"); ?>'
         }
