@@ -15,9 +15,26 @@ class SystemLogsController
         $start = $_POST['start'] ?? 0;
         $length = $_POST['length'] ?? 10;
         $search = $_POST['search']['value'] ?? '';
+        // Parametri ordinamento
+        $orderColumnIndex = $_POST['order'][0]['column'] ?? 0;
+        $orderDir = $_POST['order'][0]['dir'] ?? 'asc';
+
+        // Colonne disponibili
+        $columns = [
+            'id',
+            'username',
+            'module',
+            'table_name',
+            'action',
+            'record_id',
+            'created_at'
+        ];
+
+        // Assicurati che l'indice sia valido
+        $orderColumn = $columns[$orderColumnIndex] ?? 'created_at';
 
         $model = new ActivityLog();
-        $logs = $model->getLogs($start, $length, $search);
+        $logs = $model->getLogs($start, $length, $search, $orderColumn, $orderDir);
         $total = $model->countLogs($search);
 
         echo json_encode([

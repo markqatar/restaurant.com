@@ -253,4 +253,14 @@ class SuppliersController
 
         return $errors;
     }
+
+    public function select()
+    {
+        $search = $_POST['search'] ?? '';
+        $sql = "SELECT id, name FROM suppliers WHERE name LIKE :search ORDER BY name ASC LIMIT 20";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':search' => "%$search%"]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($data);
+    }
 }

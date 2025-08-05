@@ -1,5 +1,8 @@
 {
     "require": {
-        "luracast/restler": "^5.0"
+        "luracast/restler": "^5.0",
+        "dompdf/dompdf": "^3.1",
+        "phpmailer/phpmailer": "^6.10",
+        "picqer/php-barcode-generator": "^3.2"
     }
 }
