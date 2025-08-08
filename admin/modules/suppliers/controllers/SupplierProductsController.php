@@ -68,11 +68,8 @@ class SupplierProductsController
 
     public function select()
     {
-        // opzionale ma consigliato se stai già inviando il token nel JS
-
         $supplier_id = (int)($_POST['supplier_id'] ?? 0);
         $search      = trim($_POST['search'] ?? '');
-
         if ($supplier_id <= 0) {
             echo json_encode([]);
             return;

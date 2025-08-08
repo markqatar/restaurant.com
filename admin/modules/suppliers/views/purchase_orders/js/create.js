@@ -44,8 +44,8 @@ $(document).ready(function () {
                 type: 'POST',
                 dataType: 'json',
                 delay: 250,
-                data: params => ({ search: params.term, csrf_token: csrfToken }),
-                processResults: data => ({ results: data.map(p => ({ id: p.id, text: p.name })) })
+                data: params => ({ search: params.term, csrf_token: csrfToken, supplier_id: $('#supplier_id').val() }),
+                processResults: data => ({ results: data.map(p => ({ id: p.id, text: p.text })) })
             },
             placeholder: 'Seleziona Prodotto'
         });
