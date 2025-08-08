@@ -2,30 +2,30 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between">
-        <h5>Dettaglio Ordine #<?php echo $order['id']; ?></h5>
+        <h5><?php echo TranslationManager::t('purchase_order.detail_title'); ?> #<?php echo $order['id']; ?></h5>
         <a href="<?php echo get_setting('site_url'); ?>/admin/suppliers/purchaseorders" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Torna alla lista
+            <i class="fas fa-arrow-left"></i> <?php echo TranslationManager::t('purchase_order.back_to_list'); ?>
         </a>
     </div>
 
     <div class="card-body">
         <div class="mb-3">
-            <strong>Fornitore:</strong> <?php echo htmlspecialchars($order['supplier_name']); ?><br>
-            <strong>Stato:</strong>
+            <strong><?php echo TranslationManager::t('purchase_order.field.supplier'); ?>:</strong> <?php echo htmlspecialchars($order['supplier_name']); ?><br>
+            <strong><?php echo TranslationManager::t('purchase_order.field.status'); ?>:</strong>
             <span class="badge bg-<?php echo $order['status'] == 'draft' ? 'secondary' : ($order['status'] == 'sent' ? 'info' : 'success'); ?>">
-                <?php echo ucfirst($order['status']); ?>
+                <?php echo TranslationManager::t('purchase_order.status.' . $order['status']); ?>
             </span>
         </div>
 
         <hr>
 
-        <h6>Prodotti Ordinati</h6>
+    <h6><?php echo TranslationManager::t('purchase_order.ordered_products_title'); ?></h6>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Prodotto</th>
-                    <th>Quantità</th>
-                    <th>Unità</th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.product'); ?></th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.quantity'); ?></th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.unit'); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -45,19 +45,19 @@
             <div>
                 <?php if ($order['pdf_path']): ?>
                     <a href="<?php echo $order['pdf_path']; ?>" target="_blank" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-file-pdf"></i> Scarica PDF
+                        <i class="fas fa-file-pdf"></i> <?php echo TranslationManager::t('purchase_order.btn.download_pdf'); ?>
                     </a>
                 <?php endif; ?>
             </div>
             <div>
                 <?php if ($order['status'] == 'draft'): ?>
                     <button id="btnSendOrder" class="btn btn-info btn-sm">
-                        <i class="fas fa-paper-plane"></i> Invia Ordine
+                        <i class="fas fa-paper-plane"></i> <?php echo TranslationManager::t('purchase_order.btn.send_order'); ?>
                     </button>
                 <?php endif; ?>
                 <?php if ($order['status'] == 'sent'): ?>
                     <button id="btnReceiveOrder" class="btn btn-success btn-sm">
-                        <i class="fas fa-check"></i> Segna come Ricevuto
+                        <i class="fas fa-check"></i> <?php echo TranslationManager::t('purchase_order.btn.mark_as_received'); ?>
                     </button>
                 <?php endif; ?>
             </div>

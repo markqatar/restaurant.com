@@ -228,4 +228,63 @@ return [
     'confirm_delete' => 'Conferma Eliminazione',
     'yes_delete' => 'Sì, Elimina',
 
+    // ===========================
+    // Ordini d'Acquisto (Nuovo)
+    // ===========================
+    'purchase_order' => [
+        'list_title' => 'Ordini d\'Acquisto',
+        'create_title' => "Crea Nuovo Ordine d'Acquisto",
+        'detail_title' => 'Dettaglio Ordine',
+        'receive_title' => 'Ricevi Ordine',
+        'back_to_list' => 'Torna alla lista',
+        'add_products' => 'Aggiungi Prodotti',
+        'ordered_products_title' => 'Prodotti Ordinati',
+        'field' => [
+            'id' => 'ID',
+            'supplier' => 'Fornitore',
+            'status' => 'Stato',
+            'total' => 'Totale',
+            'date' => 'Data',
+            'actions' => 'Azioni',
+            'product' => 'Prodotto',
+            'quantity' => 'Quantità',
+            'unit' => 'Unità',
+            'sku' => 'SKU',
+            'ordered_qty' => 'Qta Ord.',
+            'price' => 'Prezzo',
+            'discount' => 'Sconto',
+            'expiry' => 'Scadenza',
+            'received_qty' => 'Qta Ricevuta',
+            'barcode' => 'Barcode',
+            'notes' => 'Note',
+        ],
+        'btn' => [
+            'add_row' => 'Aggiungi Riga',
+            'save_draft' => 'Salva Bozza',
+            'new_order' => 'Nuovo Ordine',
+            'confirm_receive' => 'Conferma ricezione',
+            'download_pdf' => 'Scarica PDF',
+            'send_order' => 'Invia Ordine',
+            'mark_as_received' => 'Segna come Ricevuto',
+        ],
+        'placeholder' => [
+            'price_per_unit' => '€/pz',
+            'discount' => 'sconto',
+        ],
+        'status' => [
+            'draft' => 'Bozza',
+            'sent' => 'Inviato',
+            'received' => 'Ricevuto',
+        ],
+        'msg' => [
+            'add_at_least_one_product' => 'Aggiungi almeno un prodotto',
+            'created_successfully' => 'Ordine creato con successo',
+            'not_found' => 'Ordine non trovato',
+            'sent_successfully' => 'Ordine inviato con successo',
+            'invalid_token' => 'Token non valido',
+            'received_successfully' => 'Ordine ricevuto con successo',
+            'not_receivable' => 'L\'ordine non è in uno stato ricevibile',
+        ],
+    ],
+
 ];

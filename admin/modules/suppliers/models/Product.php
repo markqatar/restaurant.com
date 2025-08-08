@@ -9,6 +9,31 @@ class Product
         $this->db = Database::getInstance()->getConnection();
     }
 
+        public function searchBySupplier(int $supplier_id, string $term = ''): array {
+        $sql = "
+            SELECT DISTINCT p.id, p.name
+            FROM products p
+            JOIN supplier_products sp ON sp.product_id = p.id AND sp.supplier_id = :supplier_id
+            WHERE (:term = '' OR p.name LIKE :like)
+            ORDER BY p.name LIMIT 50
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':supplier_id' => $supplier_id,
+            ':term'        => $term,
+            ':like'        => "%{$term}%"
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Opzionale: per mostrare anche prodotti NON ancora associati a quel fornitore
+    public function searchAll(string $term = ''): array {
+        $sql = "SELECT id, name FROM products WHERE (:term='' OR name LIKE :like) ORDER BY name LIMIT 50";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':term'=>$term, ':like'=>"%{$term}%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function datatable($start, $length, $search)
     {
         $where = "";

@@ -65,4 +65,24 @@ class SupplierProductsController
         $this->model->delete($id);
         echo json_encode(['success' => true]);
     }
+
+    public function select()
+    {
+        // opzionale ma consigliato se stai già inviando il token nel JS
+
+        $supplier_id = (int)($_POST['supplier_id'] ?? 0);
+        $search      = trim($_POST['search'] ?? '');
+
+        if ($supplier_id <= 0) {
+            echo json_encode([]);
+            return;
+        }
+
+        // ritorna SOLO i prodotti già associati a quel fornitore
+        $rows = $this->model->selectProductsBySupplier($supplier_id, $search);
+
+        // formato Select2
+        $out = array_map(fn($r) => ['id' => $r['id'], 'text' => $r['name']], $rows);
+        echo json_encode($out);
+    }
 }

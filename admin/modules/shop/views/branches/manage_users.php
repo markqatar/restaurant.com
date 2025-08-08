@@ -3,10 +3,10 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">
-            <i class="fas fa-users"></i> Gestione Utenti - <?php echo htmlspecialchars($branch['name']); ?>
+            <i class="fas fa-users"></i> <?php echo TranslationManager::t('branch.manage_users'); ?> - <?php echo htmlspecialchars($branch['name']); ?>
         </h1>
         <a href="branches" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Torna alle Filiali
+            <i class="fas fa-arrow-left"></i> <?php echo TranslationManager::t('back_to_list'); ?>
         </a>
     </div>
 
@@ -16,24 +16,24 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        Utenti Assegnati (<?php echo count($branch_users); ?>)
+                        <?php echo TranslationManager::t('branch.assigned_users'); ?> (<?php echo count($branch_users); ?>)
                     </h6>
                 </div>
                 <div class="card-body">
                     <?php if (empty($branch_users)): ?>
                         <div class="text-center py-4">
                             <i class="fas fa-users fa-3x text-gray-300 mb-3"></i>
-                            <p class="text-muted">Nessun utente assegnato a questa filiale</p>
+                            <p class="text-muted"><?php echo TranslationManager::t('branch.no_assigned_users'); ?></p>
                         </div>
                     <?php else: ?>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Utente</th>
-                                        <th>Email</th>
-                                        <th>Tipo</th>
-                                        <th>Azioni</th>
+                                        <th><?php echo TranslationManager::t('users'); ?></th>
+                                        <th><?php echo TranslationManager::t('email'); ?></th>
+                                        <th><?php echo TranslationManager::t('type'); ?></th>
+                                        <th><?php echo TranslationManager::t('actions'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="assignedUsers">
@@ -53,23 +53,23 @@
                                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                                         <td>
                                             <?php if ($user['is_primary']): ?>
-                                                <span class="badge badge-primary">Filiale Principale</span>
+                                                <span class="badge badge-primary"><?php echo TranslationManager::t('branch.primary_branch'); ?></span>
                                             <?php else: ?>
-                                                <span class="badge badge-secondary">Filiale Secondaria</span>
+                                                <span class="badge badge-secondary"><?php echo TranslationManager::t('branch.secondary_branch'); ?></span>
                                             <?php endif; ?>
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm">
                                                 <?php if (!$user['is_primary']): ?>
-                                                <button class="btn btn-outline-primary btn-sm" 
-                                                        onclick="setPrimary(<?php echo $user['id']; ?>)"
-                                                        title="Imposta come filiale principale">
+                        <button class="btn btn-outline-primary btn-sm" 
+                            onclick="setPrimary(<?php echo $user['id']; ?>)"
+                            title="<?php echo TranslationManager::t('branch.set_as_primary'); ?>">
                                                     <i class="fas fa-star"></i>
                                                 </button>
                                                 <?php endif; ?>
-                                                <button class="btn btn-outline-danger btn-sm" 
-                                                        onclick="removeUser(<?php echo $user['id']; ?>)"
-                                                        title="Rimuovi dalla filiale">
+                        <button class="btn btn-outline-danger btn-sm" 
+                            onclick="removeUser(<?php echo $user['id']; ?>)"
+                            title="<?php echo TranslationManager::t('branch.remove_from_branch'); ?>">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </div>
@@ -88,16 +88,16 @@
         <div class="col-lg-4">
             <div class="card shadow">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-success">Aggiungi Utente</h6>
+                    <h6 class="m-0 font-weight-bold text-success"><?php echo TranslationManager::t('branch.add_user'); ?></h6>
                 </div>
                 <div class="card-body">
                     <form id="assignUserForm">
                         <input type="hidden" name="branch_id" value="<?php echo $branch['id']; ?>">
                         
                         <div class="mb-3">
-                            <label for="user_id" class="form-label">Seleziona Utente</label>
+                            <label for="user_id" class="form-label"><?php echo TranslationManager::t('branch.select_user'); ?></label>
                             <select class="form-select" id="user_id" name="user_id" required>
-                                <option value="">Scegli utente...</option>
+                                <option value=""><?php echo TranslationManager::t('branch.choose_user_placeholder'); ?></option>
                                 <?php foreach ($all_users as $user): ?>
                                     <?php 
                                     // Check if user is already assigned
@@ -122,13 +122,13 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="is_primary" name="is_primary">
                                 <label class="form-check-label" for="is_primary">
-                                    Imposta come filiale principale
+                                    <?php echo TranslationManager::t('branch.set_as_primary'); ?>
                                 </label>
                             </div>
                         </div>
                         
                         <button type="submit" class="btn btn-success btn-block">
-                            <i class="fas fa-plus"></i> Assegna Utente
+                            <i class="fas fa-plus"></i> <?php echo TranslationManager::t('branch.assign_user'); ?>
                         </button>
                     </form>
                 </div>
@@ -137,18 +137,18 @@
             <!-- Branch Info -->
             <div class="card shadow mt-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-info">Info Filiale</h6>
+                    <h6 class="m-0 font-weight-bold text-info"><?php echo TranslationManager::t('branch.branch_info'); ?></h6>
                 </div>
                 <div class="card-body">
-                    <p><strong>Nome:</strong> <?php echo htmlspecialchars($branch['name']); ?></p>
+                    <p><strong><?php echo TranslationManager::t('branch.branch_name'); ?>:</strong> <?php echo htmlspecialchars($branch['name']); ?></p>
                     <?php if ($branch['address']): ?>
-                    <p><strong>Indirizzo:</strong> <?php echo htmlspecialchars($branch['address']); ?></p>
+                    <p><strong><?php echo TranslationManager::t('address'); ?>:</strong> <?php echo htmlspecialchars($branch['address']); ?></p>
                     <?php endif; ?>
                     <?php if ($branch['city_name']): ?>
-                    <p><strong>Città:</strong> <?php echo htmlspecialchars($branch['city_name']); ?></p>
+                    <p><strong><?php echo TranslationManager::t('branch.location'); ?>:</strong> <?php echo htmlspecialchars($branch['city_name']); ?></p>
                     <?php endif; ?>
                     <?php if ($branch['referente']): ?>
-                    <p><strong>Referente:</strong> <?php echo htmlspecialchars($branch['referente']); ?></p>
+                    <p><strong><?php echo TranslationManager::t('branch.manager'); ?>:</strong> <?php echo htmlspecialchars($branch['referente']); ?></p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -182,14 +182,14 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                showAlert('danger', 'Errore nella comunicazione con il server');
+                showAlert('danger', '<?php echo TranslationManager::t('branch.msg.server_error'); ?>');
             }
         });
     });
 });
 
 function removeUser(userId) {
-    if (confirm('Sei sicuro di voler rimuovere questo utente dalla filiale?')) {
+    if (confirm('<?php echo TranslationManager::t('branch.confirm.remove_user'); ?>')) {
         $.ajax({
             url: 'branches/remove-user',
             method: 'POST',
@@ -213,14 +213,14 @@ function removeUser(userId) {
                 }
             },
             error: function() {
-                showAlert('danger', 'Errore nella comunicazione con il server');
+                showAlert('danger', '<?php echo TranslationManager::t('branch.msg.server_error'); ?>');
             }
         });
     }
 }
 
 function setPrimary(userId) {
-    if (confirm('Impostare questa come filiale principale per questo utente?')) {
+    if (confirm('<?php echo TranslationManager::t('branch.confirm.set_primary'); ?>')) {
         $.ajax({
             url: 'branches/assign-user',
             method: 'POST',
@@ -232,7 +232,7 @@ function setPrimary(userId) {
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    showAlert('success', 'Filiale principale aggiornata');
+                    showAlert('success', '<?php echo TranslationManager::t('branch.primary_updated'); ?>');
                     setTimeout(() => {
                         location.reload();
                     }, 1500);
@@ -241,7 +241,7 @@ function setPrimary(userId) {
                 }
             },
             error: function() {
-                showAlert('danger', 'Errore nella comunicazione con il server');
+                showAlert('danger', '<?php echo TranslationManager::t('branch.msg.server_error'); ?>');
             }
         });
     }

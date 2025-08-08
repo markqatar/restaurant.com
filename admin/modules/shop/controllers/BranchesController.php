@@ -8,6 +8,7 @@ class BranchesController
     public function __construct()
     {
         $this->branch_model = new Branch();
+    TranslationManager::loadModuleTranslations('shop');
     }
 
     // Display branches list
@@ -20,7 +21,7 @@ class BranchesController
         $branches = $this->branch_model->read();
         $total_branches = $this->branch_model->count();
 
-        $page_title = "Gestione Filiali";
+    $page_title = TranslationManager::t('branch.management');
         include __DIR__ . '/../views/branches/index.php';
     }
 
@@ -31,7 +32,7 @@ class BranchesController
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
 
-        $page_title = "Nuova Filiale";
+    $page_title = TranslationManager::t('branch.new_branch');
         include __DIR__ . '/../views/branches/create.php';
     }
 
@@ -45,7 +46,7 @@ class BranchesController
         if ($_POST) {
             // Verify CSRF token
             if (!verify_csrf_token($_POST['csrf_token'])) {
-                send_notification('Token di sicurezza non valido', 'danger');
+                send_notification('msg.invalid_token', 'danger');
                 redirect(get_setting('site_url', 'http://localhost') . '/admin/branches/create');
             }
 
@@ -69,13 +70,13 @@ class BranchesController
                 try {
                     if ($this->branch_model->create($data)) {
                         log_action('shop', 'branches', 'create_branch', 0);
-                        send_notification('Filiale creata con successo', 'success');
+                        send_notification('branch.msg.created_successfully', 'success');
                         redirect(get_setting('site_url', 'http://localhost') . '/admin/branches');
                     } else {
-                        send_notification('Errore nella creazione della filiale', 'danger');
+                        send_notification('branch.msg.create_error', 'danger');
                     }
                 } catch (Exception $e) {
-                    send_notification('Errore database: ' . $e->getMessage(), 'danger');
+                    send_notification('branch.msg.db_error', 'danger');
                 }
             } else {
                 foreach ($errors as $error) {
@@ -97,11 +98,10 @@ class BranchesController
         $branch = $this->branch_model->readOne($id);
 
         if (!$branch) {
-            send_notification('Filiale non trovata', 'danger');
+            send_notification('branch.msg.not_found', 'danger');
             redirect(get_setting('site_url', 'http://localhost') . '/admin/branches');
         }
-
-        $page_title = "Modifica Filiale";
+        $page_title = TranslationManager::t('branch.edit_branch');
         include __DIR__ . '/../views/branches/edit.php';
     }
 
@@ -115,7 +115,7 @@ class BranchesController
         if ($_POST) {
             // Verify CSRF token
             if (!verify_csrf_token($_POST['csrf_token'])) {
-                send_notification('Token di sicurezza non valido', 'danger');
+                send_notification('msg.invalid_token', 'danger');
                 redirect('branches.php?action=edit&id=' . $id);
             }
 
@@ -138,13 +138,13 @@ class BranchesController
                 try {
                     if ($this->branch_model->update($id, $data)) {
                         //log_action($_SESSION['user_id'], 'update_branch', 'Updated branch ID: ' . $id);
-                        send_notification('Filiale aggiornata con successo', 'success');
+                        send_notification('branch.msg.updated_successfully', 'success');
                         redirect(get_setting('site_url', 'http://localhost') . '/admin/branches');
                     } else {
-                        send_notification('Errore nell\'aggiornamento', 'danger');
+                        send_notification('branch.msg.update_error', 'danger');
                     }
                 } catch (Exception $e) {
-                    send_notification('Errore database: ' . $e->getMessage(), 'danger');
+                    send_notification('branch.msg.db_error', 'danger');
                 }
             } else {
                 foreach ($errors as $error) {
@@ -166,12 +166,12 @@ class BranchesController
         try {
             if ($this->branch_model->delete($id)) {
                 //log_action($_SESSION['user_id'], 'delete_branch', 'Deleted branch ID: ' . $id);
-                send_notification('Filiale eliminata con successo', 'success');
+                send_notification('branch.msg.deleted_successfully', 'success');
             } else {
-                send_notification('Errore nell\'eliminazione', 'danger');
+                send_notification('branch.msg.delete_error', 'danger');
             }
         } catch (Exception $e) {
-            send_notification('Errore database: ' . $e->getMessage(), 'danger');
+            send_notification('branch.msg.db_error', 'danger');
         }
 
         redirect(get_setting('site_url', 'http://localhost') . '/admin/branches');
@@ -188,7 +188,7 @@ class BranchesController
         $branch_users = $this->branch_model->getBranchUsers($id);
         $all_users = $this->getAllUsers();
 
-        $page_title = "Gestione Utenti - " . $branch['name'];
+    $page_title = TranslationManager::t('branch.manage_users') . ' - ' . $branch['name'];
         include __DIR__ . '/../views/branches/manage_users.php';
     }
 
@@ -208,9 +208,9 @@ class BranchesController
 
             try {
                 if ($this->branch_model->assignUser($user_id, $branch_id, $is_primary)) {
-                    echo json_encode(['success' => true, 'message' => 'Utente assegnato con successo']);
+                    echo json_encode(['success' => true, 'message' => TranslationManager::t('branch.msg.user_assigned')]);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Errore nell\'assegnazione']);
+                    echo json_encode(['success' => false, 'message' => TranslationManager::t('branch.msg.assign_error')]);
                 }
             } catch (Exception $e) {
                 echo json_encode(['success' => false, 'message' => $e->getMessage()]);
@@ -234,9 +234,9 @@ class BranchesController
 
             try {
                 if ($this->branch_model->removeUser($user_id, $branch_id)) {
-                    echo json_encode(['success' => true, 'message' => 'Utente rimosso con successo']);
+                    echo json_encode(['success' => true, 'message' => TranslationManager::t('branch.msg.user_removed')]);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Errore nella rimozione']);
+                    echo json_encode(['success' => false, 'message' => TranslationManager::t('branch.msg.remove_error')]);
                 }
             } catch (Exception $e) {
                 echo json_encode(['success' => false, 'message' => $e->getMessage()]);
@@ -266,15 +266,15 @@ class BranchesController
         $errors = [];
 
         if (empty($data['name'])) {
-            $errors[] = 'Il nome della filiale è obbligatorio';
+            $errors[] = 'branch.validation.name_required';
         }
 
         if (!empty($data['email1']) && !filter_var($data['email1'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Formato email 1 non valido';
+            $errors[] = 'branch.validation.email1_invalid';
         }
 
         if (!empty($data['email2']) && !filter_var($data['email2'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Formato email 2 non valido';
+            $errors[] = 'branch.validation.email2_invalid';
         }
 
         return $errors;

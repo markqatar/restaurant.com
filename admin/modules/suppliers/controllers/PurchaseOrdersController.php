@@ -8,11 +8,13 @@ class PurchaseOrdersController
     public function __construct()
     {
         $this->model = new PurchaseOrder();
+    // Load module translations
+    TranslationManager::loadModuleTranslations('suppliers');
     }
 
     public function index()
     {
-        $page_title = "Purchase Orders";
+    $page_title = TranslationManager::t('purchase_order.list_title');
         include admin_module_path('/views/purchase_orders/index.php', 'suppliers');
     }
 
@@ -50,7 +52,7 @@ class PurchaseOrdersController
         $units = $_POST['units'] ?? [];
 
         if (empty($products)) {
-            echo json_encode(['success' => false, 'message' => 'Aggiungi almeno un prodotto']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('purchase_order.msg.add_at_least_one_product')]);
             return;
         }
 
@@ -63,7 +65,7 @@ class PurchaseOrdersController
         // Inserisci righe ordine
         $this->model->addItems($po_id, $products, $quantities, $units);
 
-        echo json_encode(['success' => true, 'id' => $po_id]);
+    echo json_encode(['success' => true, 'id' => $po_id, 'message' => TranslationManager::t('purchase_order.msg.created_successfully')]);
     }
 
     public function send()
@@ -72,7 +74,7 @@ class PurchaseOrdersController
         $order = $this->model->find($id);
 
         if (!$order) {
-            echo json_encode(['success' => false, 'message' => 'Ordine non trovato']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('purchase_order.msg.not_found')]);
             return;
         }
 
@@ -88,18 +90,63 @@ class PurchaseOrdersController
             $this->sendEmail($order['supplier_email'], $pdfPath);
         }
 
-        echo json_encode(['success' => true]);
+    echo json_encode(['success' => true, 'message' => TranslationManager::t('purchase_order.msg.sent_successfully')]);
     }
 
-    public function receive()
+    public function receive($order_id)
     {
-        $id = (int)$_POST['id'];
-        $this->model->updateStatus($id, 'received');
+        $order = $this->model->find((int)$order_id);
+        if (!$order) {
+            send_notification(TranslationManager::t('purchase_order.msg.not_found'), 'danger');
+            redirect(admin_url('purchase_orders'));
+        }
 
-        // Qui generiamo i barcode per i prodotti con checkbox barcode = 1
-        $this->generateBarcodes($id);
+        // Solo se lo stato lo consente (bozza o inviato)
+        if (!in_array($order['status'], ['sent', 'draft'])) {
+            send_notification(TranslationManager::t('purchase_order.msg.not_receivable'), 'warning');
+            redirect(admin_url('purchase_orders'));
+        }
 
-        echo json_encode(['success' => true]);
+        $items = $this->model->getItems($order_id); // con nome prodotto, SKU, qty ordinate ecc.
+
+    $page_title = TranslationManager::t('purchase_order.receive_title') . ' #' . $order_id;
+        include admin_module_path('/views/purchase_orders/receive.php', 'suppliers'); // vedi sotto
+    }
+
+    public function receiveSubmit()
+    {
+        if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('purchase_order.msg.invalid_token')]);
+            exit;
+        }
+
+        $order_id = (int)$_POST['order_id'];
+        $prices   = $_POST['price'] ?? [];     // price[item_id] => 12.34
+        $discount = $_POST['discount'] ?? [];  // discount[item_id] => 1.00
+        $expiry   = $_POST['expiry'] ?? [];    // expiry[item_id] => yyyy-mm-dd
+        $barcodes = $_POST['gen_barcode'] ?? []; // gen_barcode[item_id] => "1" se spuntato
+        $qtys     = $_POST['received_qty'] ?? []; // quantità ricevuta effettiva per stampa barcode
+
+        // Aggiorna riga per riga
+        foreach ($prices as $item_id => $p) {
+            $this->model->updateItem((int)$item_id, [
+                'price'       => ($p === '' ? null : (float)$p),
+                'discount'    => (isset($discount[$item_id]) && $discount[$item_id] !== '' ? (float)$discount[$item_id] : null),
+                'expiry_date' => ($expiry[$item_id] ?? null),
+            ]);
+
+            // Genera barcode se richiesto
+            if (!empty($barcodes[$item_id])) {
+                $row = $this->model->findItem((int)$item_id);
+                $qtyToPrint = max(0, (int)($qtys[$item_id] ?? $row['quantity'] ?? 0));
+                if (!empty($row['sku']) && $qtyToPrint > 0) {
+                    $this->generateBarcodes($row['sku'], $qtyToPrint);
+                }
+            }
+        }
+
+        $this->model->updateStatus($order_id, 'received');
+    echo json_encode(['success' => true, 'message' => TranslationManager::t('purchase_order.msg.received_successfully')]);
     }
 
     private function generatePDF($order)

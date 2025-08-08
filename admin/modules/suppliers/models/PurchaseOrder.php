@@ -3,6 +3,7 @@ class PurchaseOrder
 {
     private $db;
     private $table = "purchase_orders";
+    private $itemsTable = 'purchase_order_items';
 
     public function __construct()
     {
@@ -106,6 +107,89 @@ class PurchaseOrder
         $sql = "UPDATE {$this->table} SET status = :status WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':status' => $status, ':id' => $id]);
+    }
+
+
+    public function getItems(int $order_id): array {
+        $sql = "
+            SELECT 
+                poi.*,
+                p.name AS product_name,
+                u.name AS unit_name,
+                COALESCE(poi.sku, sp.sku) AS sku
+            FROM {$this->itemsTable} poi
+            JOIN {$this->table} po          ON po.id = poi.order_id
+            LEFT JOIN products p            ON p.id = poi.product_id
+            LEFT JOIN units u               ON u.id = poi.unit_id
+            LEFT JOIN supplier_products sp  ON sp.product_id = poi.product_id
+                                           AND sp.supplier_id = po.supplier_id
+            WHERE poi.order_id = :order_id
+            ORDER BY poi.id ASC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':order_id' => $order_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    }
+
+    /**
+     * Singola riga (item) con join utili
+     */
+    public function findItem(int $item_id): ?array {
+        $sql = "
+            SELECT 
+                poi.*,
+                p.name AS product_name,
+                u.name AS unit_name,
+                COALESCE(poi.sku, sp.sku) AS sku,
+                po.supplier_id
+            FROM {$this->itemsTable} poi
+            JOIN {$this->table} po          ON po.id = poi.order_id
+            LEFT JOIN products p            ON p.id = poi.product_id
+            LEFT JOIN units u               ON u.id = poi.unit_id
+            LEFT JOIN supplier_products sp  ON sp.product_id = poi.product_id
+                                           AND sp.supplier_id = po.supplier_id
+            WHERE poi.id = :id
+            LIMIT 1
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $item_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
+    }
+
+    /**
+     * Aggiorna campi dell’item (price, discount, expiry_date, quantity opzionale)
+     * Passa solo i campi che vuoi aggiornare in $data
+     */
+    public function updateItem(int $item_id, array $data): bool {
+        $allowed = ['price', 'discount', 'expiry_date', 'quantity'];
+        $sets = [];
+        $params = [':id' => $item_id];
+
+        foreach ($allowed as $col) {
+            if (array_key_exists($col, $data)) {
+                // expiry_date può essere NULL
+                if ($col === 'expiry_date') {
+                    if (empty($data[$col])) {
+                        $sets[] = "expiry_date = NULL";
+                    } else {
+                        $sets[] = "expiry_date = :expiry_date";
+                        $params[':expiry_date'] = $data[$col];
+                    }
+                } else {
+                    $sets[] = "{$col} = :{$col}";
+                    $params[":{$col}"] = $data[$col];
+                }
+            }
+        }
+
+        if (empty($sets)) {
+            return false; // niente da aggiornare
+        }
+
+        $sql = "UPDATE {$this->itemsTable} SET " . implode(', ', $sets) . " WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute($params);
     }
 
 }

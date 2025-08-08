@@ -41,5 +41,21 @@ return [
         'no_logo' => 'No logo to delete',
         'delete_failed' => 'Failed to delete logo file',
         'update_failed' => 'Failed to update database'
-    ]
+    ],
+
+    // Activity Logs / System Logs
+    'system' => [
+        'activity_logs' => 'Activity Logs'
+    ],
+    'log' => [
+        'details' => 'Log Details',
+        'not_found' => 'Log not found'
+    ],
+    'restore' => [
+        'confirm' => 'Restore this change?',
+        'description' => 'This will attempt to restore the previous data.'
+    ],
+    'yes_restore' => 'Yes, Restore',
+    'details' => 'Details',
+    'restore' => 'Restore'
 ];

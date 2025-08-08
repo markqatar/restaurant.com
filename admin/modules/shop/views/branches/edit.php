@@ -3,21 +3,21 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">
-            <i class="fas fa-edit"></i> Modifica Filiale
+            <i class="fas fa-edit"></i> <?php echo TranslationManager::t('branch.edit_branch'); ?>
         </h1>
         <div>
             <a href="<?php echo get_setting('site_url') ?>/admin/shop/branches/manageusers/<?php echo $branch['id']; ?>" class="btn btn-info btn-sm">
-                <i class="fas fa-users"></i> Gestisci Utenti
+                <i class="fas fa-users"></i> <?php echo TranslationManager::t('branch.manage_users'); ?>
             </a>
             <a href="<?php echo get_setting('site_url') ?>/admin/shop/branches" class="btn btn-secondary btn-sm">
-                <i class="fas fa-arrow-left"></i> Torna all'Elenco
+                <i class="fas fa-arrow-left"></i> <?php echo TranslationManager::t('back_to_list'); ?>
             </a>
         </div>
     </div>
 
     <div class="card shadow">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">Modifica: <?php echo htmlspecialchars($branch['name']); ?></h6>
+            <h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('branch.edit_branch'); ?>: <?php echo htmlspecialchars($branch['name']); ?></h6>
             <small class="text-muted">ID: <?php echo $branch['id']; ?></small>
         </div>
         <div class="card-body">
@@ -28,23 +28,23 @@
                     <!-- Basic Information -->
                     <div class="col-md-6">
                         <h5 class="mb-3 text-primary">
-                            <i class="fas fa-info-circle"></i> Informazioni Generali
+                            <i class="fas fa-info-circle"></i> <?php echo TranslationManager::t('branch.section.general_info'); ?>
                         </h5>
                         
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nome Filiale *</label>
+                            <label for="name" class="form-label"><?php echo TranslationManager::t('branch.branch_name'); ?> *</label>
                             <input type="text" class="form-control" id="name" name="name" 
                                    value="<?php echo htmlspecialchars($branch['name']); ?>" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="referente" class="form-label">Referente</label>
+                            <label for="referente" class="form-label"><?php echo TranslationManager::t('branch.manager'); ?></label>
                             <input type="text" class="form-control" id="referente" name="referente"
                                    value="<?php echo htmlspecialchars($branch['referente'] ?? ''); ?>">
                         </div>
                         
                         <div class="mb-3">
-                            <label for="address" class="form-label">Indirizzo</label>
+                            <label for="address" class="form-label"><?php echo TranslationManager::t('address'); ?></label>
                             <textarea class="form-control" id="address" name="address" rows="3"><?php echo htmlspecialchars($branch['address'] ?? ''); ?></textarea>
                         </div>
                     </div>
@@ -52,20 +52,20 @@
                     <!-- Contact Information -->
                     <div class="col-md-6">
                         <h5 class="mb-3 text-success">
-                            <i class="fas fa-phone"></i> Informazioni di Contatto
+                            <i class="fas fa-phone"></i> <?php echo TranslationManager::t('branch.section.contact_info'); ?>
                         </h5>
                         
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="email1" class="form-label">Email Principale</label>
+                                    <label for="email1" class="form-label"><?php echo TranslationManager::t('branch.field.email_primary'); ?></label>
                                     <input type="email" class="form-control" id="email1" name="email1"
                                            value="<?php echo htmlspecialchars($branch['email1'] ?? ''); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="email2" class="form-label">Email Secondaria</label>
+                                    <label for="email2" class="form-label"><?php echo TranslationManager::t('branch.field.email_secondary'); ?></label>
                                     <input type="email" class="form-control" id="email2" name="email2"
                                            value="<?php echo htmlspecialchars($branch['email2'] ?? ''); ?>">
                                 </div>
@@ -75,14 +75,14 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="tel1" class="form-label">Telefono Principale</label>
+                                    <label for="tel1" class="form-label"><?php echo TranslationManager::t('branch.field.phone_primary'); ?></label>
                                     <input type="tel" class="form-control" id="tel1" name="tel1"
                                            value="<?php echo htmlspecialchars($branch['tel1'] ?? ''); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="tel2" class="form-label">Telefono Secondario</label>
+                                    <label for="tel2" class="form-label"><?php echo TranslationManager::t('branch.field.phone_secondary'); ?></label>
                                     <input type="tel" class="form-control" id="tel2" name="tel2"
                                            value="<?php echo htmlspecialchars($branch['tel2'] ?? ''); ?>">
                                 </div>
@@ -97,13 +97,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h5 class="mb-3 text-info">
-                            <i class="fas fa-map-marker-alt"></i> Localizzazione
+                            <i class="fas fa-map-marker-alt"></i> <?php echo TranslationManager::t('branch.section.location'); ?>
                         </h5>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="state_id" class="form-label">Stato/Regione</label>
+                            <label for="state_id" class="form-label"><?php echo TranslationManager::t('branch.field.state_region'); ?></label>
                             <select class="form-select select2" id="state_id" name="state_id">
                                 <option value="">Seleziona Stato</option>
                                 <?php foreach ($states as $state): ?>
@@ -118,14 +118,14 @@
                     
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="city_id" class="form-label">Città</label>
+                            <label for="city_id" class="form-label"><?php echo TranslationManager::t('branch.field.city'); ?></label>
                             <select class="form-select select2" id="city_id" name="city_id">
                                 <?php if ($branch['city_id'] && $branch['city_name']): ?>
                                     <option value="<?php echo $branch['city_id']; ?>" selected>
                                         <?php echo htmlspecialchars($branch['city_name']); ?>
                                     </option>
                                 <?php else: ?>
-                                    <option value="">Prima seleziona lo stato</option>
+                                    <option value=""><?php echo TranslationManager::t('branch.placeholder.select_state_first'); ?></option>
                                 <?php endif; ?>
                             </select>
                         </div>
@@ -141,7 +141,7 @@
                             <input class="form-check-input" type="checkbox" id="is_active" name="is_active" 
                                    <?php echo $branch['is_active'] ? 'checked' : ''; ?>>
                             <label class="form-check-label" for="is_active">
-                                <strong>Filiale Attiva</strong>
+                                <strong><?php echo TranslationManager::t('branch.field.active_branch'); ?></strong>
                             </label>
                         </div>
                     </div>
@@ -149,10 +149,10 @@
                 
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Salva Modifiche
+                        <i class="fas fa-save"></i> <?php echo TranslationManager::t('branch.btn.save_changes'); ?>
                     </button>
                     <a href="branches" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Annulla
+                        <i class="fas fa-times"></i> <?php echo TranslationManager::t('cancel'); ?>
                     </a>
                 </div>
             </form>

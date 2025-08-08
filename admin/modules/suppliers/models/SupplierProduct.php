@@ -66,4 +66,23 @@ class SupplierProduct
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function selectProductsBySupplier(int $supplier_id, string $term = ''): array
+    {
+        $sql = "
+        SELECT DISTINCT p.id, p.name
+        FROM supplier_products sp
+        JOIN products p ON p.id = sp.product_id
+        WHERE sp.supplier_id = :supplier_id
+          AND (:term = '' OR p.name LIKE :like)
+        ORDER BY p.name
+        LIMIT 50
+    ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':supplier_id' => $supplier_id,
+            ':term'        => $term,
+            ':like'        => "%{$term}%"
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

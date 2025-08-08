@@ -41,5 +41,21 @@ return [
         'no_logo' => 'Nessun logo da eliminare',
         'delete_failed' => 'Eliminazione file logo fallita',
         'update_failed' => 'Aggiornamento database fallito'
-    ]
+    ],
+
+    // Activity Logs / System Logs
+    'system' => [
+        'activity_logs' => 'Log Attività'
+    ],
+    'log' => [
+        'details' => 'Dettagli Log',
+        'not_found' => 'Log non trovato'
+    ],
+    'restore' => [
+        'confirm' => 'Ripristinare questa modifica?',
+        'description' => 'Questo tenterà di ripristinare i dati precedenti.'
+    ],
+    'yes_restore' => 'Sì, Ripristina',
+    'details' => 'Dettagli',
+    'restore' => 'Ripristina'
 ];

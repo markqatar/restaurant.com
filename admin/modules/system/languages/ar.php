@@ -41,5 +41,21 @@ return [
         'no_logo' => 'لا يوجد شعار للحذف',
         'delete_failed' => 'فشل في حذف ملف الشعار',
         'update_failed' => 'فشل في تحديث قاعدة البيانات'
-    ]
+    ],
+
+    // Activity Logs / System Logs
+    'system' => [
+        'activity_logs' => 'سجل النشاطات'
+    ],
+    'log' => [
+        'details' => 'تفاصيل السجل',
+        'not_found' => 'السجل غير موجود'
+    ],
+    'restore' => [
+        'confirm' => 'استعادة هذا التغيير؟',
+        'description' => 'سيتم محاولة استعادة البيانات السابقة.'
+    ],
+    'yes_restore' => 'نعم، استعادة',
+    'details' => 'تفاصيل',
+    'restore' => 'استعادة'
 ];

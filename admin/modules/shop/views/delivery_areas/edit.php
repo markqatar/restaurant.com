@@ -14,7 +14,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/shop/deliveryarea'; ?>" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back'); ?>
+            <i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back_to_list'); ?>
         </a>
     </div>
 </div>
@@ -36,7 +36,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         <form method="POST" action="<?php echo get_setting('site_url', 'http://localhost') . '/admin/shop/deliveryarea/update/' . $data['id']; ?>">
             <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
             <div class="row">
-                <!-- Nome Area -->
+                <!-- Area Name -->
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="area_name" class="form-label">

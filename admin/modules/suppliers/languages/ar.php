@@ -184,4 +184,63 @@ return [
     'confirm_delete' => 'تأكيد الحذف',
     'yes_delete' => 'نعم، احذف',
 
+    // ===========================
+    // أوامر الشراء (جديد)
+    // ===========================
+    'purchase_order' => [
+        'list_title' => 'أوامر الشراء',
+        'create_title' => 'إنشاء أمر شراء جديد',
+        'detail_title' => 'تفاصيل أمر الشراء',
+        'receive_title' => 'استلام الأمر',
+        'back_to_list' => 'العودة إلى القائمة',
+        'add_products' => 'إضافة منتجات',
+        'ordered_products_title' => 'المنتجات المطلوبة',
+        'field' => [
+            'id' => 'المعرف',
+            'supplier' => 'المورد',
+            'status' => 'الحالة',
+            'total' => 'الإجمالي',
+            'date' => 'التاريخ',
+            'actions' => 'الإجراءات',
+            'product' => 'المنتج',
+            'quantity' => 'الكمية',
+            'unit' => 'الوحدة',
+            'sku' => 'SKU',
+            'ordered_qty' => 'الكمية المطلوبة',
+            'price' => 'السعر',
+            'discount' => 'الخصم',
+            'expiry' => 'الصلاحية',
+            'received_qty' => 'الكمية المستلمة',
+            'barcode' => 'باركود',
+            'notes' => 'ملاحظات',
+        ],
+        'btn' => [
+            'add_row' => 'إضافة صف',
+            'save_draft' => 'حفظ كمسودة',
+            'new_order' => 'أمر جديد',
+            'confirm_receive' => 'تأكيد الاستلام',
+            'download_pdf' => 'تنزيل PDF',
+            'send_order' => 'إرسال الأمر',
+            'mark_as_received' => 'وضع علامة مستلم',
+        ],
+        'placeholder' => [
+            'price_per_unit' => 'سعر/وحدة',
+            'discount' => 'خصم',
+        ],
+        'status' => [
+            'draft' => 'مسودة',
+            'sent' => 'مرسل',
+            'received' => 'تم الاستلام',
+        ],
+        'msg' => [
+            'add_at_least_one_product' => 'أضف منتجاً واحداً على الأقل',
+            'created_successfully' => 'تم إنشاء الأمر بنجاح',
+            'not_found' => 'أمر الشراء غير موجود',
+            'sent_successfully' => 'تم إرسال الأمر بنجاح',
+            'invalid_token' => 'رمز غير صالح',
+            'received_successfully' => 'تم استلام الأمر بنجاح',
+            'not_receivable' => 'الأمر ليس في حالة قابلة للاستلام',
+        ],
+    ],
+
 ];

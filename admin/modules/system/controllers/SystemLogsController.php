@@ -7,6 +7,7 @@ class SystemLogsController
         if (!has_permission($_SESSION['user_id'], 'system_logs', 'view')) {
             redirect(admin_url('unauthorized'));
         }
+    TranslationManager::loadModuleTranslations('system');
         include admin_module_path('/views/activity_logs/activity_logs.php', 'system');
     }
 
@@ -88,7 +89,7 @@ class SystemLogsController
         $log = $model->getLogById($_POST['log_id']);
 
         if (!$log) {
-            echo json_encode(['success' => false, 'message' => 'Log non trovato']);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('log.not_found')]);
             return;
         }
 

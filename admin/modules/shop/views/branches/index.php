@@ -7,7 +7,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'branches', 'create')): ?>
-            <a href="<?php echo admin_url('branches', 'create'); ?>" class="btn btn-primary me-2">
+            <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/shop/branches/create'; ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('branch.new_branch'); ?>
             </a>
         <?php endif; ?>
@@ -102,7 +102,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                     <?php foreach ($branches as $branch): ?>
                         <tr>
                             <td><strong><?php echo htmlspecialchars($branch['name']); ?></strong></td>
-                            <td><small class="text-muted"><?php echo htmlspecialchars($branch['address'] ?? 'N/A'); ?></small></td>
+                            <td><small class="text-muted"><?php echo htmlspecialchars($branch['address'] ?? TranslationManager::t('na')); ?></small></td>
                             <td>
                                 <?php if ($branch['city_name']): ?>
                                     <div><?php echo htmlspecialchars($branch['city_name']); ?></div>
@@ -110,7 +110,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                         <small class="text-muted"><?php echo htmlspecialchars($branch['state_name']); ?></small>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <span class="text-muted">N/A</span>
+                                    <span class="text-muted"><?php echo TranslationManager::t('na'); ?></span>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -129,13 +129,13 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                     </div>
                                 <?php endif; ?>
                                 <?php if ($branch['email2'] || $branch['tel2']): ?>
-                                    <small class="text-muted">+ altri contatti</small>
+                                    <small class="text-muted">+ <?php echo TranslationManager::t('branch.more_contacts'); ?></small>
                                 <?php endif; ?>
                             </td>
-                            <td><?php echo htmlspecialchars($branch['referente'] ?? 'N/A'); ?></td>
+                            <td><?php echo htmlspecialchars($branch['referente'] ?? TranslationManager::t('na')); ?></td>
                             <td>
                                 <span class="badge bg-info">
-                                    <?php echo $branch['users_count']; ?> utent<?php echo $branch['users_count'] == 1 ? 'e' : 'i'; ?>
+                                    <?php echo $branch['users_count']; ?> <?php echo $branch['users_count'] == 1 ? TranslationManager::t('branch.user_singular') : TranslationManager::t('branch.user_plural'); ?>
                                 </span>
                             </td>
                             <td>

@@ -234,5 +234,64 @@ return [
     'confirm_delete' => 'Confirm Delete',
     'yes_delete' => 'Yes, Delete',
 
+    // ===========================
+    // Purchase Orders (New)
+    // ===========================
+    'purchase_order' => [
+        'list_title' => 'Purchase Orders',
+        'create_title' => "Create Purchase Order",
+        'detail_title' => 'Purchase Order Details',
+        'receive_title' => 'Receive Order',
+        'back_to_list' => 'Back to list',
+        'add_products' => 'Add Products',
+        'ordered_products_title' => 'Ordered Products',
+        'field' => [
+            'id' => 'ID',
+            'supplier' => 'Supplier',
+            'status' => 'Status',
+            'total' => 'Total',
+            'date' => 'Date',
+            'actions' => 'Actions',
+            'product' => 'Product',
+            'quantity' => 'Quantity',
+            'unit' => 'Unit',
+            'sku' => 'SKU',
+            'ordered_qty' => 'Ordered Qty',
+            'price' => 'Price',
+            'discount' => 'Discount',
+            'expiry' => 'Expiry',
+            'received_qty' => 'Received Qty',
+            'barcode' => 'Barcode',
+            'notes' => 'Notes',
+        ],
+        'btn' => [
+            'add_row' => 'Add Row',
+            'save_draft' => 'Save Draft',
+            'new_order' => 'New Order',
+            'confirm_receive' => 'Confirm Receipt',
+            'download_pdf' => 'Download PDF',
+            'send_order' => 'Send Order',
+            'mark_as_received' => 'Mark as Received',
+        ],
+        'placeholder' => [
+            'price_per_unit' => 'Price/unit',
+            'discount' => 'discount',
+        ],
+        'status' => [
+            'draft' => 'Draft',
+            'sent' => 'Sent',
+            'received' => 'Received',
+        ],
+        'msg' => [
+            'add_at_least_one_product' => 'Add at least one product',
+            'created_successfully' => 'Order created successfully',
+            'not_found' => 'Order not found',
+            'sent_successfully' => 'Order sent successfully',
+            'invalid_token' => 'Invalid token',
+            'received_successfully' => 'Order received successfully',
+            'not_receivable' => 'The order is not in a receivable state',
+        ],
+    ],
+
 ];
 ?>

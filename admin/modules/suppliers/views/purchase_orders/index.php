@@ -2,21 +2,21 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between">
-        <h5>Purchase Orders</h5>
+        <h5><?php echo TranslationManager::t('purchase_order.list_title'); ?></h5>
         <a href="<?php echo get_setting('site_url'); ?>/admin/suppliers/purchaseorders/create" class="btn btn-success btn-sm">
-            <i class="fas fa-plus"></i> Nuovo Ordine
+            <i class="fas fa-plus"></i> <?php echo TranslationManager::t('purchase_order.btn.new_order'); ?>
         </a>
     </div>
     <div class="card-body">
         <table id="purchaseOrdersTable" class="table table-bordered table-striped w-100">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Fornitore</th>
-                    <th>Stato</th>
-                    <th>Totale</th>
-                    <th>Data</th>
-                    <th>Azioni</th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.id'); ?></th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.supplier'); ?></th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.status'); ?></th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.total'); ?></th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.date'); ?></th>
+                    <th><?php echo TranslationManager::t('purchase_order.field.actions'); ?></th>
                 </tr>
             </thead>
         </table>
