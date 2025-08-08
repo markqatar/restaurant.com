@@ -156,7 +156,7 @@ abstract class AbstractTag
                         break;
 
                     case "translate":
-                        $surface->translate($t[1], isset($t[2]) ? $t[2] : 0);
+                        $surface->TranslationManager::t$t[1], isset($t[2]) ? $t[2] : 0);
                         break;
 
                     case "scale":
@@ -166,9 +166,9 @@ abstract class AbstractTag
                     case "rotate":
                         if (isset($t[2])) {
                             $t[3] = isset($t[3]) ? $t[3] : 0;
-                            $surface->translate($t[2], $t[3]);
+                            $surface->TranslationManager::t$t[2], $t[3]);
                             $surface->rotate($t[1]);
-                            $surface->translate(-$t[2], -$t[3]);
+                            $surface->TranslationManager::t-$t[2], -$t[3]);
                         } else {
                             $surface->rotate($t[1]);
                         }
@@ -275,7 +275,7 @@ abstract class AbstractTag
             $translateX += ($eHeight - $vbHeight * $scaleY);
         }
 
-        $surface->translate($translateX, $translateY);
+        $surface->TranslationManager::t$translateX, $translateY);
         $surface->scale($scaleX, $scaleY);
     }
 

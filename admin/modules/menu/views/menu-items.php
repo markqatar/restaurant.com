@@ -28,7 +28,7 @@ switch ($action) {
         break;
 }
 
-$pageTitle = translate('menu_items');
+$pageTitle = TranslationManager::t('menu_items');
 include 'includes/header.php';
 ?>
 
@@ -38,12 +38,12 @@ include 'includes/header.php';
             <div class="main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h2><?php echo translate('public_menu'); ?></h2>
+                        <h2><?php echo TranslationManager::t('public_menu'); ?></h2>
                         <p class="text-muted">Gestisci il menu di navigazione del sito pubblico</p>
                     </div>
                     <?php if (has_permission($_SESSION['user_id'], 'menu_items', 'create')): ?>
                         <a href="menu-items-create.php" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> <?php echo translate('add_menu_item'); ?>
+                            <i class="fas fa-plus"></i> <?php echo TranslationManager::t('add_menu_item'); ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -68,14 +68,14 @@ include 'includes/header.php';
                             <table class="table table-striped" id="menuItemsTable">
                                 <thead>
                                     <tr>
-                                        <th><?php echo translate('id'); ?></th>
-                                        <th><?php echo translate('menu_title'); ?></th>
+                                        <th><?php echo TranslationManager::t('id'); ?></th>
+                                        <th><?php echo TranslationManager::t('menu_title'); ?></th>
                                         <th>Link</th>
-                                        <th><?php echo translate('parent_menu'); ?></th>
+                                        <th><?php echo TranslationManager::t('parent_menu'); ?></th>
                                         <th>Ordine</th>
-                                        <th><?php echo translate('status'); ?></th>
-                                        <th><?php echo translate('created_at'); ?></th>
-                                        <th><?php echo translate('actions'); ?></th>
+                                        <th><?php echo TranslationManager::t('status'); ?></th>
+                                        <th><?php echo TranslationManager::t('created_at'); ?></th>
+                                        <th><?php echo TranslationManager::t('actions'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -121,7 +121,7 @@ include 'includes/header.php';
                                             </td>
                                             <td>
                                                 <span class="badge <?php echo $item['status'] === 'active' ? 'bg-success' : 'bg-secondary'; ?>">
-                                                    <?php echo translate($item['status']); ?>
+                                                    <?php echo TranslationManager::t($item['status']); ?>
                                                 </span>
                                             </td>
                                             <td><?php echo date('d/m/Y H:i', strtotime($item['created_at'])); ?></td>
@@ -129,14 +129,14 @@ include 'includes/header.php';
                                                 <?php if (has_permission($_SESSION['user_id'], 'menu_items', 'edit')): ?>
                                                     <a href="menu-items-edit.php?id=<?php echo $item['id']; ?>" 
                                                        class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-edit"></i> <?php echo translate('edit'); ?>
+                                                        <i class="fas fa-edit"></i> <?php echo TranslationManager::t('edit'); ?>
                                                     </a>
                                                 <?php endif; ?>
                                                 
                                                 <?php if (has_permission($_SESSION['user_id'], 'menu_items', 'delete')): ?>
                                                     <button type="button" class="btn btn-sm btn-outline-danger ms-1" 
                                                             onclick="confirmDelete(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['title']); ?>')">
-                                                        <i class="fas fa-trash"></i> <?php echo translate('delete'); ?>
+                                                        <i class="fas fa-trash"></i> <?php echo TranslationManager::t('delete'); ?>
                                                     </button>
                                                 <?php endif; ?>
                                             </td>
@@ -156,7 +156,7 @@ include 'includes/header.php';
 $(document).ready(function() {
     $('#menuItemsTable').DataTable({
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/<?php echo get_current_language(); ?>.json"
+            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/<?php echo $language; ?>.json"
         },
         "order": [[ 4, "asc" ]], // Order by sort_order
         "pageLength": 25
@@ -165,14 +165,14 @@ $(document).ready(function() {
 
 function confirmDelete(id, title) {
     Swal.fire({
-        title: '<?php echo translate('confirm_delete'); ?>',
+        title: '<?php echo TranslationManager::t('confirm_delete'); ?>',
         text: 'Sei sicuro di voler eliminare la voce di menu "' + title + '"? Verranno eliminate anche tutte le voci figlie.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: '<?php echo translate('yes_delete'); ?>',
-        cancelButtonText: '<?php echo translate('cancel'); ?>'
+        confirmButtonText: '<?php echo TranslationManager::t('yes_delete'); ?>',
+        cancelButtonText: '<?php echo TranslationManager::t('cancel'); ?>'
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = 'menu-items.php?action=delete&id=' + id;

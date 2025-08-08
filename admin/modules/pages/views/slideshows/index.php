@@ -28,7 +28,7 @@ switch ($action) {
         break;
 }
 
-$pageTitle = translate('slideshow');
+$pageTitle = TranslationManager::t('slideshow');
 include 'includes/header.php';
 ?>
 
@@ -37,10 +37,10 @@ include 'includes/header.php';
         <div class="col-md-12">
             <div class="main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2><?php echo translate('slideshow'); ?></h2>
+                    <h2><?php echo TranslationManager::t('slideshow'); ?></h2>
                     <?php if (has_permission($_SESSION['user_id'], 'slideshows', 'create')): ?>
                         <a href="slideshows-create.php" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> <?php echo translate('add_slide'); ?>
+                            <i class="fas fa-plus"></i> <?php echo TranslationManager::t('add_slide'); ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -65,14 +65,14 @@ include 'includes/header.php';
                             <table class="table table-striped" id="slideshowTable">
                                 <thead>
                                     <tr>
-                                        <th><?php echo translate('id'); ?></th>
+                                        <th><?php echo TranslationManager::t('id'); ?></th>
                                         <th>Anteprima</th>
-                                        <th><?php echo translate('slide_title'); ?></th>
+                                        <th><?php echo TranslationManager::t('slide_title'); ?></th>
                                         <th>Link</th>
                                         <th>Ordine</th>
-                                        <th><?php echo translate('status'); ?></th>
-                                        <th><?php echo translate('created_at'); ?></th>
-                                        <th><?php echo translate('actions'); ?></th>
+                                        <th><?php echo TranslationManager::t('status'); ?></th>
+                                        <th><?php echo TranslationManager::t('created_at'); ?></th>
+                                        <th><?php echo TranslationManager::t('actions'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,7 +110,7 @@ include 'includes/header.php';
                                             </td>
                                             <td>
                                                 <span class="badge <?php echo $slide['status'] === 'active' ? 'bg-success' : 'bg-secondary'; ?>">
-                                                    <?php echo translate($slide['status']); ?>
+                                                    <?php echo TranslationManager::t($slide['status']); ?>
                                                 </span>
                                             </td>
                                             <td><?php echo date('d/m/Y H:i', strtotime($slide['created_at'])); ?></td>
@@ -118,14 +118,14 @@ include 'includes/header.php';
                                                 <?php if (has_permission($_SESSION['user_id'], 'slideshows', 'edit')): ?>
                                                     <a href="slideshows-edit.php?id=<?php echo $slide['id']; ?>" 
                                                        class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-edit"></i> <?php echo translate('edit'); ?>
+                                                        <i class="fas fa-edit"></i> <?php echo TranslationManager::t('edit'); ?>
                                                     </a>
                                                 <?php endif; ?>
                                                 
                                                 <?php if (has_permission($_SESSION['user_id'], 'slideshows', 'delete')): ?>
                                                     <button type="button" class="btn btn-sm btn-outline-danger ms-1" 
                                                             onclick="confirmDelete(<?php echo $slide['id']; ?>, '<?php echo htmlspecialchars($slide['title']); ?>')">
-                                                        <i class="fas fa-trash"></i> <?php echo translate('delete'); ?>
+                                                        <i class="fas fa-trash"></i> <?php echo TranslationManager::t('delete'); ?>
                                                     </button>
                                                 <?php endif; ?>
                                             </td>
@@ -145,7 +145,7 @@ include 'includes/header.php';
 $(document).ready(function() {
     $('#slideshowTable').DataTable({
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/<?php echo get_current_language(); ?>.json"
+            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/<?php echo $language; ?>.json"
         },
         "order": [[ 4, "asc" ]], // Order by sort_order
         "pageLength": 25
@@ -154,14 +154,14 @@ $(document).ready(function() {
 
 function confirmDelete(id, title) {
     Swal.fire({
-        title: '<?php echo translate('confirm_delete'); ?>',
-        text: '<?php echo translate('Are you sure you want to delete the slide'); ?> "' + title + '"?',
+        title: '<?php echo TranslationManager::t('confirm_delete'); ?>',
+        text: '<?php echo TranslationManager::t('Are you sure you want to delete the slide'); ?> "' + title + '"?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: '<?php echo translate('yes_delete'); ?>',
-        cancelButtonText: '<?php echo translate('cancel'); ?>'
+        confirmButtonText: '<?php echo TranslationManager::t('yes_delete'); ?>',
+        cancelButtonText: '<?php echo TranslationManager::t('cancel'); ?>'
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = 'slideshows.php?action=delete&id=' + id;

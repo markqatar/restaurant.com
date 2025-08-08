@@ -23,6 +23,7 @@
 
     <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+    <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/tinymce/tinymce.min.js"></script>
 
     <!-- Main JS -->
     <script src="<?php echo $siteUrl; ?>/admin/assets/js/main.js"></script>

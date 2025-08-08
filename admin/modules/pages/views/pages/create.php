@@ -1,311 +1,112 @@
 <?php
-session_start();
-require_once '../config/database.php';
-require_once '../controllers/PageController.php';
-require_once '../includes/functions.php';
-
-// Check if user is logged in and has permission
-if (!isset($_SESSION['user_id']) || !has_permission($_SESSION['user_id'], 'pages', 'create')) {
-    redirect('/admin/login');
-    exit;
-}
-
-$controller = new PageController($pdo);
-$data = $controller->create();
-
-$pageTitle = translate('add_page');
-include 'includes/header.php';
+require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="main-content">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2><?php echo translate('add_page'); ?></h2>
-                    <a href="pages.php" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> <?php echo translate('back'); ?>
-                    </a>
-                </div>
-
-                <?php if (isset($data['error'])): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?php echo htmlspecialchars($data['error']); ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <form method="POST" action="" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <!-- Main Content -->
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0"><?php echo translate('page_content'); ?></h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label"><?php echo translate('page_title'); ?> *</label>
-                                        <input type="text" class="form-control" id="title" name="title" 
-                                               value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>" 
-                                               required maxlength="255">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="content" class="form-label"><?php echo translate('page_content'); ?></label>
-                                        <textarea class="form-control tinymce-editor" id="content" name="content" rows="15">
-                                            <?php echo htmlspecialchars($_POST['content'] ?? ''); ?>
-                                        </textarea>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="excerpt" class="form-label"><?php echo translate('page_excerpt'); ?></label>
-                                        <textarea class="form-control" id="excerpt" name="excerpt" rows="3" maxlength="500">
-                                            <?php echo htmlspecialchars($_POST['excerpt'] ?? ''); ?>
-                                        </textarea>
-                                        <div class="form-text"><?php echo translate('optional'); ?></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- SEO Settings -->
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0"><?php echo translate('seo_settings'); ?></h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="meta_title" class="form-label"><?php echo translate('meta_title'); ?></label>
-                                        <input type="text" class="form-control" id="meta_title" name="meta_title" 
-                                               value="<?php echo htmlspecialchars($_POST['meta_title'] ?? ''); ?>" 
-                                               maxlength="255">
-                                        <div class="form-text"><?php echo translate('optional'); ?> - Se vuoto, sarà usato il titolo della pagina</div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="meta_description" class="form-label"><?php echo translate('meta_description'); ?></label>
-                                        <textarea class="form-control" id="meta_description" name="meta_description" rows="3" maxlength="160">
-                                            <?php echo htmlspecialchars($_POST['meta_description'] ?? ''); ?>
-                                        </textarea>
-                                        <div class="form-text">Massimo 160 caratteri per i motori di ricerca</div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="meta_keywords" class="form-label"><?php echo translate('meta_keywords'); ?></label>
-                                        <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" 
-                                               value="<?php echo htmlspecialchars($_POST['meta_keywords'] ?? ''); ?>" 
-                                               maxlength="255">
-                                        <div class="form-text">Parole chiave separate da virgole</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <!-- Page Settings -->
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0">Impostazioni Pagina</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="status" class="form-label"><?php echo translate('page_status'); ?></label>
-                                        <select class="form-select" id="status" name="status">
-                                            <option value="draft" <?php echo (($_POST['status'] ?? 'draft') === 'draft') ? 'selected' : ''; ?>>
-                                                <?php echo translate('draft'); ?>
-                                            </option>
-                                            <option value="published" <?php echo (($_POST['status'] ?? '') === 'published') ? 'selected' : ''; ?>>
-                                                <?php echo translate('published'); ?>
-                                            </option>
-                                            <option value="private" <?php echo (($_POST['status'] ?? '') === 'private') ? 'selected' : ''; ?>>
-                                                <?php echo translate('private'); ?>
-                                            </option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="template" class="form-label"><?php echo translate('page_template'); ?></label>
-                                        <select class="form-select" id="template" name="template">
-                                            <option value="default">Default</option>
-                                            <option value="full-width">Full Width</option>
-                                            <option value="landing">Landing Page</option>
-                                            <option value="contact">Contact Page</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="parent_id" class="form-label"><?php echo translate('parent_page'); ?></label>
-                                        <select class="form-select" id="parent_id" name="parent_id">
-                                            <option value=""><?php echo translate('no'); ?> - Pagina principale</option>
-                                            <?php if (isset($data['parentPages'])): ?>
-                                                <?php foreach ($data['parentPages'] as $parent): ?>
-                                                    <option value="<?php echo $parent['id']; ?>" 
-                                                            <?php echo (isset($_POST['parent_id']) && $_POST['parent_id'] == $parent['id']) ? 'selected' : ''; ?>>
-                                                        <?php echo htmlspecialchars($parent['title']); ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="sort_order" class="form-label">Ordine di Visualizzazione</label>
-                                        <input type="number" class="form-control" id="sort_order" name="sort_order" 
-                                               value="<?php echo htmlspecialchars($_POST['sort_order'] ?? '0'); ?>" 
-                                               min="0">
-                                        <div class="form-text">0 = primo nella lista</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Featured Image -->
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0"><?php echo translate('featured_image'); ?></h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="featured_image" class="form-label">Seleziona Immagine</label>
-                                        <input type="text" class="form-control" id="featured_image" name="featured_image" 
-                                               value="<?php echo htmlspecialchars($_POST['featured_image'] ?? ''); ?>" 
-                                               readonly>
-                                        <button type="button" class="btn btn-outline-primary mt-2" id="selectImageBtn">
-                                            <i class="fas fa-images"></i> Scegli Immagine
-                                        </button>
-                                        <button type="button" class="btn btn-outline-danger mt-2" id="removeImageBtn" style="display:none;">
-                                            <i class="fas fa-times"></i> Rimuovi
-                                        </button>
-                                    </div>
-                                    <div id="imagePreview" class="text-center" style="display:none;">
-                                        <img id="previewImg" src="" alt="Preview" class="img-fluid" style="max-height: 200px;">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Actions -->
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> <?php echo translate('save'); ?>
-                                        </button>
-                                        <a href="pages.php" class="btn btn-outline-secondary">
-                                            <?php echo translate('cancel'); ?>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+    <h1 class="h2"><i class="fas fa-file-circle-plus me-2"></i><?php echo TranslationManager::t('add_page'); ?></h1>
+    <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
+        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/pages/page'; ?>" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back'); ?></a>
     </div>
 </div>
 
-<!-- TinyMCE Editor -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-tinymce.init({
-    selector: '.tinymce-editor',
-    height: 400,
-    menubar: true,
-    plugins: [
-        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-        'insertdatetime', 'media', 'table', 'help', 'wordcount'
-    ],
-    toolbar: 'undo redo | blocks | ' +
-        'bold italic forecolor | alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'removeformat | image media link | code | help',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-    language: '<?php echo get_current_language(); ?>',
-    relative_urls: false,
-    remove_script_host: false,
-    convert_urls: true,
-    branding: false,
-    image_uploadtab: true,
-    automatic_uploads: true,
-    file_picker_types: 'image',
-    file_picker_callback: function(cb, value, meta) {
-        if (meta.filetype === 'image') {
-            openMediaLibrary(function(imageUrl) {
-                cb(imageUrl, { alt: '' });
-            });
-        }
-    }
-});
-
-// Image selection functionality
-document.getElementById('selectImageBtn').addEventListener('click', function() {
-    openMediaLibrary(function(imageUrl) {
-        document.getElementById('featured_image').value = imageUrl;
-        document.getElementById('previewImg').src = imageUrl;
-        document.getElementById('imagePreview').style.display = 'block';
-        document.getElementById('removeImageBtn').style.display = 'inline-block';
-    });
-});
-
-document.getElementById('removeImageBtn').addEventListener('click', function() {
-    document.getElementById('featured_image').value = '';
-    document.getElementById('imagePreview').style.display = 'none';
-    this.style.display = 'none';
-});
-
-// Enhanced media library opener
-function openMediaLibrary(callback) {
-    // Create modal for media selection
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'mediaLibraryModal';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Seleziona Media</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<form method="POST" action="<?php echo get_setting('site_url', 'http://localhost') . '/admin/pages/page/store'; ?>">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 shadow">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('page_content'); ?></h6>
                 </div>
-                <div class="modal-body p-0">
-                    <iframe src="media-selector.php" style="width:100%; height:500px; border:none;"></iframe>
+                <div class="card-body">
+                    <?php $defaultLang = get_default_public_language_from_db(); ?>
+                    <?php if (empty($activeLanguages)): ?>
+                        <div class="alert alert-warning mb-0"><?php echo TranslationManager::t('no_active_languages'); ?></div>
+                    <?php else: ?>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <?php $i=0; foreach ($activeLanguages as $lang): $code=$lang['code']; ?>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link <?php echo $i===0? 'active':''; ?>" id="tab-<?php echo $code; ?>" data-bs-toggle="tab" data-bs-target="#pane-<?php echo $code; ?>" type="button" role="tab">
+                                        <?php echo htmlspecialchars(strtoupper($code).' - '.$lang['name']); ?><?php echo $code === $defaultLang ? ' *' : ''; ?>
+                                    </button>
+                                </li>
+                            <?php $i++; endforeach; ?>
+                        </ul>
+                        <div class="tab-content border border-top-0 p-3">
+                            <?php $i=0; foreach ($activeLanguages as $lang): $code=$lang['code']; ?>
+                                <div class="tab-pane fade <?php echo $i===0? 'show active':''; ?>" id="pane-<?php echo $code; ?>" role="tabpanel">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="title-<?php echo $code; ?>"><?php echo TranslationManager::t('page_title'); ?> (<?php echo strtoupper($code); ?>)<?php echo $code === $defaultLang ? ' *' : ''; ?></label>
+                                        <input type="text" class="form-control" id="title-<?php echo $code; ?>" name="translations[<?php echo $code; ?>][title]" value="<?php echo htmlspecialchars($_POST['translations'][$code]['title'] ?? ''); ?>" maxlength="255" <?php echo $code === $defaultLang ? 'required' : ''; ?>>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="content-<?php echo $code; ?>"><?php echo TranslationManager::t('page_content'); ?> (<?php echo strtoupper($code); ?>)</label>
+                                        <textarea class="form-control tinymce-editor" id="content-<?php echo $code; ?>" name="translations[<?php echo $code; ?>][content]" rows="10"><?php echo htmlspecialchars($_POST['translations'][$code]['content'] ?? ''); ?></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="meta_title-<?php echo $code; ?>"><?php echo TranslationManager::t('meta_title'); ?> (<?php echo strtoupper($code); ?>)</label>
+                                        <input type="text" class="form-control" id="meta_title-<?php echo $code; ?>" name="translations[<?php echo $code; ?>][meta_title]" value="<?php echo htmlspecialchars($_POST['translations'][$code]['meta_title'] ?? ''); ?>" maxlength="255">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="meta_description-<?php echo $code; ?>"><?php echo TranslationManager::t('meta_description'); ?> (<?php echo strtoupper($code); ?>)</label>
+                                        <textarea class="form-control" id="meta_description-<?php echo $code; ?>" name="translations[<?php echo $code; ?>][meta_description]" rows="3" maxlength="160"><?php echo htmlspecialchars($_POST['translations'][$code]['meta_description'] ?? ''); ?></textarea>
+                                    </div>
+                                </div>
+                            <?php $i++; endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-    `;
-    
-    document.body.appendChild(modal);
-    const bsModal = new bootstrap.Modal(modal);
-    bsModal.show();
-    
-    // Handle media selection
-    window.onMediaSelected = function(media) {
-        callback(media.url);
-        bsModal.hide();
-        modal.remove();
-    };
-    
-    // Handle messages from iframe
-    window.addEventListener('message', function(e) {
-        if (e.data.type === 'mediaSelected') {
-            callback(e.data.media.url);
-            bsModal.hide();
-            modal.remove();
-        } else if (e.data.type === 'closeModal') {
-            bsModal.hide();
-            modal.remove();
-        }
-    });
-}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow">
+                <div class="card-header"><h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('page_settings'); ?></h6></div>
+                <div class="card-body">
+                    <?php echo csrf_token_field(); ?>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="is_published" name="is_published" value="1" <?php echo !empty($_POST['is_published']) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="is_published"><?php echo TranslationManager::t('published'); ?></label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sort_order" class="form-label"><?php echo TranslationManager::t('display_order'); ?></label>
+                        <input type="number" class="form-control" id="sort_order" name="sort_order" value="<?php echo htmlspecialchars($_POST['sort_order'] ?? '0'); ?>" min="0">
+                        <div class="form-text">0 = <?php echo TranslationManager::t('first_in_list'); ?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i><?php echo TranslationManager::t('save'); ?></button>
+                        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/pages/page'; ?>" class="btn btn-outline-secondary"><?php echo TranslationManager::t('cancel'); ?></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
-// Initialize image preview if image already selected
-document.addEventListener('DOMContentLoaded', function() {
-    const featuredImage = document.getElementById('featured_image').value;
-    if (featuredImage) {
-        document.getElementById('previewImg').src = featuredImage;
-        document.getElementById('imagePreview').style.display = 'block';
-        document.getElementById('removeImageBtn').style.display = 'inline-block';
+<script>
+  const TINYMCE_VARS = {
+    language: '<?php echo $language; ?>',
+    urls: {
+      mediaSelector: '<?php echo get_setting('site_url', 'http://localhost') . '/admin/media/media/mediaSelector'; ?>'
+    },
+    translations: {
+      selectMedia: '<?php echo TranslationManager::t("select_media"); ?>'
+    },
+    // Selettori/ID usati nella pagina
+    selectors: {
+      editor: '.tinymce-editor',
+      selectImageBtn: '#selectImageBtn',
+      removeImageBtn: '#removeImageBtn',
+      featuredImageInput: '#featured_image',
+      imagePreviewWrapper: '#imagePreview',
+      imagePreviewImg: '#previewImg'
     }
-});
+  };
 </script>
-
-<?php include 'includes/footer.php'; ?>
+<?php
+$pageScripts = [
+  get_setting('site_url', 'http://localhost') . '/admin/modules/pages/views/pages/js/create.js',
+];
+?>
+<?php include get_setting('base_path', '/var/www/html') . 'admin/layouts/footer.php'; ?>

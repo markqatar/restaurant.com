@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id']) || !has_permission($_SESSION['user_id'], 'slide
 $controller = new SlideshowController($pdo);
 $data = $controller->create();
 
-$pageTitle = translate('add_slide');
+$pageTitle = TranslationManager::t('add_slide');
 include 'includes/header.php';
 ?>
 
@@ -22,9 +22,9 @@ include 'includes/header.php';
         <div class="col-md-12">
             <div class="main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2><?php echo translate('add_slide'); ?></h2>
+                    <h2><?php echo TranslationManager::t('add_slide'); ?></h2>
                     <a href="slideshows.php" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> <?php echo translate('back'); ?>
+                        <i class="fas fa-arrow-left"></i> <?php echo TranslationManager::t('back'); ?>
                     </a>
                 </div>
 
@@ -45,14 +45,14 @@ include 'includes/header.php';
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="title" class="form-label"><?php echo translate('slide_title'); ?> *</label>
+                                        <label for="title" class="form-label"><?php echo TranslationManager::t('slide_title'); ?> *</label>
                                         <input type="text" class="form-control" id="title" name="title" 
                                                value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>" 
                                                required maxlength="255">
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="image" class="form-label"><?php echo translate('slide_image'); ?> *</label>
+                                        <label for="image" class="form-label"><?php echo TranslationManager::t('slide_image'); ?> *</label>
                                         <input type="text" class="form-control" id="image" name="image" 
                                                value="<?php echo htmlspecialchars($_POST['image'] ?? ''); ?>" 
                                                required readonly>
@@ -70,7 +70,7 @@ include 'includes/header.php';
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="caption" class="form-label"><?php echo translate('slide_caption'); ?></label>
+                                        <label for="caption" class="form-label"><?php echo TranslationManager::t('slide_caption'); ?></label>
                                         <textarea class="form-control" id="caption" name="caption" rows="3" maxlength="500">
                                             <?php echo htmlspecialchars($_POST['caption'] ?? ''); ?>
                                         </textarea>
@@ -142,14 +142,14 @@ include 'includes/header.php';
                                     </div>
                                     
                                     <div class="mb-3" id="url_input" style="display:none;">
-                                        <label for="link_url" class="form-label"><?php echo translate('slide_link_url'); ?></label>
+                                        <label for="link_url" class="form-label"><?php echo TranslationManager::t('slide_link_url'); ?></label>
                                         <input type="url" class="form-control" id="link_url" name="link_url" 
                                                value="<?php echo htmlspecialchars($_POST['link_url'] ?? ''); ?>" 
                                                placeholder="https://esempio.com">
                                     </div>
                                     
                                     <div class="mb-3" id="link_text_input" style="display:none;">
-                                        <label for="link_text" class="form-label"><?php echo translate('slide_link_text'); ?></label>
+                                        <label for="link_text" class="form-label"><?php echo TranslationManager::t('slide_link_text'); ?></label>
                                         <input type="text" class="form-control" id="link_text" name="link_text" 
                                                value="<?php echo htmlspecialchars($_POST['link_text'] ?? ''); ?>" 
                                                maxlength="100" placeholder="Scopri di più">
@@ -167,19 +167,19 @@ include 'includes/header.php';
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="status" class="form-label"><?php echo translate('status'); ?></label>
+                                        <label for="status" class="form-label"><?php echo TranslationManager::t('status'); ?></label>
                                         <select class="form-select" id="status" name="status">
                                             <option value="active" <?php echo (($_POST['status'] ?? 'active') === 'active') ? 'selected' : ''; ?>>
-                                                <?php echo translate('active'); ?>
+                                                <?php echo TranslationManager::t('active'); ?>
                                             </option>
                                             <option value="inactive" <?php echo (($_POST['status'] ?? '') === 'inactive') ? 'selected' : ''; ?>>
-                                                <?php echo translate('inactive'); ?>
+                                                <?php echo TranslationManager::t('inactive'); ?>
                                             </option>
                                         </select>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="sort_order" class="form-label"><?php echo translate('slide_sort_order'); ?></label>
+                                        <label for="sort_order" class="form-label"><?php echo TranslationManager::t('slide_sort_order'); ?></label>
                                         <input type="number" class="form-control" id="sort_order" name="sort_order" 
                                                value="<?php echo htmlspecialchars($_POST['sort_order'] ?? '0'); ?>" 
                                                min="0">
@@ -193,10 +193,10 @@ include 'includes/header.php';
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> <?php echo translate('save'); ?>
+                                            <i class="fas fa-save"></i> <?php echo TranslationManager::t('save'); ?>
                                         </button>
                                         <a href="slideshows.php" class="btn btn-outline-secondary">
-                                            <?php echo translate('cancel'); ?>
+                                            <?php echo TranslationManager::t('cancel'); ?>
                                         </a>
                                     </div>
                                 </div>

@@ -1,16 +1,5 @@
 <?php
-// Include required files
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
-// Set page title before including header
-$page_title = TranslationManager::t('user.groups') . ' - Restaurant Admin';
-
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
-
-
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 ?>
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
     <h1 class="h2">

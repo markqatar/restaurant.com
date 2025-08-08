@@ -28,7 +28,7 @@ switch ($action) {
         break;
 }
 
-$pageTitle = translate('articles');
+$pageTitle = TranslationManager::t('articles');
 include 'includes/header.php';
 ?>
 
@@ -38,18 +38,18 @@ include 'includes/header.php';
             <div class="main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h2><?php echo translate('articles'); ?></h2>
+                        <h2><?php echo TranslationManager::t('articles'); ?></h2>
                         <p class="text-muted">Gestisci gli articoli del blog</p>
                     </div>
                     <div>
                         <?php if (has_permission($_SESSION['user_id'], 'categories', 'view')): ?>
                             <a href="categories.php" class="btn btn-outline-secondary me-2">
-                                <i class="fas fa-tags"></i> <?php echo translate('categories'); ?>
+                                <i class="fas fa-tags"></i> <?php echo TranslationManager::t('categories'); ?>
                             </a>
                         <?php endif; ?>
                         <?php if (has_permission($_SESSION['user_id'], 'articles', 'create')): ?>
                             <a href="articles-create.php" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> <?php echo translate('add_article'); ?>
+                                <i class="fas fa-plus"></i> <?php echo TranslationManager::t('add_article'); ?>
                             </a>
                         <?php endif; ?>
                     </div>
@@ -75,15 +75,15 @@ include 'includes/header.php';
                             <table class="table table-striped" id="articlesTable">
                                 <thead>
                                     <tr>
-                                        <th><?php echo translate('id'); ?></th>
+                                        <th><?php echo TranslationManager::t('id'); ?></th>
                                         <th>Anteprima</th>
-                                        <th><?php echo translate('article_title'); ?></th>
-                                        <th><?php echo translate('category'); ?></th>
-                                        <th><?php echo translate('author'); ?></th>
-                                        <th><?php echo translate('article_status'); ?></th>
+                                        <th><?php echo TranslationManager::t('article_title'); ?></th>
+                                        <th><?php echo TranslationManager::t('category'); ?></th>
+                                        <th><?php echo TranslationManager::t('author'); ?></th>
+                                        <th><?php echo TranslationManager::t('article_status'); ?></th>
                                         <th>Visualizzazioni</th>
-                                        <th><?php echo translate('published_at'); ?></th>
-                                        <th><?php echo translate('actions'); ?></th>
+                                        <th><?php echo TranslationManager::t('published_at'); ?></th>
+                                        <th><?php echo TranslationManager::t('actions'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -121,7 +121,7 @@ include 'includes/header.php';
                                             <td><?php echo htmlspecialchars($article['author_name'] ?? 'Sconosciuto'); ?></td>
                                             <td>
                                                 <span class="badge <?php echo $article['status'] === 'published' ? 'bg-success' : ($article['status'] === 'draft' ? 'bg-warning' : 'bg-secondary'); ?>">
-                                                    <?php echo translate($article['status']); ?>
+                                                    <?php echo TranslationManager::t($article['status']); ?>
                                                 </span>
                                             </td>
                                             <td>
@@ -138,14 +138,14 @@ include 'includes/header.php';
                                                 <?php if (has_permission($_SESSION['user_id'], 'articles', 'edit')): ?>
                                                     <a href="articles-edit.php?id=<?php echo $article['id']; ?>" 
                                                        class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-edit"></i> <?php echo translate('edit'); ?>
+                                                        <i class="fas fa-edit"></i> <?php echo TranslationManager::t('edit'); ?>
                                                     </a>
                                                 <?php endif; ?>
                                                 
                                                 <?php if (has_permission($_SESSION['user_id'], 'articles', 'delete')): ?>
                                                     <button type="button" class="btn btn-sm btn-outline-danger ms-1" 
                                                             onclick="confirmDelete(<?php echo $article['id']; ?>, '<?php echo htmlspecialchars($article['title']); ?>')">
-                                                        <i class="fas fa-trash"></i> <?php echo translate('delete'); ?>
+                                                        <i class="fas fa-trash"></i> <?php echo TranslationManager::t('delete'); ?>
                                                     </button>
                                                 <?php endif; ?>
                                             </td>
@@ -165,7 +165,7 @@ include 'includes/header.php';
 $(document).ready(function() {
     $('#articlesTable').DataTable({
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/<?php echo get_current_language(); ?>.json"
+            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/<?php echo $language; ?>.json"
         },
         "order": [[ 0, "desc" ]],
         "pageLength": 25
@@ -174,14 +174,14 @@ $(document).ready(function() {
 
 function confirmDelete(id, title) {
     Swal.fire({
-        title: '<?php echo translate('confirm_delete'); ?>',
+        title: '<?php echo TranslationManager::t('confirm_delete'); ?>',
         text: 'Sei sicuro di voler eliminare l\'articolo "' + title + '"?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: '<?php echo translate('yes_delete'); ?>',
-        cancelButtonText: '<?php echo translate('cancel'); ?>'
+        confirmButtonText: '<?php echo TranslationManager::t('yes_delete'); ?>',
+        cancelButtonText: '<?php echo TranslationManager::t('cancel'); ?>'
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = 'articles.php?action=delete&id=' + id;

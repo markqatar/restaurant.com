@@ -12,7 +12,7 @@ class SlideshowController {
     public function index() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'slideshows', 'view')) {
-            header('Location: /admin/dashboard.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/dashboard.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
@@ -30,7 +30,7 @@ class SlideshowController {
     public function create() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'slideshows', 'create')) {
-            header('Location: /admin/slideshows.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/slideshows.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
 
@@ -49,7 +49,7 @@ class SlideshowController {
                 return [
                     'pages' => $this->slideshow->getPages(),
                     'articles' => $this->slideshow->getArticles(),
-                    'error' => translate('title_required')
+                    'error' => TranslationManager::t('title_required')
                 ];
             }
             
@@ -57,7 +57,7 @@ class SlideshowController {
                 return [
                     'pages' => $this->slideshow->getPages(),
                     'articles' => $this->slideshow->getArticles(),
-                    'error' => translate('image_required')
+                    'error' => TranslationManager::t('image_required')
                 ];
             }
             
@@ -74,13 +74,13 @@ class SlideshowController {
             ];
             
             if ($this->slideshow->createSlide($data)) {
-                header('Location: /admin/slideshows.php?success=' . urlencode(translate('slide_created')));
+                header('Location: /admin/slideshows.php?success=' . urlencode(TranslationManager::t('slide_created')));
                 exit;
             } else {
                 return [
                     'pages' => $this->slideshow->getPages(),
                     'articles' => $this->slideshow->getArticles(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -96,14 +96,14 @@ class SlideshowController {
     public function edit($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'slideshows', 'edit')) {
-            header('Location: /admin/slideshows.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/slideshows.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         $slide = $this->slideshow->getSlideById($id);
         
         if (!$slide) {
-            header('Location: /admin/slideshows.php?error=' . urlencode(translate('slide_not_found')));
+            header('Location: /admin/slideshows.php?error=' . urlencode(TranslationManager::t('slide_not_found')));
             exit;
         }
         
@@ -123,7 +123,7 @@ class SlideshowController {
                     'slide' => $slide,
                     'pages' => $this->slideshow->getPages(),
                     'articles' => $this->slideshow->getArticles(),
-                    'error' => translate('title_required')
+                    'error' => TranslationManager::t('title_required')
                 ];
             }
             
@@ -132,7 +132,7 @@ class SlideshowController {
                     'slide' => $slide,
                     'pages' => $this->slideshow->getPages(),
                     'articles' => $this->slideshow->getArticles(),
-                    'error' => translate('image_required')
+                    'error' => TranslationManager::t('image_required')
                 ];
             }
             
@@ -149,14 +149,14 @@ class SlideshowController {
             ];
             
             if ($this->slideshow->updateSlide($id, $data)) {
-                header('Location: /admin/slideshows.php?success=' . urlencode(translate('slide_updated')));
+                header('Location: /admin/slideshows.php?success=' . urlencode(TranslationManager::t('slide_updated')));
                 exit;
             } else {
                 return [
                     'slide' => $slide,
                     'pages' => $this->slideshow->getPages(),
                     'articles' => $this->slideshow->getArticles(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -173,14 +173,14 @@ class SlideshowController {
     public function delete($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'slideshows', 'delete')) {
-            header('Location: /admin/slideshows.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/slideshows.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         if ($this->slideshow->deleteSlide($id)) {
-            header('Location: /admin/slideshows.php?success=' . urlencode(translate('slide_deleted')));
+            header('Location: /admin/slideshows.php?success=' . urlencode(TranslationManager::t('slide_deleted')));
         } else {
-            header('Location: /admin/slideshows.php?error=' . urlencode(translate('error_occurred')));
+            header('Location: /admin/slideshows.php?error=' . urlencode(TranslationManager::t('error_occurred')));
         }
         exit;
     }

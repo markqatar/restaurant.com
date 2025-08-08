@@ -1,21 +1,4 @@
 <?php
-// Process language changes first to prevent header issues
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
-// Set page title before including header
-$page_title = TranslationManager::t('user.groups') . ' - ' . TranslationManager::t('btn.add_new') . ' - Restaurant Admin';
-
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Function to get CSRF token (if not defined in functions.php)
-if (!function_exists('get_csrf_token')) {
-    function get_csrf_token() {
-        return generate_csrf_token();
-    }
-}
-
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 

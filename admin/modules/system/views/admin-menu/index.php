@@ -1,5 +1,4 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 
@@ -9,7 +8,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
         <?php if (has_permission($_SESSION['user_id'], 'menu', 'create')): ?>
-            <a href="<?php echo admin_url('menu', 'create'); ?>" class="btn btn-primary me-2">
+            <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/system/adminmenu/create'; ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('add.new'); ?>
             </a>
         <?php endif; ?>
@@ -109,7 +108,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                     echo $parent ? htmlspecialchars($parent['title']) : '-';
                                     ?>
                                 <?php else: ?>
-                                    <span class="text-muted">Root</span>
+                                    <span class="text-muted"><?php echo TranslationManager::t('root'); ?></span>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -136,7 +135,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             <td>
                                 <div class="btn-group" role="group">
                                     <?php if (has_permission($_SESSION['user_id'], 'menu', 'update')): ?>
-                                        <a href="<?php echo admin_url('menu', 'edit/' . $item['id']); ?>"
+                                        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/system/adminmenu/edit/' . $item['id']; ?>"
                                            class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
                                             <i class="fas fa-edit"></i>
                                         </a>
@@ -171,7 +170,7 @@ function confirmDelete(id) {
         cancelButtonText: '<?php echo TranslationManager::t("cancel"); ?>'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = '<?php echo admin_url("menu", "delete"); ?>/' + id;
+            window.location.href = '<?php echo get_setting('site_url', 'http://localhost') . '/admin/system/adminmenu/delete'; ?>/' + id;
         }
     });
 }

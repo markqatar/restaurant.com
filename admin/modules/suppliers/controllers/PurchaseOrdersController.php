@@ -98,13 +98,13 @@ class PurchaseOrdersController
         $order = $this->model->find((int)$order_id);
         if (!$order) {
             send_notification(TranslationManager::t('purchase_order.msg.not_found'), 'danger');
-            redirect(admin_url('purchase_orders'));
+            redirect(get_setting('site_url', 'http://localhost') . '/admin/suppliers/purchaseorders');
         }
 
         // Solo se lo stato lo consente (bozza o inviato)
         if (!in_array($order['status'], ['sent', 'draft'])) {
             send_notification(TranslationManager::t('purchase_order.msg.not_receivable'), 'warning');
-            redirect(admin_url('purchase_orders'));
+            redirect(get_setting('site_url', 'http://localhost') . '/admin/suppliers/purchaseorders');
         }
 
         $items = $this->model->getItems($order_id); // con nome prodotto, SKU, qty ordinate ecc.

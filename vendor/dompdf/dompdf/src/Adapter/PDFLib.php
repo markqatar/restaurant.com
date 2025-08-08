@@ -979,30 +979,30 @@ class PDFLib implements Canvas
     public function rotate($angle, $x, $y)
     {
         $pdf = $this->_pdf;
-        $pdf->translate($x, $this->_height - $y);
+        $pdf->TranslationManager::t$x, $this->_height - $y);
         $pdf->rotate(-$angle);
-        $pdf->translate(-$x, -$this->_height + $y);
+        $pdf->TranslationManager::t-$x, -$this->_height + $y);
     }
 
     public function skew($angle_x, $angle_y, $x, $y)
     {
         $pdf = $this->_pdf;
-        $pdf->translate($x, $this->_height - $y);
+        $pdf->TranslationManager::t$x, $this->_height - $y);
         $pdf->skew($angle_y, $angle_x); // Needs to be inverted
-        $pdf->translate(-$x, -$this->_height + $y);
+        $pdf->TranslationManager::t-$x, -$this->_height + $y);
     }
 
     public function scale($s_x, $s_y, $x, $y)
     {
         $pdf = $this->_pdf;
-        $pdf->translate($x, $this->_height - $y);
+        $pdf->TranslationManager::t$x, $this->_height - $y);
         $pdf->scale($s_x, $s_y);
-        $pdf->translate(-$x, -$this->_height + $y);
+        $pdf->TranslationManager::t-$x, -$this->_height + $y);
     }
 
-    public function translate($t_x, $t_y)
+    public function TranslationManager::t$t_x, $t_y)
     {
-        $this->_pdf->translate($t_x, -$t_y);
+        $this->_pdf->TranslationManager::t$t_x, -$t_y);
     }
 
     public function transform($a, $b, $c, $d, $e, $f)

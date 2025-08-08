@@ -148,11 +148,11 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             <td>
                                 <div class="btn-group" role="group">
                                     <?php if (has_permission($_SESSION['user_id'], 'branches', 'update')): ?>
-                                        <a href="<?php echo admin_url('branches', 'edit/' . $branch['id']); ?>"
+                                        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/shop/branches/edit/' . $branch['id']; ?>"
                                            class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="<?php echo admin_url('branches', 'manage-users/' . $branch['id']); ?>"
+                                        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/shop/branches/manage-users/' . $branch['id']; ?>"
                                            class="btn btn-sm btn-outline-info" title="<?php echo TranslationManager::t('branch.manage_users'); ?>">
                                             <i class="fas fa-users"></i>
                                         </a>

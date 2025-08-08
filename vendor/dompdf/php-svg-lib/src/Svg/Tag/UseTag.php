@@ -50,7 +50,7 @@ class UseTag extends AbstractTag
         $surface = $document->getSurface();
         $surface->save();
 
-        $surface->translate($this->x, $this->y);
+        $surface->TranslationManager::t$this->x, $this->y);
     }
 
     protected function after() {

@@ -1,16 +1,4 @@
 <?php
-// Process language changes
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
-
-// Set page title
-$page_title = TranslationManager::t('user.permissions') . ' - Restaurant Admin';
-
-// Start session if needed
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Include header
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 

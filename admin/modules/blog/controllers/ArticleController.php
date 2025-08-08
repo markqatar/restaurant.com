@@ -15,7 +15,7 @@ class ArticleController {
     public function index() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'articles', 'view')) {
-            header('Location: /admin/dashboard.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/dashboard.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
@@ -31,7 +31,7 @@ class ArticleController {
     public function create() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'articles', 'create')) {
-            header('Location: /admin/articles.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
 
@@ -51,14 +51,14 @@ class ArticleController {
             if (empty($title)) {
                 return [
                     'categories' => $this->category->getAllCategories(),
-                    'error' => translate('title_required')
+                    'error' => TranslationManager::t('title_required')
                 ];
             }
             
             if (empty($content)) {
                 return [
                     'categories' => $this->category->getAllCategories(),
-                    'error' => translate('content_required')
+                    'error' => TranslationManager::t('content_required')
                 ];
             }
             
@@ -81,12 +81,12 @@ class ArticleController {
             ];
             
             if ($this->article->createArticle($data)) {
-                header('Location: /admin/articles.php?success=' . urlencode(translate('article_created')));
+                header('Location: /admin/articles.php?success=' . urlencode(TranslationManager::t('article_created')));
                 exit;
             } else {
                 return [
                     'categories' => $this->category->getAllCategories(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -98,14 +98,14 @@ class ArticleController {
     public function edit($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'articles', 'edit')) {
-            header('Location: /admin/articles.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         $article = $this->article->getArticleById($id);
         
         if (!$article) {
-            header('Location: /admin/articles.php?error=' . urlencode(translate('article_not_found')));
+            header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('article_not_found')));
             exit;
         }
         
@@ -126,7 +126,7 @@ class ArticleController {
                 return [
                     'article' => $article,
                     'categories' => $this->category->getAllCategories(),
-                    'error' => translate('title_required')
+                    'error' => TranslationManager::t('title_required')
                 ];
             }
             
@@ -134,7 +134,7 @@ class ArticleController {
                 return [
                     'article' => $article,
                     'categories' => $this->category->getAllCategories(),
-                    'error' => translate('content_required')
+                    'error' => TranslationManager::t('content_required')
                 ];
             }
             
@@ -156,13 +156,13 @@ class ArticleController {
             ];
             
             if ($this->article->updateArticle($id, $data)) {
-                header('Location: /admin/articles.php?success=' . urlencode(translate('article_updated')));
+                header('Location: /admin/articles.php?success=' . urlencode(TranslationManager::t('article_updated')));
                 exit;
             } else {
                 return [
                     'article' => $article,
                     'categories' => $this->category->getAllCategories(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -177,14 +177,14 @@ class ArticleController {
     public function delete($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'articles', 'delete')) {
-            header('Location: /admin/articles.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         if ($this->article->deleteArticle($id)) {
-            header('Location: /admin/articles.php?success=' . urlencode(translate('article_deleted')));
+            header('Location: /admin/articles.php?success=' . urlencode(TranslationManager::t('article_deleted')));
         } else {
-            header('Location: /admin/articles.php?error=' . urlencode(translate('error_occurred')));
+            header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('error_occurred')));
         }
         exit;
     }

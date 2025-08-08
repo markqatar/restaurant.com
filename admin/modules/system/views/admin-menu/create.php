@@ -1,5 +1,4 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 
@@ -10,8 +9,8 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="<?php echo admin_url('index'); ?>"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item"><a href="menu-management.php"><?php echo TranslationManager::t('menu.management'); ?></a></li>
+                    <li class="breadcrumb-item"><a><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a><?php echo TranslationManager::t('menu.management'); ?></a></li>
                     <li class="breadcrumb-item active" aria-current="page"><?php echo TranslationManager::t('add.new'); ?></li>
                 </ol>
             </nav>
@@ -77,8 +76,8 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                         <div class="row mb-3">
                             <label for="url" class="col-sm-3 col-form-label"><?php echo TranslationManager::t('url'); ?></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="url" id="url" placeholder="e.g., users.php">
-                                <div class="form-text">Leave empty for parent menu items</div>
+                                <input type="text" class="form-control" name="url" id="url" placeholder="<?php echo TranslationManager::t('example.url'); ?>">
+                                <div class="form-text"><?php echo TranslationManager::t('leave.empty.parent'); ?></div>
                             </div>
                         </div>
 
@@ -86,14 +85,14 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             <label for="icon" class="col-sm-3 col-form-label"><?php echo TranslationManager::t('icon'); ?></label>
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="icon" id="icon" value="fas fa-circle" placeholder="fas fa-circle">
+                                    <input type="text" class="form-control" name="icon" id="icon" value="<?php echo TranslationManager::t('icon.placeholder'); ?>" placeholder="<?php echo TranslationManager::t('icon.placeholder'); ?>">
                                     <button class="btn btn-outline-secondary" type="button" onclick="showIconPicker()">
                                         <i class="fas fa-icons"></i>
                                     </button>
                                 </div>
                                 <div class="form-text">
-                                    Preview: <i id="icon-preview" class="fas fa-circle"></i>
-                                    <a href="https://fontawesome.com/icons" target="_blank">Browse FontAwesome Icons</a>
+                                    <?php echo TranslationManager::t('preview'); ?>: <i id="icon-preview" class="fas fa-circle"></i>
+                                    <a href="https://fontawesome.com/icons" target="_blank"><?php echo TranslationManager::t('browse.icons'); ?></a>
                                 </div>
                             </div>
                         </div>
@@ -108,8 +107,8 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                         <div class="row mb-3">
                             <label for="permission_module" class="col-sm-3 col-form-label"><?php echo TranslationManager::t('permission.module'); ?></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="permission_module" id="permission_module" placeholder="e.g., users">
-                                <div class="form-text">Leave empty for no permission check</div>
+                                <input type="text" class="form-control" name="permission_module" id="permission_module" placeholder="<?php echo TranslationManager::t('example.module'); ?>">
+                                <div class="form-text"><?php echo TranslationManager::t('leave.empty.permission'); ?></div>
                             </div>
                         </div>
 
@@ -117,10 +116,10 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             <label for="permission_action" class="col-sm-3 col-form-label"><?php echo TranslationManager::t('permission.action'); ?></label>
                             <div class="col-sm-9">
                                 <select class="form-select" name="permission_action" id="permission_action">
-                                    <option value="view">View</option>
-                                    <option value="create">Create</option>
-                                    <option value="update">Update</option>
-                                    <option value="delete">Delete</option>
+                                    <option value="view"><?php echo TranslationManager::t('permission.action.view'); ?></option>
+                                    <option value="create"><?php echo TranslationManager::t('permission.action.create'); ?></option>
+                                    <option value="update"><?php echo TranslationManager::t('permission.action.update'); ?></option>
+                                    <option value="delete"><?php echo TranslationManager::t('permission.action.delete'); ?></option>
                                 </select>
                             </div>
                         </div>
@@ -129,8 +128,8 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                             <label for="target" class="col-sm-3 col-form-label"><?php echo TranslationManager::t('target'); ?></label>
                             <div class="col-sm-9">
                                 <select class="form-select" name="target" id="target">
-                                    <option value="_self">Same Window</option>
-                                    <option value="_blank">New Window</option>
+                                    <option value="_self"><?php echo TranslationManager::t('same.window'); ?></option>
+                                    <option value="_blank"><?php echo TranslationManager::t('new.window'); ?></option>
                                 </select>
                             </div>
                         </div>
@@ -138,7 +137,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                         <div class="row mb-3">
                             <label for="css_class" class="col-sm-3 col-form-label"><?php echo TranslationManager::t('css.class'); ?></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="css_class" id="css_class" placeholder="custom-class">
+                                <input type="text" class="form-control" name="css_class" id="css_class" placeholder="<?php echo TranslationManager::t('custom.class.placeholder'); ?>">
                             </div>
                         </div>
 
@@ -172,7 +171,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                 <button type="submit" class="btn btn-primary px-5">
                                     <i class="bx bx-save"></i> <?php echo TranslationManager::t('save'); ?>
                                 </button>
-                                <a href="menu-management.php" class="btn btn-secondary px-5 ms-2">
+                                <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/system/adminmenu'; ?>" class="btn btn-secondary px-5 ms-2">
                                     <i class="bx bx-x"></i> <?php echo TranslationManager::t('cancel'); ?>
                                 </a>
                             </div>
@@ -192,7 +191,7 @@ document.getElementById('icon').addEventListener('input', function() {
 });
 
 function showIconPicker() {
-    alert('Please visit https://fontawesome.com/icons to browse and copy icon classes');
+    alert('<?php echo TranslationManager::t('browse.icons.info'); ?>');
 }
 </script>
 

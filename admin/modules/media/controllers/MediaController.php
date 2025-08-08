@@ -1,18 +1,18 @@
 <?php
 require_once __DIR__ . '/../models/Media.php';
-require_once __DIR__ . '/../includes/functions.php';
 
 class MediaController {
     private $media;
     
-    public function __construct($pdo) {
-        $this->media = new Media($pdo);
+    public function __construct() {
+        $this->media = new Media();
+        TranslationManager::loadModuleTranslations('media');
     }
     
     public function index() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'media', 'view')) {
-            header('Location: /admin/dashboard.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/dashboard.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
@@ -29,7 +29,7 @@ class MediaController {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'media', 'upload')) {
             header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => translate('no_permission')]);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('no_permission')]);
             exit;
         }
 
@@ -54,7 +54,7 @@ class MediaController {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'media', 'edit')) {
             header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => translate('no_permission')]);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('no_permission')]);
             exit;
         }
         
@@ -71,10 +71,10 @@ class MediaController {
             
             if ($this->media->updateMedia($id, $data)) {
                 header('Content-Type: application/json');
-                echo json_encode(['success' => true, 'message' => translate('media_updated')]);
+                echo json_encode(['success' => true, 'message' => TranslationManager::t('media_updated')]);
             } else {
                 header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => translate('error_occurred')]);
+                echo json_encode(['success' => false, 'message' => TranslationManager::t('error_occurred')]);
             }
             exit;
         }
@@ -84,25 +84,28 @@ class MediaController {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'media', 'delete')) {
             header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => translate('no_permission')]);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('no_permission')]);
             exit;
         }
         
         if ($this->media->deleteMedia($id)) {
             header('Content-Type: application/json');
-            echo json_encode(['success' => true, 'message' => translate('media_deleted')]);
+            echo json_encode(['success' => true, 'message' => TranslationManager::t('media_deleted')]);
         } else {
             header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => translate('error_occurred')]);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('error_occurred')]);
         }
         exit;
     }
-    
+    public function mediaSelector() {
+        include __DIR__ . '/../views/media-library/media-selector.php';    
+    }
+
     public function getMediaLibrary() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'media', 'view')) {
             header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => translate('no_permission')]);
+            echo json_encode(['success' => false, 'message' => TranslationManager::t('no_permission')]);
             exit;
         }
         

@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id']) || !has_permission($_SESSION['user_id'], 'artic
 $controller = new ArticleController($pdo);
 $data = $controller->create();
 
-$pageTitle = translate('add_article');
+$pageTitle = TranslationManager::t('add_article');
 include 'includes/header.php';
 ?>
 
@@ -17,9 +17,9 @@ include 'includes/header.php';
         <div class="col-md-12">
             <div class="main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2><?php echo translate('add_article'); ?></h2>
+                    <h2><?php echo TranslationManager::t('add_article'); ?></h2>
                     <a href="articles.php" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> <?php echo translate('back'); ?>
+                        <i class="fas fa-arrow-left"></i> <?php echo TranslationManager::t('back'); ?>
                     </a>
                 </div>
 
@@ -36,25 +36,25 @@ include 'includes/header.php';
                             <!-- Main Content -->
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0"><?php echo translate('article_content'); ?></h5>
+                                    <h5 class="card-title mb-0"><?php echo TranslationManager::t('article_content'); ?></h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="title" class="form-label"><?php echo translate('article_title'); ?> *</label>
+                                        <label for="title" class="form-label"><?php echo TranslationManager::t('article_title'); ?> *</label>
                                         <input type="text" class="form-control" id="title" name="title" 
                                                value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>" 
                                                required maxlength="255">
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="content" class="form-label"><?php echo translate('article_content'); ?> *</label>
+                                        <label for="content" class="form-label"><?php echo TranslationManager::t('article_content'); ?> *</label>
                                         <textarea class="form-control tinymce-editor" id="content" name="content" rows="15">
                                             <?php echo htmlspecialchars($_POST['content'] ?? ''); ?>
                                         </textarea>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="excerpt" class="form-label"><?php echo translate('article_excerpt'); ?></label>
+                                        <label for="excerpt" class="form-label"><?php echo TranslationManager::t('article_excerpt'); ?></label>
                                         <textarea class="form-control" id="excerpt" name="excerpt" rows="3" maxlength="500">
                                             <?php echo htmlspecialchars($_POST['excerpt'] ?? ''); ?>
                                         </textarea>
@@ -66,19 +66,19 @@ include 'includes/header.php';
                             <!-- SEO Settings -->
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0"><?php echo translate('seo_settings'); ?></h5>
+                                    <h5 class="card-title mb-0"><?php echo TranslationManager::t('seo_settings'); ?></h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="meta_title" class="form-label"><?php echo translate('meta_title'); ?></label>
+                                        <label for="meta_title" class="form-label"><?php echo TranslationManager::t('meta_title'); ?></label>
                                         <input type="text" class="form-control" id="meta_title" name="meta_title" 
                                                value="<?php echo htmlspecialchars($_POST['meta_title'] ?? ''); ?>" 
                                                maxlength="255">
-                                        <div class="form-text"><?php echo translate('optional'); ?> - Se vuoto, sarà usato il titolo dell'articolo</div>
+                                        <div class="form-text"><?php echo TranslationManager::t('optional'); ?> - Se vuoto, sarà usato il titolo dell'articolo</div>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="meta_description" class="form-label"><?php echo translate('meta_description'); ?></label>
+                                        <label for="meta_description" class="form-label"><?php echo TranslationManager::t('meta_description'); ?></label>
                                         <textarea class="form-control" id="meta_description" name="meta_description" rows="3" maxlength="160">
                                             <?php echo htmlspecialchars($_POST['meta_description'] ?? ''); ?>
                                         </textarea>
@@ -86,7 +86,7 @@ include 'includes/header.php';
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="meta_keywords" class="form-label"><?php echo translate('meta_keywords'); ?></label>
+                                        <label for="meta_keywords" class="form-label"><?php echo TranslationManager::t('meta_keywords'); ?></label>
                                         <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" 
                                                value="<?php echo htmlspecialchars($_POST['meta_keywords'] ?? ''); ?>" 
                                                maxlength="255">
@@ -104,22 +104,22 @@ include 'includes/header.php';
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <label for="status" class="form-label"><?php echo translate('article_status'); ?></label>
+                                        <label for="status" class="form-label"><?php echo TranslationManager::t('article_status'); ?></label>
                                         <select class="form-select" id="status" name="status">
                                             <option value="draft" <?php echo (($_POST['status'] ?? 'draft') === 'draft') ? 'selected' : ''; ?>>
-                                                <?php echo translate('draft'); ?>
+                                                <?php echo TranslationManager::t('draft'); ?>
                                             </option>
                                             <option value="published" <?php echo (($_POST['status'] ?? '') === 'published') ? 'selected' : ''; ?>>
-                                                <?php echo translate('published'); ?>
+                                                <?php echo TranslationManager::t('published'); ?>
                                             </option>
                                             <option value="private" <?php echo (($_POST['status'] ?? '') === 'private') ? 'selected' : ''; ?>>
-                                                <?php echo translate('private'); ?>
+                                                <?php echo TranslationManager::t('private'); ?>
                                             </option>
                                         </select>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="category_id" class="form-label"><?php echo translate('article_category'); ?></label>
+                                        <label for="category_id" class="form-label"><?php echo TranslationManager::t('article_category'); ?></label>
                                         <select class="form-select" id="category_id" name="category_id">
                                             <option value="">Nessuna categoria</option>
                                             <?php if (isset($data['categories'])): ?>
@@ -134,7 +134,7 @@ include 'includes/header.php';
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="published_at" class="form-label"><?php echo translate('published_at'); ?></label>
+                                        <label for="published_at" class="form-label"><?php echo TranslationManager::t('published_at'); ?></label>
                                         <input type="datetime-local" class="form-control" id="published_at" name="published_at" 
                                                value="<?php echo htmlspecialchars($_POST['published_at'] ?? ''); ?>">
                                         <div class="form-text">Lascia vuoto per pubblicazione immediata</div>
@@ -144,7 +144,7 @@ include 'includes/header.php';
                                         <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" 
                                                <?php echo isset($_POST['is_featured']) ? 'checked' : ''; ?>>
                                         <label class="form-check-label" for="is_featured">
-                                            <?php echo translate('featured_article'); ?>
+                                            <?php echo TranslationManager::t('featured_article'); ?>
                                         </label>
                                         <div class="form-text">Gli articoli in evidenza appaiono in homepage</div>
                                     </div>
@@ -154,7 +154,7 @@ include 'includes/header.php';
                             <!-- Featured Image -->
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0"><?php echo translate('featured_image'); ?></h5>
+                                    <h5 class="card-title mb-0"><?php echo TranslationManager::t('featured_image'); ?></h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
@@ -180,10 +180,10 @@ include 'includes/header.php';
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> <?php echo translate('save'); ?>
+                                            <i class="fas fa-save"></i> <?php echo TranslationManager::t('save'); ?>
                                         </button>
                                         <a href="articles.php" class="btn btn-outline-secondary">
-                                            <?php echo translate('cancel'); ?>
+                                            <?php echo TranslationManager::t('cancel'); ?>
                                         </a>
                                     </div>
                                 </div>
@@ -201,6 +201,9 @@ include 'includes/header.php';
 <script>
 tinymce.init({
     selector: '.tinymce-editor',
+  base_url: '/admin/assets/plugins/tinymce', // cartella "root" di TinyMCE
+  suffix: '.min',                             // se usi i file .min.js
+  license_key: 'gpl',                         // opzionale, non obbligatorio
     height: 500,
     menubar: true,
     plugins: [
@@ -213,7 +216,7 @@ tinymce.init({
         'alignright alignjustify | bullist numlist outdent indent | ' +
         'removeformat | image media link | code | help',
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-    language: '<?php echo get_current_language(); ?>',
+    language: '<?php echo $language; ?>',
     relative_urls: false,
     remove_script_host: false,
     convert_urls: true,

@@ -3,7 +3,7 @@
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
     <h1 class="h2"><i class="fas fa-edit me-2"></i><?php echo TranslationManager::t('supplier.edit_supplier'); ?></h1>
     <div class="btn-toolbar ms-auto">
-        <a href="<?php echo admin_url('suppliers'); ?>" class="btn btn-secondary">
+        <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/suppliers'; ?>" class="btn btn-secondary">
             <i class="fas fa-arrow-left me-1"></i><?php echo TranslationManager::t('back_to_list'); ?>
         </a>
     </div>
@@ -133,7 +133,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save me-1"></i><?php echo TranslationManager::t('btn.save_changes'); ?>
                 </button>
-                <a href="<?php echo admin_url('suppliers'); ?>" class="btn btn-secondary">
+                <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/suppliers'; ?>" class="btn btn-secondary">
                     <i class="fas fa-times me-1"></i><?php echo TranslationManager::t('cancel'); ?>
                 </a>
             </div>

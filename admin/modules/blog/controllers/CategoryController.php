@@ -12,7 +12,7 @@ class CategoryController {
     public function index() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'categories', 'view')) {
-            header('Location: /admin/dashboard.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/dashboard.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
@@ -26,7 +26,7 @@ class CategoryController {
     public function create() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'categories', 'create')) {
-            header('Location: /admin/categories.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
 
@@ -39,7 +39,7 @@ class CategoryController {
             if (empty($name)) {
                 return [
                     'parentCategories' => $this->category->getAllCategories(),
-                    'error' => translate('Category name is required')
+                    'error' => TranslationManager::t('Category name is required')
                 ];
             }
             
@@ -54,12 +54,12 @@ class CategoryController {
             ];
             
             if ($this->category->createCategory($data)) {
-                header('Location: /admin/categories.php?success=' . urlencode(translate('category_created')));
+                header('Location: /admin/categories.php?success=' . urlencode(TranslationManager::t('category_created')));
                 exit;
             } else {
                 return [
                     'parentCategories' => $this->category->getAllCategories(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -71,14 +71,14 @@ class CategoryController {
     public function edit($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'categories', 'edit')) {
-            header('Location: /admin/categories.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         $category = $this->category->getCategoryById($id);
         
         if (!$category) {
-            header('Location: /admin/categories.php?error=' . urlencode(translate('category_not_found')));
+            header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('category_not_found')));
             exit;
         }
         
@@ -92,7 +92,7 @@ class CategoryController {
                 return [
                     'category' => $category,
                     'parentCategories' => $this->category->getAllCategories(),
-                    'error' => translate('Category name is required')
+                    'error' => TranslationManager::t('Category name is required')
                 ];
             }
             
@@ -107,13 +107,13 @@ class CategoryController {
             ];
             
             if ($this->category->updateCategory($id, $data)) {
-                header('Location: /admin/categories.php?success=' . urlencode(translate('category_updated')));
+                header('Location: /admin/categories.php?success=' . urlencode(TranslationManager::t('category_updated')));
                 exit;
             } else {
                 return [
                     'category' => $category,
                     'parentCategories' => $this->category->getAllCategories(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -128,14 +128,14 @@ class CategoryController {
     public function delete($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'categories', 'delete')) {
-            header('Location: /admin/categories.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         if ($this->category->deleteCategory($id)) {
-            header('Location: /admin/categories.php?success=' . urlencode(translate('category_deleted')));
+            header('Location: /admin/categories.php?success=' . urlencode(TranslationManager::t('category_deleted')));
         } else {
-            header('Location: /admin/categories.php?error=' . urlencode(translate('error_occurred')));
+            header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('error_occurred')));
         }
         exit;
     }

@@ -95,10 +95,10 @@ class SurfacePDFLib implements SurfaceInterface
         $this->canvas->rotate($angle);
     }
 
-    public function translate($x, $y)
+    public function TranslationManager::t$x, $y)
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
-        $this->canvas->translate($x, $y);
+        $this->canvas->TranslationManager::t$x, $y);
     }
 
     public function transform($a, $b, $c, $d, $e, $f)

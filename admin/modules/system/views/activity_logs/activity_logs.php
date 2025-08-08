@@ -38,9 +38,9 @@
 </div>
 <script>
     const ACTIVITY_LOGS_VARS = {
-        datatableUrl: '<?php echo module_admin_url("system/systemlogs/datatable"); ?>',
-        restoreUrl: '<?php echo module_admin_url("system/systemlogs/restore"); ?>',
-        logDetailsUrl: '<?php echo module_admin_url("system/systemlogs/getLogDetails"); ?>',
+        datatableUrl: '<?php echo get_setting('site_url', 'http://localhost') . '/admin/system/systemlogs/datatable'; ?>',
+        restoreUrl: '<?php echo get_setting('site_url', 'http://localhost') . '/admin/system/systemlogs/restore'; ?>',
+        logDetailsUrl: '<?php echo get_setting('site_url', 'http://localhost') . '/admin/system/systemlogs/getLogDetails'; ?>',
         csrfToken: '<?php echo csrf_token_field(); ?>',
         translations: {
             confirmTitle: '<?php echo TranslationManager::t("restore.confirm"); ?>',

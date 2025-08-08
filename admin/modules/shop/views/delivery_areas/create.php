@@ -1,11 +1,4 @@
 <?php
-// Controllo autenticazione e permessi
-if (!isset($_SESSION['user_id']) || !has_permission($_SESSION['user_id'], 'delivery_areas', 'create')) {
-    header('Location: ' . admin_url('login'));
-    exit;
-}
-
-
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 

@@ -2,7 +2,7 @@
 <div class="page-breadcrumb d-flex align-items-center mb-3">
   <h1 class="h4"><i class="fas fa-inbox me-2"></i><?php echo TranslationManager::t('purchase_order.receive_title'); ?> #<?php echo (int)$order['id']; ?></h1>
   <div class="ms-auto">
-    <a href="<?php echo admin_url('purchase_orders'); ?>" class="btn btn-outline-secondary btn-sm">
+    <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/purchaseorders'; ?>" class="btn btn-outline-secondary btn-sm">
   <i class="fas fa-arrow-left"></i> <?php echo TranslationManager::t('purchase_order.back_to_list'); ?>
     </a>
   </div>
@@ -10,7 +10,7 @@
 
 <div class="card">
   <div class="card-body">
-    <form id="receiveForm" method="post" action="<?php echo admin_url('purchase_orders/receiveSubmit'); ?>">
+    <form id="receiveForm" method="post" action="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/purchaseorders/receiveSubmit'; ?>">
       <?php echo csrf_token_field(); ?>
       <input type="hidden" name="order_id" value="<?php echo (int)$order['id']; ?>">
 

@@ -4497,7 +4497,7 @@ EOT;
      * @param float $t_x movement to the right
      * @param float $t_y movement to the bottom
      */
-    function translate($t_x, $t_y)
+    function TranslationManager::t$t_x, $t_y)
     {
         $tm = [
             1,

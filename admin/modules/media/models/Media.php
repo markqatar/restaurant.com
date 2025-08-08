@@ -1,16 +1,19 @@
 <?php
 class Media {
-    private $pdo;
+    private $db;
     private $uploadPath;
     
-    public function __construct($pdo) {
-        $this->pdo = $pdo;
+    public function __construct()
+    {
+        $database = Database::getInstance();
+        $this->db = $database->getConnection();
         $this->uploadPath = __DIR__ . '/../uploads/';
         
         // Create upload directory if it doesn't exist
         if (!is_dir($this->uploadPath)) {
             mkdir($this->uploadPath, 0755, true);
         }
+
     }
     
     public function getAllMedia($type = null) {
@@ -25,7 +28,7 @@ class Media {
             
             $sql .= " ORDER BY m.created_at DESC";
             
-            $stmt = $this->pdo->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             
             if ($type) {
                 $stmt->execute([$type . '%']);
@@ -42,7 +45,7 @@ class Media {
     
     public function getMediaById($id) {
         try {
-            $stmt = $this->pdo->prepare("
+            $stmt = $this->db->prepare("
                 SELECT m.*, u.username as uploaded_by_name 
                 FROM media m 
                 LEFT JOIN users u ON m.uploaded_by = u.id 
@@ -91,7 +94,7 @@ class Media {
             }
             
             // Save to database
-            $stmt = $this->pdo->prepare("
+            $stmt = $this->db->prepare("
                 INSERT INTO media (filename, original_name, file_path, file_size, mime_type, alt_text, title, description, uploaded_by, created_at, updated_at) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
@@ -109,7 +112,7 @@ class Media {
             ]);
             
             if ($result) {
-                $mediaId = $this->pdo->lastInsertId();
+                $mediaId = $this->db->lastInsertId();
                 return [
                     'success' => true, 
                     'message' => 'File uploaded successfully.',
@@ -131,7 +134,7 @@ class Media {
     
     public function updateMedia($id, $data) {
         try {
-            $stmt = $this->pdo->prepare("
+            $stmt = $this->db->prepare("
                 UPDATE media 
                 SET alt_text = ?, title = ?, description = ?, updated_at = NOW() 
                 WHERE id = ?
@@ -157,7 +160,7 @@ class Media {
             }
             
             // Delete from database
-            $stmt = $this->pdo->prepare("DELETE FROM media WHERE id = ?");
+            $stmt = $this->db->prepare("DELETE FROM media WHERE id = ?");
             $result = $stmt->execute([$id]);
             
             if ($result) {

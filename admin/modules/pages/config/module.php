@@ -1,17 +1,16 @@
 <?php
 return [
-    'name' => 'Shop',
+    'name' => 'Pages',
     'version' => '1.0.0',
-    'description' => 'Gestione dei negozi e filiali',
-    'icon' => 'fa-store', // Icona FontAwesome
+    'description' => 'Gestione pagine contenuto statico',
+    'icon' => 'fa-file-alt',
     'dependencies' => [
         'system',
         'access-management'
     ],
     'hooks' => [
     ],
-
-    'extends' => 'access-management', // Questo modulo estende access-management
-    'author' => 'Tuo Nome',
+    'extends' => 'access-management',
+    'author' => 'Core',
     'license' => 'MIT'
 ];

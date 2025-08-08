@@ -1,21 +1,4 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
-
-// Imposta il titolo della pagina
-$page_title = TranslationManager::t('user.permissions') . ' - ' . TranslationManager::t('btn.add_new') . ' - Restaurant Admin';
-
-// Avvia sessione se non esiste
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Token CSRF
-if (!function_exists('get_csrf_token')) {
-    function get_csrf_token() {
-        return generate_csrf_token();
-    }
-}
-
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
 ?>
 

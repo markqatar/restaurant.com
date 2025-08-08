@@ -1,166 +1,159 @@
 <?php
 require_once __DIR__ . '/../models/Page.php';
-require_once __DIR__ . '/../includes/functions.php';
 
 class PageController {
-    private $page;
-    
-    public function __construct($pdo) {
-        $this->page = new Page($pdo);
-    }
-    
-    public function index() {
-        // Check permissions
-        if (!has_permission($_SESSION['user_id'], 'pages', 'view')) {
-            header('Location: /admin/dashboard.php?error=' . urlencode(translate('no_permission')));
-            exit;
-        }
-        
-        $pages = $this->page->getAllPages();
-        
-        return [
-            'pages' => $pages
-        ];
-    }
-    
-    public function create() {
-        // Check permissions
-        if (!has_permission($_SESSION['user_id'], 'pages', 'create')) {
-            header('Location: /admin/pages.php?error=' . urlencode(translate('no_permission')));
-            exit;
-        }
+    private $page_model;
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = trim($_POST['title'] ?? '');
-            $content = $_POST['content'] ?? '';
-            $excerpt = trim($_POST['excerpt'] ?? '');
-            $status = $_POST['status'] ?? 'draft';
-            $template = $_POST['template'] ?? 'default';
-            $parent_id = !empty($_POST['parent_id']) ? intval($_POST['parent_id']) : null;
-            $sort_order = intval($_POST['sort_order'] ?? 0);
-            $featured_image = $_POST['featured_image'] ?? null;
-            $meta_title = trim($_POST['meta_title'] ?? '');
-            $meta_description = trim($_POST['meta_description'] ?? '');
-            $meta_keywords = trim($_POST['meta_keywords'] ?? '');
-            
-            if (empty($title)) {
-                return ['error' => translate('title_required')];
-            }
-            
-            $slug = $this->page->generateSlug($title);
-            
-            $data = [
-                'title' => $title,
-                'slug' => $slug,
-                'content' => $content,
-                'excerpt' => $excerpt,
-                'status' => $status,
-                'template' => $template,
-                'parent_id' => $parent_id,
-                'sort_order' => $sort_order,
-                'author_id' => $_SESSION['user_id'],
-                'featured_image' => $featured_image,
-                'meta_title' => $meta_title,
-                'meta_description' => $meta_description,
-                'meta_keywords' => $meta_keywords
-            ];
-            
-            if ($this->page->createPage($data)) {
-                header('Location: /admin/pages.php?success=' . urlencode(translate('page_created')));
-                exit;
-            } else {
-                return ['error' => translate('error_occurred')];
-            }
-        }
-        
-        $parentPages = $this->page->getAllPages('published');
-        return ['parentPages' => $parentPages];
+    public function __construct() {
+        $this->page_model = new Page();
+        TranslationManager::loadModuleTranslations('pages');
     }
-    
+
+    // List pages
+    public function index() {
+        if (!has_permission($_SESSION['user_id'], 'pages', 'view')) {
+            send_notification('msg.no_permission', 'danger');
+            redirect(get_setting('site_url','/admin') . '/admin/dashboard');
+        }
+        $pages = $this->page_model->getAll();
+        $page_title = TranslationManager::t('page.management');
+        include __DIR__ . '/../views/pages/index.php';
+    }
+
+    // Show create form
+    public function create() {
+        if (!has_permission($_SESSION['user_id'], 'pages', 'create')) {
+            send_notification('msg.no_permission', 'danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages');
+        }
+    $page_title = TranslationManager::t('page.add');
+    $languages = get_available_languages_from_db('public');
+    $activeLanguages = array_filter($languages, function($l){return (int)$l['is_active_public'] === 1;});
+        include __DIR__ . '/../views/pages/create.php';
+    }
+
+    // Store page
+    public function store() {
+        if (!has_permission($_SESSION['user_id'], 'pages', 'create')) {
+            send_notification('msg.no_permission', 'danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages');
+        }
+        if ($_POST) {
+            if (!verify_csrf_token($_POST['csrf_token'])) {
+                send_notification('msg.invalid_token','danger');
+                redirect(get_setting('site_url','/admin') . '/admin/pages/create');
+            }
+            $is_published = isset($_POST['is_published']) ? 1 : 0; // maintained naming
+            $sort_order = (int)($_POST['sort_order'] ?? 0);
+
+            $translationsInput = $_POST['translations'] ?? [];
+            // Ensure default language title exists
+            $defaultLang = get_default_public_language_from_db();
+            $defaultTitle = trim($translationsInput[$defaultLang]['title'] ?? '');
+            if ($defaultTitle === '') {
+                send_notification('page.title_required','danger');
+                redirect(get_setting('site_url','/admin') . '/admin/pages/create');
+            }
+
+            // Prepare translations array with slug generation
+            $translations = [];
+            foreach ($translationsInput as $lang => $vals) {
+                $title = trim($vals['title'] ?? '');
+                if ($title === '') continue; // skip empties
+                $slug = $vals['slug'] ?? $this->page_model->generateSlug($title, $lang);
+                $translations[$lang] = [
+                    'title' => $title,
+                    'slug' => $slug,
+                    'content' => $vals['content'] ?? null,
+                    'meta_title' => $vals['meta_title'] ?? null,
+                    'meta_description' => $vals['meta_description'] ?? null,
+                ];
+            }
+
+            $baseData = [ 'is_published' => $is_published, 'sort_order' => $sort_order ];
+            $pageId = $this->page_model->create($baseData, $translations);
+            if ($pageId) {
+                send_notification('page.saved_success','success');
+                redirect(get_setting('site_url','/admin') . '/admin/pages');
+            }
+            send_notification('page.error_process','danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages/create');
+        }
+    }
+
+    // Edit form
     public function edit($id) {
-        // Check permissions
         if (!has_permission($_SESSION['user_id'], 'pages', 'edit')) {
-            header('Location: /admin/pages.php?error=' . urlencode(translate('no_permission')));
-            exit;
+            send_notification('msg.no_permission', 'danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages');
         }
-        
-        $page = $this->page->getPageById($id);
-        
+    $page = $this->page_model->find($id);
         if (!$page) {
-            header('Location: /admin/pages.php?error=' . urlencode(translate('page_not_found')));
-            exit;
+            send_notification('page.page_not_found','danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages');
         }
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = trim($_POST['title'] ?? '');
-            $content = $_POST['content'] ?? '';
-            $excerpt = trim($_POST['excerpt'] ?? '');
-            $status = $_POST['status'] ?? 'draft';
-            $template = $_POST['template'] ?? 'default';
-            $parent_id = !empty($_POST['parent_id']) ? intval($_POST['parent_id']) : null;
-            $sort_order = intval($_POST['sort_order'] ?? 0);
-            $featured_image = $_POST['featured_image'] ?? null;
-            $meta_title = trim($_POST['meta_title'] ?? '');
-            $meta_description = trim($_POST['meta_description'] ?? '');
-            $meta_keywords = trim($_POST['meta_keywords'] ?? '');
-            
-            if (empty($title)) {
-                return [
-                    'page' => $page,
-                    'parentPages' => $this->page->getAllPages('published'),
-                    'error' => translate('title_required')
-                ];
-            }
-            
-            $slug = $this->page->generateSlug($title, $id);
-            
-            $data = [
-                'title' => $title,
-                'slug' => $slug,
-                'content' => $content,
-                'excerpt' => $excerpt,
-                'status' => $status,
-                'template' => $template,
-                'parent_id' => $parent_id,
-                'sort_order' => $sort_order,
-                'featured_image' => $featured_image,
-                'meta_title' => $meta_title,
-                'meta_description' => $meta_description,
-                'meta_keywords' => $meta_keywords
-            ];
-            
-            if ($this->page->updatePage($id, $data)) {
-                header('Location: /admin/pages.php?success=' . urlencode(translate('page_updated')));
-                exit;
-            } else {
-                return [
-                    'page' => $page,
-                    'parentPages' => $this->page->getAllPages('published'),
-                    'error' => translate('error_occurred')
-                ];
-            }
-        }
-        
-        $parentPages = $this->page->getAllPages('published');
-        return [
-            'page' => $page,
-            'parentPages' => $parentPages
-        ];
+    $page_title = TranslationManager::t('page.edit');
+    $languages = get_available_languages_from_db('public');
+    $activeLanguages = array_filter($languages, function($l){return (int)$l['is_active_public'] === 1;});
+        include __DIR__ . '/../views/pages/edit.php';
     }
-    
+
+    // Update page
+    public function update($id) {
+        if (!has_permission($_SESSION['user_id'], 'pages', 'edit')) {
+            send_notification('msg.no_permission', 'danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages');
+        }
+        if ($_POST) {
+            if (!verify_csrf_token($_POST['csrf_token'])) {
+                send_notification('msg.invalid_token','danger');
+                redirect(get_setting('site_url','/admin') . '/admin/pages/edit/' . $id);
+            }
+            $is_published = isset($_POST['is_published']) ? 1 : 0;
+            $sort_order = (int)($_POST['sort_order'] ?? 0);
+            $translationsInput = $_POST['translations'] ?? [];
+            $defaultLang = get_default_public_language_from_db();
+            $defaultTitle = trim($translationsInput[$defaultLang]['title'] ?? '');
+            if ($defaultTitle === '') {
+                send_notification('page.title_required','danger');
+                redirect(get_setting('site_url','/admin') . '/admin/pages/edit/' . $id);
+            }
+            $translations = [];
+            foreach ($translationsInput as $lang => $vals) {
+                $title = trim($vals['title'] ?? '');
+                if ($title === '') continue;
+                // If slug present keep, else generate unique (exclude current page id)
+                $slug = $vals['slug'] ?? $this->page_model->generateSlug($title, $lang, $id);
+                $translations[$lang] = [
+                    'title' => $title,
+                    'slug' => $slug,
+                    'content' => $vals['content'] ?? null,
+                    'meta_title' => $vals['meta_title'] ?? null,
+                    'meta_description' => $vals['meta_description'] ?? null,
+                ];
+            }
+            $baseData = [ 'is_published' => $is_published, 'sort_order' => $sort_order ];
+            if ($this->page_model->update($id, $baseData, $translations)) {
+                send_notification('page.updated_success','success');
+                redirect(get_setting('site_url','/admin') . '/admin/pages');
+            }
+            send_notification('page.error_process','danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages/edit/' . $id);
+        }
+    }
+
+    // Delete
     public function delete($id) {
-        // Check permissions
         if (!has_permission($_SESSION['user_id'], 'pages', 'delete')) {
-            header('Location: /admin/pages.php?error=' . urlencode(translate('no_permission')));
-            exit;
+            send_notification('msg.no_permission', 'danger');
+            redirect(get_setting('site_url','/admin') . '/admin/pages');
         }
-        
-        if ($this->page->deletePage($id)) {
-            header('Location: /admin/pages.php?success=' . urlencode(translate('page_deleted')));
+        if ($this->page_model->delete($id)) {
+            send_notification('page.deleted_success','success');
         } else {
-            header('Location: /admin/pages.php?error=' . urlencode(translate('error_occurred')));
+            send_notification('page.error_process','danger');
         }
-        exit;
+        redirect(get_setting('site_url','/admin') . '/admin/pages');
     }
 }
 ?>

@@ -39,7 +39,7 @@ if (isset($_GET['ajax'])) {
 
 $data = $controller->index();
 
-$pageTitle = translate('media_library');
+$pageTitle = TranslationManager::t('media_library');
 include 'includes/header.php';
 ?>
 
@@ -49,12 +49,12 @@ include 'includes/header.php';
             <div class="main-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h2><?php echo translate('media_library'); ?></h2>
+                        <h2><?php echo TranslationManager::t('media_library'); ?></h2>
                         <p class="text-muted">Gestisci immagini e file del sito</p>
                     </div>
                     <?php if (has_permission($_SESSION['user_id'], 'media', 'upload')): ?>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
-                            <i class="fas fa-upload"></i> <?php echo translate('upload_media'); ?>
+                            <i class="fas fa-upload"></i> <?php echo TranslationManager::t('upload_media'); ?>
                         </button>
                     <?php endif; ?>
                 </div>
@@ -150,7 +150,7 @@ include 'includes/header.php';
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php echo translate('upload_media'); ?></h5>
+                <h5 class="modal-title"><?php echo TranslationManager::t('upload_media'); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -166,18 +166,18 @@ include 'includes/header.php';
                     </div>
 
                     <div class="mb-3">
-                        <label for="title" class="form-label"><?php echo translate('media_title'); ?></label>
+                        <label for="title" class="form-label"><?php echo TranslationManager::t('media_title'); ?></label>
                         <input type="text" class="form-control" id="title" name="title" maxlength="255">
                     </div>
 
                     <div class="mb-3">
-                        <label for="alt_text" class="form-label"><?php echo translate('media_alt_text'); ?></label>
+                        <label for="alt_text" class="form-label"><?php echo TranslationManager::t('media_alt_text'); ?></label>
                         <input type="text" class="form-control" id="alt_text" name="alt_text" maxlength="255">
                         <div class="form-text">Importante per SEO e accessibilità</div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="description" class="form-label"><?php echo translate('media_description'); ?></label>
+                        <label for="description" class="form-label"><?php echo TranslationManager::t('media_description'); ?></label>
                         <textarea class="form-control" id="description" name="description" rows="3" maxlength="500"></textarea>
                     </div>
                 </form>
@@ -191,7 +191,7 @@ include 'includes/header.php';
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo translate('cancel'); ?></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo TranslationManager::t('cancel'); ?></button>
                 <button type="button" class="btn btn-primary" onclick="uploadFiles()">
                     <i class="fas fa-upload"></i> Carica
                 </button>
@@ -213,25 +213,25 @@ include 'includes/header.php';
                     <input type="hidden" id="edit_media_id">
 
                     <div class="mb-3">
-                        <label for="edit_title" class="form-label"><?php echo translate('media_title'); ?></label>
+                        <label for="edit_title" class="form-label"><?php echo TranslationManager::t('media_title'); ?></label>
                         <input type="text" class="form-control" id="edit_title" name="title" maxlength="255">
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_alt_text" class="form-label"><?php echo translate('media_alt_text'); ?></label>
+                        <label for="edit_alt_text" class="form-label"><?php echo TranslationManager::t('media_alt_text'); ?></label>
                         <input type="text" class="form-control" id="edit_alt_text" name="alt_text" maxlength="255">
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_description" class="form-label"><?php echo translate('media_description'); ?></label>
+                        <label for="edit_description" class="form-label"><?php echo TranslationManager::t('media_description'); ?></label>
                         <textarea class="form-control" id="edit_description" name="description" rows="3" maxlength="500"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo translate('cancel'); ?></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo TranslationManager::t('cancel'); ?></button>
                 <button type="button" class="btn btn-primary" onclick="updateMedia()">
-                    <i class="fas fa-save"></i> <?php echo translate('save'); ?>
+                    <i class="fas fa-save"></i> <?php echo TranslationManager::t('save'); ?>
                 </button>
             </div>
         </div>

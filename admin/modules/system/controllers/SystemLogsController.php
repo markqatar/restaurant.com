@@ -5,7 +5,7 @@ class SystemLogsController
     public function index()
     {
         if (!has_permission($_SESSION['user_id'], 'system_logs', 'view')) {
-            redirect(admin_url('unauthorized'));
+            redirect(get_setting('site_url', 'http://localhost') . '/admin/unauthorized');
         }
     TranslationManager::loadModuleTranslations('system');
         include admin_module_path('/views/activity_logs/activity_logs.php', 'system');

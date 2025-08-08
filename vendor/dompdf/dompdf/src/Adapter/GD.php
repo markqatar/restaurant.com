@@ -541,7 +541,7 @@ class GD implements Canvas
         // @todo
     }
 
-    public function translate($t_x, $t_y)
+    public function TranslationManager::t$t_x, $t_y)
     {
         // @todo
     }

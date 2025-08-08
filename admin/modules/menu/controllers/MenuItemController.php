@@ -12,7 +12,7 @@ class MenuItemController {
     public function index() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'menu_items', 'view')) {
-            header('Location: /admin/dashboard.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/dashboard.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
@@ -26,7 +26,7 @@ class MenuItemController {
     public function create() {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'menu_items', 'create')) {
-            header('Location: /admin/menu-items.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/menu-items.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
 
@@ -47,7 +47,7 @@ class MenuItemController {
                     'pages' => $this->menuItem->getPages(),
                     'articles' => $this->menuItem->getArticles(),
                     'parentMenuItems' => $this->menuItem->getParentMenuItems(),
-                    'error' => translate('title_required')
+                    'error' => TranslationManager::t('title_required')
                 ];
             }
             
@@ -65,14 +65,14 @@ class MenuItemController {
             ];
             
             if ($this->menuItem->createMenuItem($data)) {
-                header('Location: /admin/menu-items.php?success=' . urlencode(translate('menu_item_created')));
+                header('Location: /admin/menu-items.php?success=' . urlencode(TranslationManager::t('menu_item_created')));
                 exit;
             } else {
                 return [
                     'pages' => $this->menuItem->getPages(),
                     'articles' => $this->menuItem->getArticles(),
                     'parentMenuItems' => $this->menuItem->getParentMenuItems(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -87,14 +87,14 @@ class MenuItemController {
     public function edit($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'menu_items', 'edit')) {
-            header('Location: /admin/menu-items.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/menu-items.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         $menuItem = $this->menuItem->getMenuItemById($id);
         
         if (!$menuItem) {
-            header('Location: /admin/menu-items.php?error=' . urlencode(translate('menu_item_not_found')));
+            header('Location: /admin/menu-items.php?error=' . urlencode(TranslationManager::t('menu_item_not_found')));
             exit;
         }
         
@@ -116,7 +116,7 @@ class MenuItemController {
                     'pages' => $this->menuItem->getPages(),
                     'articles' => $this->menuItem->getArticles(),
                     'parentMenuItems' => $this->menuItem->getParentMenuItems(),
-                    'error' => translate('title_required')
+                    'error' => TranslationManager::t('title_required')
                 ];
             }
             
@@ -134,7 +134,7 @@ class MenuItemController {
             ];
             
             if ($this->menuItem->updateMenuItem($id, $data)) {
-                header('Location: /admin/menu-items.php?success=' . urlencode(translate('menu_item_updated')));
+                header('Location: /admin/menu-items.php?success=' . urlencode(TranslationManager::t('menu_item_updated')));
                 exit;
             } else {
                 return [
@@ -142,7 +142,7 @@ class MenuItemController {
                     'pages' => $this->menuItem->getPages(),
                     'articles' => $this->menuItem->getArticles(),
                     'parentMenuItems' => $this->menuItem->getParentMenuItems(),
-                    'error' => translate('error_occurred')
+                    'error' => TranslationManager::t('error_occurred')
                 ];
             }
         }
@@ -158,14 +158,14 @@ class MenuItemController {
     public function delete($id) {
         // Check permissions
         if (!has_permission($_SESSION['user_id'], 'menu_items', 'delete')) {
-            header('Location: /admin/menu-items.php?error=' . urlencode(translate('no_permission')));
+            header('Location: /admin/menu-items.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
         
         if ($this->menuItem->deleteMenuItem($id)) {
-            header('Location: /admin/menu-items.php?success=' . urlencode(translate('menu_item_deleted')));
+            header('Location: /admin/menu-items.php?success=' . urlencode(TranslationManager::t('menu_item_deleted')));
         } else {
-            header('Location: /admin/menu-items.php?error=' . urlencode(translate('error_occurred')));
+            header('Location: /admin/menu-items.php?error=' . urlencode(TranslationManager::t('error_occurred')));
         }
         exit;
     }

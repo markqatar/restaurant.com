@@ -1,11 +1,5 @@
 <?php
-require_once get_setting('base_path', '/var/www/html') . 'admin/includes/process_language.php';
-$page_title = TranslationManager::t('user.groups') . ' - ' . TranslationManager::t('edit') . ' - Restaurant Admin';
 require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 ?>
 
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
