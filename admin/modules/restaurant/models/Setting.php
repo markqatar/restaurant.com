@@ -6,33 +6,6 @@ class Setting {
     
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
-        $this->createTableIfNotExists();
-    }
-    
-    private function createTableIfNotExists() {
-        $sql = "CREATE TABLE IF NOT EXISTS settings (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            setting_key VARCHAR(255) UNIQUE NOT NULL,
-            setting_value TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        )";
-        
-        $this->db->exec($sql);
-        
-        // Insert default settings if they don't exist
-        $defaults = [
-            'site_name' => 'Restaurant Management System',
-            'site_url' => 'http://localhost',
-            'logo_path' => '',
-            'currency' => 'USD',
-            'timezone' => 'UTC'
-        ];
-        
-        foreach ($defaults as $key => $value) {
-            $stmt = $this->db->prepare("INSERT IGNORE INTO settings (setting_key, setting_value) VALUES (?, ?)");
-            $stmt->execute([$key, $value]);
-        }
     }
     
     public function get($key, $default = null) {

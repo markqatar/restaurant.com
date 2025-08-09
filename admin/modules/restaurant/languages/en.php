@@ -234,5 +234,44 @@ return [
     'confirm_delete' => 'Confirm Delete',
     'yes_delete' => 'Yes, Delete',
 
+    // Recipes Module (namespaced)
+    'restaurant.menu' => 'Restaurant',
+    'restaurant.recipes' => 'Recipes',
+    'restaurant.production' => 'Production',
+    'recipes.title' => 'Recipes',
+    'recipes.action.new' => 'New',
+    'recipes.field.name' => 'Name',
+    'recipes.field.yield' => 'Yield',
+    'recipes.field.components' => 'Components',
+    'recipes.field.actions' => 'Actions',
+    'recipes.action.edit' => 'Edit',
+    'recipes.action.delete' => 'Delete',
+    'recipes.action.production' => 'Production',
+    'recipes.production.batch_title' => 'Production Batch',
+    'recipes.field.output_quantity' => 'Output Quantity',
+    'recipes.field.reference_code' => 'Reference Code',
+    'recipes.msg.batch_success' => 'Batch produced successfully',
+    'recipes.msg.batch_error' => 'Batch production failed',
+    'recipes.components.preview' => 'Components Preview',
+    'recipes.field.base_qty' => 'Base Qty',
+    'recipes.field.scaled_qty' => 'Scaled Qty',
+    'recipes.field.unit' => 'Unit',
+    'recipes.field.yield_label' => 'Yield',
+
+    // Inventory
+    'inventory.title' => 'Inventory',
+    'inventory.field.type' => 'Type',
+    'inventory.field.updated_at' => 'Updated',
+    'inventory.field.quantity' => 'Quantity',
+    'inventory.field.unit' => 'Unit',
+    'recipes.action.add_component' => 'Add Component',
+    'recipes.field.unit' => 'Unit',
+    'recipes.confirm.delete' => 'Delete recipe?',
+    // Inventory movement reasons
+    'inventory.reason.batch_consume' => 'Batch Consumption',
+    'inventory.reason.batch_produce' => 'Batch Production',
+    'inventory.reason.po_receive' => 'Purchase Order Receive',
+    'cancel' => 'Cancel',
+
 ];
 ?>

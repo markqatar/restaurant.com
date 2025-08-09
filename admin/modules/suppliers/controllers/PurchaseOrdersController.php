@@ -259,8 +259,9 @@ class PurchaseOrdersController
         if (!in_array($order['status'], ['sent','draft'])) {
             echo json_encode(['success' => false, 'message' => TranslationManager::t('purchase_order.msg.not_receivable')]); return;
         }
-        // Minimal direct receive: just update status (no pricing capture). For full receive use receiveSubmit.
-        $this->model->updateStatus($id, 'received');
+    // Auto-inventory increment: assume ordered quantity fully received
+    $this->incrementInventoryForOrder($id, null, true);
+    $this->model->updateStatus($id, 'received');
         echo json_encode(['success' => true, 'message' => TranslationManager::t('purchase_order.msg.received_successfully')]);
     }
 
@@ -272,6 +273,9 @@ class PurchaseOrdersController
         }
 
         $order_id = (int)$_POST['order_id'];
+    $order = $this->model->find($order_id);
+    if(!$order){ echo json_encode(['success'=>false,'message'=>TranslationManager::t('purchase_order.msg.not_found')]); return; }
+    if (!in_array($order['status'], ['sent','draft'])) { echo json_encode(['success'=>false,'message'=>TranslationManager::t('purchase_order.msg.not_receivable')]); return; }
     // Set current PO id for barcode persistence context
     $this->currentPoId = $order_id;
         $prices   = $_POST['price'] ?? [];     // price[item_id] => 12.34
@@ -367,7 +371,42 @@ class PurchaseOrdersController
         }
 
         $this->model->updateStatus($order_id, 'received');
+        // Inventory increment using received quantities (fallback to ordered if missing)
+        $this->incrementInventoryForOrder($order_id, $qtys, false);
     echo json_encode(['success' => true, 'message' => TranslationManager::t('purchase_order.msg.received_successfully')]);
+    }
+
+    /**
+     * Increment product inventory for a purchase order when received.
+     * @param int $order_id
+     * @param array|null $receivedQtys keyed by item_id => qty (optional)
+     * @param bool $useOrderedIfEmpty when true, use ordered quantity (for direct receive)
+     */
+    private function incrementInventoryForOrder(int $order_id, ?array $receivedQtys = null, bool $useOrderedIfEmpty = false): void {
+        // Load items with required fields
+        $items = $this->model->getItems($order_id);
+        if(empty($items)) return;
+        // Attempt to load Recipe model for inventory system (lazy) - skip silently if missing
+        $invModel = null;
+        try {
+            $path = get_setting('base_path') . 'admin/modules/restaurant/models/Recipe.php';
+            if (is_file($path)) { require_once $path; $invModel = new Recipe(); }
+        } catch(Exception $e){ $invModel = null; }
+        if(!$invModel || !method_exists($invModel,'adjustInventory')) return; // inventory system not present
+        foreach($items as $it){
+            $qty = null;
+            if($receivedQtys !== null && isset($receivedQtys[$it['id']]) && $receivedQtys[$it['id']] !== ''){
+                $qty = (float)$receivedQtys[$it['id']];
+            } elseif($useOrderedIfEmpty) {
+                $qty = (float)$it['quantity'];
+            }
+            if($qty === null) continue; // nothing to add
+            if($qty <= 0) continue;
+            // Positive delta adds inventory
+            try {
+                $invModel->adjustInventory('product', (int)$it['product_id'], (float)$qty, $it['unit_id'] ? (int)$it['unit_id'] : null, 'po_receive', 'PO-'.$order_id);
+            } catch(Exception $e){ /* swallow inventory errors to not block receiving */ }
+        }
     }
 
     private function generatePDF($order)
