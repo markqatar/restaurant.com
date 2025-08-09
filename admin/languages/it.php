@@ -62,5 +62,33 @@ return [
         'forgot_password' => 'Password dimenticata?',
         'username' => 'Nome utente',
         'password' => 'Password'
+    ],
+
+    // =======================
+    // Modulo Fornitori
+    // =======================
+    'suppliers' => [
+        'products_title' => 'Prodotti',
+        'add_product' => 'Aggiungi Prodotto',
+        'manage_product' => 'Gestione Prodotto',
+        'raw_material' => 'Materia Prima',
+        'generate_barcode' => 'Genera Barcode',
+        'requires_expiry' => 'Richiede Data di Scadenza',
+        'supplier' => 'Fornitore',
+        'unit' => 'Unità',
+        'quantity' => 'Quantità',
+        'quantity_per_unit' => 'Quantità per Unità',
+        'sub_unit_level' => 'Sotto-unità Livello :level',
+        'quantity_for_unit' => 'Quantità per questa Unità',
+        'active' => 'Attivo',
+        'associate' => 'Associa',
+        'associations' => 'Associazioni',
+        'back_to_products' => 'Torna ai Prodotti',
+        'add_sub_unit' => 'Aggiungi Sotto-Unità',
+        'cancel_edit' => 'Annulla Modifica',
+        'confirm_delete' => 'Confermi la cancellazione?',
+        'delete_yes' => 'Sì, elimina',
+        'record_not_found' => 'Record non trovato',
+        'base_quantity_gt_zero' => 'La quantità base deve essere > 0'
     ]
 ];

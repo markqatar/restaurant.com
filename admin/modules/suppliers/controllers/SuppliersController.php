@@ -19,7 +19,7 @@ class SuppliersController
      */
     public function index()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'view')) {
+        if (!can('suppliers', 'view')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
 
@@ -35,7 +35,7 @@ class SuppliersController
      */
     public function create()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'create')) {
+    if (!can('suppliers', 'create')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
 
@@ -50,7 +50,7 @@ class SuppliersController
      */
     public function store()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'create')) {
+    if (!can('suppliers', 'create')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
 
@@ -110,7 +110,7 @@ class SuppliersController
      */
     public function edit($id)
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'update')) {
+    if (!can('suppliers', 'update')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
 
@@ -133,7 +133,7 @@ class SuppliersController
      */
     public function update($id)
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'update')) {
+    if (!can('suppliers', 'update')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
 
@@ -193,7 +193,7 @@ class SuppliersController
      */
     public function delete($id)
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'delete')) {
+    if (!can('suppliers', 'delete')) {
             redirect(__DIR__ . '/../admin/unauthorized.php');
         }
 
@@ -216,7 +216,7 @@ class SuppliersController
 
     public function view($id)
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'view')) {
+    if (!can('suppliers', 'view')) {
             redirect(get_setting('site_url') . '/admin/unauthorized.php');
         }
 

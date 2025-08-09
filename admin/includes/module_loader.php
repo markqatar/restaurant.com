@@ -92,11 +92,32 @@ function load_active_modules()
 {
     $modulesPath = get_setting('base_path') . 'admin/modules/';
     $activeModules = [];
+    $collectedPerms = [];
 
     foreach (glob($modulesPath . '*/config/module.php') as $moduleFile) {
         $moduleDir = basename(dirname(dirname($moduleFile))); // Nome modulo
         $config = include $moduleFile;
         $activeModules[$moduleDir] = $config;
+        if (!empty($config['permissions']) && is_array($config['permissions'])) {
+            foreach ($config['permissions'] as $perm) {
+                // Accept only full quadruples [module, action, name, description]
+                if (is_array($perm) && count($perm) >= 2) {
+                    $collectedPerms[] = [
+                        $perm[0] ?: $moduleDir,
+                        $perm[1] ?? null,
+                        $perm[2] ?? null,
+                        $perm[3] ?? null
+                    ];
+                } elseif (is_string($perm)) {
+                    $collectedPerms[] = [$moduleDir, $perm, null, null];
+                }
+            }
+        }
+    }
+
+    // Register collected permissions once
+    if (!empty($collectedPerms) && function_exists('ensure_permissions')) {
+        ensure_permissions($collectedPerms);
     }
 
     return $activeModules;
@@ -144,7 +165,8 @@ function register_module_hooks($modules)
             if (file_exists($file)) {
                 $hooks = include $file;
                 foreach ($hooks as $hook_name => $callback) {
-                    HookManager::register($hook_name, $callback);
+                    // Updated to use HookManager public API naming
+                    HookManager::registerHook($hook_name, $callback);
                 }
             }
         }

@@ -21,5 +21,10 @@ return [
 
     'extends' => 'shops', // Questo modulo estende Shops
     'author' => 'Tuo Nome',
-    'license' => 'MIT'
+    'license' => 'MIT',
+    'permissions' => [
+        // Placeholder restaurant permissions (adjust with real features)
+        ['restaurant','view','Restaurant View','View restaurant data'],
+        ['restaurant','update','Restaurant Update','Update restaurant data'],
+    ]
 ];

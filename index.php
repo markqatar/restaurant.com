@@ -57,9 +57,22 @@ if (!empty($path_parts[0]) && $path_parts[0] === 'admin') {
 
     array_shift($path_parts); // rimuove "admin"
 
-    // Modulo, controller, action, parametri
+    // Modulo, controller (supporto slug con trattini -> PascalCase), action, parametri
     $module = $path_parts[0] ?? 'dashboard';
-    $controllerName = ucfirst($path_parts[1] ?? $module) . 'Controller';
+    $controllerSegment = $path_parts[1] ?? $module;
+
+    // Converte slug tipo supplier-product-associations => SupplierProductAssociationsController
+    $toControllerClass = function(string $segment): string {
+        // Rimuove caratteri non alfanumerici eccetto il trattino
+        $segment = strtolower($segment);
+        $segment = preg_replace('/[^a-z0-9\-]+/','-', $segment);
+        $parts = array_filter(explode('-', $segment), 'strlen');
+        $pascal = implode('', array_map(fn($p)=>ucfirst($p), $parts));
+        if ($pascal === '') { $pascal = 'Index'; }
+        return $pascal . 'Controller';
+    };
+
+    $controllerName = $toControllerClass($controllerSegment);
     $action = $path_parts[2] ?? 'index';
     $params = array_slice($path_parts, 3);
 

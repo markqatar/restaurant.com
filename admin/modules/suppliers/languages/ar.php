@@ -213,6 +213,8 @@ return [
             'received_qty' => 'الكمية المستلمة',
             'barcode' => 'باركود',
             'notes' => 'ملاحظات',
+            'supplier_reference' => 'مرجع المورد',
+            'order_discount' => 'خصم الأمر (%)',
         ],
         'btn' => [
             'add_row' => 'إضافة صف',
@@ -220,8 +222,9 @@ return [
             'new_order' => 'أمر جديد',
             'confirm_receive' => 'تأكيد الاستلام',
             'download_pdf' => 'تنزيل PDF',
-            'send_order' => 'إرسال الأمر',
+            'send_order' => 'تأكيد الطلب',
             'mark_as_received' => 'وضع علامة مستلم',
+            'edit_order' => 'تعديل الطلب',
         ],
         'placeholder' => [
             'price_per_unit' => 'سعر/وحدة',
@@ -229,18 +232,100 @@ return [
         ],
         'status' => [
             'draft' => 'مسودة',
-            'sent' => 'مرسل',
+            'sent' => 'مؤكد',
             'received' => 'تم الاستلام',
         ],
         'msg' => [
             'add_at_least_one_product' => 'أضف منتجاً واحداً على الأقل',
+            'select_supplier_first' => 'اختر المورد أولاً',
             'created_successfully' => 'تم إنشاء الأمر بنجاح',
             'not_found' => 'أمر الشراء غير موجود',
             'sent_successfully' => 'تم إرسال الأمر بنجاح',
             'invalid_token' => 'رمز غير صالح',
             'received_successfully' => 'تم استلام الأمر بنجاح',
             'not_receivable' => 'الأمر ليس في حالة قابلة للاستلام',
+            'updated_successfully' => 'تم تحديث الأمر بنجاح',
+            'invalid_branch' => 'فرع غير صالح',
+            'confirm_send_title' => 'تأكيد الطلب؟',
+            'confirm_send_button' => 'تأكيد',
+            'confirm_receive_title' => 'وضع علامة تم الاستلام؟',
+            'confirm_receive_button' => 'تأكيد',
+            'generic_ok' => 'حسناً',
+            'generic_error' => 'خطأ',
+            'resent_successfully' => 'تمت إعادة إرسال البريد الإلكتروني للأمر بنجاح',
+            'resending_email' => 'جاري إعادة إرسال بريد الأمر...'
+            ,'sending_order' => 'جاري إرسال الأمر...'
+            ,'receiving_order' => 'جاري إنهاء الاستلام...'
         ],
+        'summary' => [
+            'subtotal' => 'الإجمالي الفرعي',
+            'line_discounts' => 'خصومات السطور',
+            'order_discount_pct' => 'خصم الأمر (%)',
+            'order_discount_val' => 'قيمة خصم الأمر',
+            'net_total' => 'الإجمالي الصافي'
+        ],
+        'history' => [
+            'title' => 'سجل الحالات',
+            'changed_at' => 'تاريخ التغيير',
+            'old_status' => 'الحالة السابقة',
+            'new_status' => 'الحالة الجديدة'
+        ],
+        'validation' => [
+            'fix_invalid_prices' => 'يرجى تصحيح الأسعار غير الصالحة',
+            'expiry_required' => 'تاريخ الصلاحية مطلوب للمنتجات المحددة',
+            'expiry_invalid_format' => 'تنسيق تاريخ الصلاحية غير صالح (متوقع YYYY-MM-DD)'
+        ],
+        'pdf' => [
+            'title' => 'أمر شراء',
+            'footer' => 'تم إنشاء المستند تلقائياً - الرجاء عدم الرد على هذا البريد'
+        ],
+        'email' => [
+            'subject' => 'أمر شراء رقم {order}',
+            'subject_resend' => 'أمر شراء (إعادة إرسال) رقم {order}',
+            'greeting' => 'عزيزي المورد،',
+            'intro' => 'مرفق أمر الشراء الخاص بنا. يمكنك أيضاً تنزيله باستخدام الزر أدناه:',
+            'download_button' => 'تنزيل الأمر',
+            'thanks' => 'شكراً لتعاونكم،',
+            'signature' => 'قسم المشتريات'
+        ],
+        'barcode' => [
+            'title' => 'باركود للأمر',
+            'print_button' => 'طباعة',
+            'generated_total' => 'الباركود المولدة',
+            'none' => 'لم يتم توليد أي باركود لهذا الأمر بعد',
+            'invalid_params' => 'معلمات الباركود غير صالحة',
+            'regenerated' => 'تم توليد الباركود بنجاح'
+        ],
+        'stats' => [
+            'last_price' => 'آخر سعر',
+            'last_purchase_date' => 'تاريخ آخر شراء'
+        ],
+    ],
+
+    // تصنيفات منتجات المورد و الوحدة الأساسية
+    'supplier_product' => [
+        'base_unit' => 'الوحدة الأساسية',
+        'category' => 'التصنيف',
+        'categories' => [
+            'consumables' => 'مستهلكات',
+            'food' => 'طعام',
+            'raw_materials' => 'مواد خام',
+            'houseware' => 'أدوات منزلية'
+        ],
+        'form' => [
+            'product' => 'المنتج',
+            'invoice_name' => 'الاسم في الفاتورة',
+            'unit' => 'الوحدة',
+            'quantity' => 'الكمية',
+            'base_quantity' => 'الكمية بوحدة الأساس (تحويل)',
+            'price' => 'السعر',
+            'currency' => 'العملة'
+        ],
+        'inventory' => [
+            'title' => 'ملخص المخزون',
+            'supplier_units' => 'وحدات المورد',
+            'base_unit_total' => 'إجمالي بوحدة الأساس'
+        ]
     ],
 
 ];

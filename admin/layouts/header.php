@@ -54,6 +54,15 @@ $langCode = $currentLanguage;
   <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 
   <title><?php echo TranslationManager::t('Restaurant Management System'); ?></title>
+<?php
+// Build frontend permission map for current user
+if(isset($_SESSION['user_id'])){
+  $uid = $_SESSION['user_id'];
+  $permMap = load_user_permissions($uid); // uses cache
+  echo "<script>window.APP_PERMISSIONS = ".json_encode($permMap).";</script>";
+  echo "<script src='{$siteUrl}/admin/assets/js/permissions.js'></script>";
+}
+?>
 
   <style>
     .dropdown-menu {

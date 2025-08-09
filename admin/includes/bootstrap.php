@@ -2,6 +2,8 @@
 // Bootstrap file: carica tutte le dipendenze di base
 
 require_once __DIR__ . '/functions.php';
+// Centralized permissions registration
+require_once __DIR__ . '/permissions_bootstrap.php';
 require_once __DIR__ . '/HookManager.php';
 require_once get_setting('base_path', '/var/www/html') . 'includes/session.php';
 require_once get_setting('base_path', '/var/www/html') . 'admin/includes/module_loader.php';

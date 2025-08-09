@@ -14,7 +14,7 @@ class ArticleController {
     
     public function index() {
         // Check permissions
-        if (!has_permission($_SESSION['user_id'], 'articles', 'view')) {
+        if (!can('articles', 'view')) {
             header('Location: /admin/dashboard.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
@@ -30,7 +30,7 @@ class ArticleController {
     
     public function create() {
         // Check permissions
-        if (!has_permission($_SESSION['user_id'], 'articles', 'create')) {
+    if (!can('articles', 'create')) {
             header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
@@ -97,7 +97,7 @@ class ArticleController {
     
     public function edit($id) {
         // Check permissions
-        if (!has_permission($_SESSION['user_id'], 'articles', 'edit')) {
+    if (!can('articles', 'edit')) {
             header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
@@ -176,7 +176,7 @@ class ArticleController {
     
     public function delete($id) {
         // Check permissions
-        if (!has_permission($_SESSION['user_id'], 'articles', 'delete')) {
+    if (!can('articles', 'delete')) {
             header('Location: /admin/articles.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }

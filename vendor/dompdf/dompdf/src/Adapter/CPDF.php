@@ -537,9 +537,9 @@ class CPDF implements Canvas
         $this->_pdf->scale($s_x, $s_y, $x, $y);
     }
 
-    public function TranslationManager::t$t_x, $t_y)
+    public function translate($t_x, $t_y)
     {
-        $this->_pdf->TranslationManager::t$t_x, $t_y);
+        $this->_pdf->translate($t_x, $t_y);
     }
 
     public function transform($a, $b, $c, $d, $e, $f)

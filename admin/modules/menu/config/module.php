@@ -1,6 +1,6 @@
 <?php
 return [
-    'name' => 'Shop',
+    'name' => 'Menu',
     'version' => '1.0.0',
     'description' => 'Gestione dei negozi e filiali',
     'icon' => 'fa-store', // Icona FontAwesome
@@ -13,5 +13,11 @@ return [
 
     'extends' => 'access-management', // Questo modulo estende access-management
     'author' => 'Tuo Nome',
-    'license' => 'MIT'
+    'license' => 'MIT',
+    'permissions' => [
+        ['menu','view','Menu View','View admin menu items'],
+        ['menu','create','Menu Create','Create admin menu items'],
+        ['menu','update','Menu Update','Update admin menu items'],
+        ['menu','delete','Menu Delete','Delete admin menu items'],
+    ]
 ];

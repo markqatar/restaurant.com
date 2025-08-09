@@ -173,15 +173,13 @@ function getDefaultBranchId($user_id) {
  */
 function isSuperAdmin($user_id) {
     global $db;
-    
     $stmt = $db->prepare("
         SELECT ug.group_id
-        FROM user_groups ug
-        JOIN groups g ON ug.group_id = g.id
-        WHERE ug.user_id = ? AND g.name IN ('Super Admin', 'Administrator')
+        FROM `user_group_assignments` ug
+        JOIN `user_groups` g ON ug.group_id = g.id
+        WHERE ug.user_id = :uid AND g.name IN ('Super Admin','Administrator')
     ");
-    $stmt->execute([$user_id]);
-    
+    $stmt->execute([':uid' => $user_id]);
     return $stmt->rowCount() > 0;
 }
 

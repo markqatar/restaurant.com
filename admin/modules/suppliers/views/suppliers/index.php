@@ -7,7 +7,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         <i class="fas fa-truck me-2"></i><?php echo TranslationManager::t('supplier.management'); ?>
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0 ms-auto">
-        <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'create')): ?>
+    <?php if (can('suppliers', 'create')): ?>
             <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/suppliers/create'; ?>" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-1"></i><?php echo TranslationManager::t('supplier.new_supplier'); ?>
             </a>
@@ -116,14 +116,14 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                                         <i class="fas fa-eye"></i>
                                     </a>&nbsp;
 
-                                    <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'update')): ?>
+                                    <?php if (can('suppliers', 'update')): ?>
                                         <a href="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/suppliers/edit'; ?>/<?php echo $supplier['id']; ?>"
                                            class="btn btn-sm btn-outline-primary" title="<?php echo TranslationManager::t('edit'); ?>">
                                             <i class="fas fa-edit"></i>
                                         </a>&nbsp;
                                     <?php endif; ?>
 
-                                    <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'delete')): ?>
+                                    <?php if (can('suppliers', 'delete')): ?>
                                         <button onclick="deleteSupplier(<?php echo $supplier['id']; ?>)"
                                                 class="btn btn-sm btn-outline-danger" title="<?php echo TranslationManager::t('delete'); ?>">
                                             <i class="fas fa-trash"></i>

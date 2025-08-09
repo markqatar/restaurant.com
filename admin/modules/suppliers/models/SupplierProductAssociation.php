@@ -34,7 +34,13 @@ class SupplierProductAssociation
                 (product_id, supplier_id, unit_id, quantity, is_active)
                 VALUES (:product_id, :supplier_id, :unit_id, :quantity, :is_active)";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute($data);
+        $stmt->execute([
+            ':product_id' => $data['product_id'],
+            ':supplier_id' => $data['supplier_id'],
+            ':unit_id' => $data['unit_id'],
+            ':quantity' => $data['quantity'],
+            ':is_active' => $data['is_active']
+        ]);
         return $this->db->lastInsertId(); // FIX
     }
 
@@ -46,16 +52,26 @@ class SupplierProductAssociation
                 quantity = :quantity,
                 is_active = :is_active
                 WHERE id = :id";
-        $data['id'] = $id;
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute($data);
+        return $stmt->execute([
+            ':supplier_id' => $data['supplier_id'],
+            ':unit_id' => $data['unit_id'],
+            ':quantity' => $data['quantity'],
+            ':is_active' => $data['is_active'],
+            ':id' => $id
+        ]);
     }
 
     public function find($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
-        $stmt->execute([':id' => $id]);
-        $record = $stmt->fetch(PDO::FETCH_ASSOC);
+    $sql = "SELECT sp.*, s.name AS supplier_name, u.name AS unit_name
+        FROM {$this->table} sp
+        JOIN suppliers s ON sp.supplier_id = s.id
+        JOIN units u ON sp.unit_id = u.id
+        WHERE sp.id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    $record = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($record) {
             $record['sub_units'] = $this->getSubUnitsBySupplierProduct($id);
         }

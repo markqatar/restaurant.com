@@ -16,7 +16,7 @@ class SupplierContactsController
      */
     public function datatable()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'view')) {
+    if (!can('suppliers', 'view')) {
             http_response_code(403);
             echo json_encode(['error' => 'Permission denied']);
             exit;
@@ -66,7 +66,7 @@ class SupplierContactsController
      */
     public function store()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'update')) {
+    if (!can('suppliers', 'contact.create') && !can('suppliers','contact.update')) {
             http_response_code(403);
             echo json_encode(['error' => 'Permission denied']);
             exit;
@@ -110,7 +110,7 @@ class SupplierContactsController
      */
     public function update()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'update')) {
+    if (!can('suppliers', 'contact.update')) {
             http_response_code(403);
             echo json_encode(['error' => 'Permission denied']);
             exit;
@@ -146,7 +146,7 @@ class SupplierContactsController
      */
     public function delete()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'delete')) {
+    if (!can('suppliers', 'contact.delete')) {
             http_response_code(403);
             echo json_encode(['error' => 'Permission denied']);
             exit;
@@ -169,7 +169,7 @@ class SupplierContactsController
 
     public function get($id)
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'view')) {
+    if (!can('suppliers', 'view')) {
             http_response_code(403);
             echo json_encode(['success' => false, 'message' => 'Permission denied']);
             exit;

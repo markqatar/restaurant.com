@@ -263,6 +263,8 @@ return [
             'received_qty' => 'Received Qty',
             'barcode' => 'Barcode',
             'notes' => 'Notes',
+            'supplier_reference' => 'Supplier Ref.',
+            'order_discount' => 'Order Discount (%)',
         ],
         'btn' => [
             'add_row' => 'Add Row',
@@ -270,8 +272,9 @@ return [
             'new_order' => 'New Order',
             'confirm_receive' => 'Confirm Receipt',
             'download_pdf' => 'Download PDF',
-            'send_order' => 'Send Order',
+            'send_order' => 'Confirm Order',
             'mark_as_received' => 'Mark as Received',
+            'edit_order' => 'Edit Order',
         ],
         'placeholder' => [
             'price_per_unit' => 'Price/unit',
@@ -279,18 +282,100 @@ return [
         ],
         'status' => [
             'draft' => 'Draft',
-            'sent' => 'Sent',
+            'sent' => 'Confirmed',
             'received' => 'Received',
         ],
         'msg' => [
             'add_at_least_one_product' => 'Add at least one product',
+            'select_supplier_first' => 'Select a supplier first',
             'created_successfully' => 'Order created successfully',
             'not_found' => 'Order not found',
             'sent_successfully' => 'Order sent successfully',
             'invalid_token' => 'Invalid token',
             'received_successfully' => 'Order received successfully',
             'not_receivable' => 'The order is not in a receivable state',
+            'updated_successfully' => 'Order updated successfully',
+            'invalid_branch' => 'Invalid branch selection',
+            'confirm_send_title' => 'Confirm order?',
+            'confirm_send_button' => 'Confirm',
+            'confirm_receive_title' => 'Mark as received?',
+            'confirm_receive_button' => 'Confirm',
+            'generic_ok' => 'OK',
+            'generic_error' => 'Error',
+            'resent_successfully' => 'Order email resent successfully',
+            'resending_email' => 'Resending order email...'
+            ,'sending_order' => 'Sending order...'
+            ,'receiving_order' => 'Finalizing receipt...'
         ],
+        'summary' => [
+            'subtotal' => 'Subtotal',
+            'line_discounts' => 'Line Discounts',
+            'order_discount_pct' => 'Order Discount (%)',
+            'order_discount_val' => 'Order Discount Val.',
+            'net_total' => 'Net Total'
+        ],
+        'history' => [
+            'title' => 'Status History',
+            'changed_at' => 'Changed At',
+            'old_status' => 'Old Status',
+            'new_status' => 'New Status'
+        ],
+        'validation' => [
+            'fix_invalid_prices' => 'Fix invalid prices',
+            'expiry_required' => 'Expiry date is required for the indicated products',
+            'expiry_invalid_format' => 'Invalid expiry date format (expected YYYY-MM-DD)'
+        ],
+        'pdf' => [
+            'title' => 'Purchase Order',
+            'footer' => 'Automatically generated document - Do not reply to this email'
+        ],
+        'email' => [
+            'subject' => 'Purchase Order #{order}',
+            'subject_resend' => 'Purchase Order (Resent) #{order}',
+            'greeting' => 'Dear Supplier,',
+            'intro' => 'Please find attached our purchase order. You can also download it using the button below:',
+            'download_button' => 'Download Order',
+            'thanks' => 'Thank you for your cooperation,',
+            'signature' => 'Purchasing Department'
+        ],
+        'barcode' => [
+            'title' => 'Barcodes for Order',
+            'print_button' => 'Print',
+            'generated_total' => 'Generated Barcodes',
+            'none' => 'No barcodes generated for this order yet',
+            'invalid_params' => 'Invalid barcode parameters',
+            'regenerated' => 'Barcodes generated successfully'
+        ],
+        'stats' => [
+            'last_price' => 'Last Price',
+            'last_purchase_date' => 'Last Purchase Date'
+        ],
+    ],
+
+    // Supplier Product Categories & Base Units
+    'supplier_product' => [
+        'base_unit' => 'Base Unit',
+        'category' => 'Category',
+        'categories' => [
+            'consumables' => 'Consumables',
+            'food' => 'Food',
+            'raw_materials' => 'Raw Materials',
+            'houseware' => 'Houseware'
+        ],
+        'form' => [
+            'product' => 'Product',
+            'invoice_name' => 'Invoice Name',
+            'unit' => 'Unit',
+            'quantity' => 'Quantity',
+            'base_quantity' => 'Quantity in Base Unit (conversion)',
+            'price' => 'Price',
+            'currency' => 'Currency'
+        ],
+        'inventory' => [
+            'title' => 'Inventory Summary',
+            'supplier_units' => 'Supplier Units',
+            'base_unit_total' => 'Total Base Units'
+        ]
     ],
 
 ];

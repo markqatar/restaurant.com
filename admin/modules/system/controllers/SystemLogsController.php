@@ -4,7 +4,7 @@ class SystemLogsController
 {
     public function index()
     {
-        if (!has_permission($_SESSION['user_id'], 'system_logs', 'view')) {
+        if (!can('system_logs', 'view')) {
             redirect(get_setting('site_url', 'http://localhost') . '/admin/unauthorized');
         }
     TranslationManager::loadModuleTranslations('system');
@@ -74,7 +74,7 @@ class SystemLogsController
     }
     public function restore()
     {
-        if (!has_permission($_SESSION['user_id'], 'system_logs', 'restore')) {
+    if (!can('system_logs', 'restore')) {
             echo json_encode(['success' => false, 'message' => TranslationManager::t('unauthorized')]);
             exit;
         }

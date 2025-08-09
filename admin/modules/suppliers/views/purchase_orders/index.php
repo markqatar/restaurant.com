@@ -12,6 +12,7 @@
             <thead>
                 <tr>
                     <th><?php echo TranslationManager::t('purchase_order.field.id'); ?></th>
+                    <th><?php echo TranslationManager::t('branch.branch_name'); ?></th>
                     <th><?php echo TranslationManager::t('purchase_order.field.supplier'); ?></th>
                     <th><?php echo TranslationManager::t('purchase_order.field.status'); ?></th>
                     <th><?php echo TranslationManager::t('purchase_order.field.total'); ?></th>

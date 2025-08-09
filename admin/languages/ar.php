@@ -62,5 +62,33 @@ return [
         'forgot_password' => 'هل نسيت كلمة المرور؟',
         'username' => 'اسم المستخدم',
         'password' => 'كلمة المرور'
+    ],
+
+    // =======================
+    // الموردون (وحدات التوريد)
+    // =======================
+    'suppliers' => [
+        'products_title' => 'المنتجات',
+        'add_product' => 'إضافة منتج',
+        'manage_product' => 'إدارة المنتج',
+        'raw_material' => 'مادة أولية',
+        'generate_barcode' => 'توليد باركود',
+        'requires_expiry' => 'يتطلب تاريخ صلاحية',
+        'supplier' => 'المورد',
+        'unit' => 'الوحدة',
+        'quantity' => 'الكمية',
+        'quantity_per_unit' => 'الكمية لكل وحدة',
+        'sub_unit_level' => 'وحدة فرعية مستوى :level',
+        'quantity_for_unit' => 'الكمية لهذه الوحدة',
+        'active' => 'نشط',
+        'associate' => 'ربط',
+        'associations' => 'الروابط',
+        'back_to_products' => 'العودة إلى المنتجات',
+        'add_sub_unit' => 'إضافة وحدة فرعية',
+        'cancel_edit' => 'إلغاء التعديل',
+        'confirm_delete' => 'تأكيد الحذف؟',
+        'delete_yes' => 'نعم، احذف',
+        'record_not_found' => 'السجل غير موجود',
+        'base_quantity_gt_zero' => 'يجب أن تكون الكمية الأساسية > 0'
     ]
 ];

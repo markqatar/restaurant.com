@@ -7,6 +7,8 @@ return [
     'site_url' => 'URL Sito',
     'logo' => 'Logo',
     'currency' => 'Valuta',
+    'currencies' => 'Valute',
+    'currencies_help' => 'Elenco codici valuta abilitati (ISO 4217), la prima è la predefinita',
     'timezone' => 'Fuso Orario',
     'date_format_admin' => 'Formato Data Admin',
     'date_format_public' => 'Formato Data Pubblico',

@@ -7,6 +7,8 @@ return [
     'site_url' => 'Site URL',
     'logo' => 'Logo',
     'currency' => 'Currency',
+    'currencies' => 'Currencies',
+    'currencies_help' => 'List of enabled currency codes (ISO 4217), first is default',
     'timezone' => 'Timezone',
     'date_format_admin' => 'Admin Date Format',
     'date_format_public' => 'Public Date Format',

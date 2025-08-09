@@ -12,9 +12,10 @@ $(document).ready(function () {
         columns: [
             { data: 'id' },
             { data: 'name' },
-            { data: 'is_raw_material', render: val => val == 1 ? 'Sì' : 'No' },
-            { data: 'generate_barcode', render: val => val == 1 ? 'Sì' : 'No' },
-            { data: 'requires_expiry', render: val => val == 1 ? 'Sì' : 'No' },
+            { data: 'is_raw_material', render: val => val == 1 ? '✔' : '' },
+            { data: 'generate_barcode', render: val => val == 1 ? '✔' : '' },
+            { data: 'requires_expiry', render: val => val == 1 ? '✔' : '' },
+            { data: 'base_unit_name', defaultContent: '' },
             {
                 data: 'id',
                 render: data => `
@@ -32,7 +33,7 @@ $(document).ready(function () {
         ]
     });
 
-    // ✅ Mostra SKU se Materia Prima è selezionato
+    // Toggle SKU visibility if raw material selected
     $('#is_raw_material').on('change', function () {
         if ($(this).is(':checked')) {
             $('#skuField').removeClass('d-none');
@@ -55,6 +56,15 @@ $(document).ready(function () {
         }, 'json');
     });
 
+    // ✅ Reset form for new product
+    $('#addProductBtn').on('click', function(){
+        $('#productForm')[0].reset();
+        $('#productId').val('');
+        $('#skuField').addClass('d-none');
+        $('#sku').val('');
+        $('#is_raw_material, #generate_barcode, #requires_expiry').prop('checked', false);
+    });
+
     // ✅ Edit Product
     $(document).on('click', '.edit', function () {
         const id = $(this).data('id');
@@ -67,6 +77,7 @@ $(document).ready(function () {
                 $('#is_raw_material').prop('checked', res.data.is_raw_material == 1);
                 $('#generate_barcode').prop('checked', res.data.generate_barcode == 1);
                 $('#requires_expiry').prop('checked', res.data.requires_expiry == 1);
+                $('#base_unit_id').val(res.data.base_unit_id || '');
                 if (res.data.is_raw_material == 1) {
                     $('#skuField').removeClass('d-none');
                 } else {
@@ -107,6 +118,6 @@ $(document).ready(function () {
     // ✅ Pulsante Associa Fornitori & Units
     $(document).on('click', '.associate', function () {
         const productId = $(this).data('id');
-        window.location.href = `/admin/suppliers/products/associate/${productId}`;
+    window.location.href = `/admin/suppliers/products/associate/${productId}`;
     });
 });

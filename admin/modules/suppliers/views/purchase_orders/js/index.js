@@ -11,6 +11,7 @@ $(document).ready(function () {
         },
         columns: [
             { data: 'id' },
+            { data: 'branch_name', defaultContent: '' },
             { data: 'supplier_name' },
             { data: 'status' },
             { data: 'total_amount' },

@@ -7,6 +7,8 @@ return [
     'site_url' => 'رابط الموقع',
     'logo' => 'الشعار',
     'currency' => 'العملة',
+    'currencies' => 'العملات',
+    'currencies_help' => 'قائمة رموز العملات المفعلة (ISO 4217)، الأولى هي الافتراضية',
     'timezone' => 'المنطقة الزمنية',
     'date_format_admin' => 'تنسيق التاريخ (الإدارة)',
     'date_format_public' => 'تنسيق التاريخ (الموقع)',

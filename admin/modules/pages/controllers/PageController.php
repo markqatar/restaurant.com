@@ -11,7 +11,7 @@ class PageController {
 
     // List pages
     public function index() {
-        if (!has_permission($_SESSION['user_id'], 'pages', 'view')) {
+        if (!can('pages', 'view')) {
             send_notification('msg.no_permission', 'danger');
             redirect(get_setting('site_url','/admin') . '/admin/dashboard');
         }
@@ -22,7 +22,7 @@ class PageController {
 
     // Show create form
     public function create() {
-        if (!has_permission($_SESSION['user_id'], 'pages', 'create')) {
+    if (!can('pages', 'create')) {
             send_notification('msg.no_permission', 'danger');
             redirect(get_setting('site_url','/admin') . '/admin/pages');
         }
@@ -34,7 +34,7 @@ class PageController {
 
     // Store page
     public function store() {
-        if (!has_permission($_SESSION['user_id'], 'pages', 'create')) {
+    if (!can('pages', 'create')) {
             send_notification('msg.no_permission', 'danger');
             redirect(get_setting('site_url','/admin') . '/admin/pages');
         }
@@ -83,7 +83,7 @@ class PageController {
 
     // Edit form
     public function edit($id) {
-        if (!has_permission($_SESSION['user_id'], 'pages', 'edit')) {
+    if (!can('pages', 'edit')) {
             send_notification('msg.no_permission', 'danger');
             redirect(get_setting('site_url','/admin') . '/admin/pages');
         }
@@ -100,7 +100,7 @@ class PageController {
 
     // Update page
     public function update($id) {
-        if (!has_permission($_SESSION['user_id'], 'pages', 'edit')) {
+    if (!can('pages', 'edit')) {
             send_notification('msg.no_permission', 'danger');
             redirect(get_setting('site_url','/admin') . '/admin/pages');
         }
@@ -144,7 +144,7 @@ class PageController {
 
     // Delete
     public function delete($id) {
-        if (!has_permission($_SESSION['user_id'], 'pages', 'delete')) {
+    if (!can('pages', 'delete')) {
             send_notification('msg.no_permission', 'danger');
             redirect(get_setting('site_url','/admin') . '/admin/pages');
         }

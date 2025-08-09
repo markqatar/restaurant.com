@@ -12,5 +12,11 @@ return [
     ],
     'extends' => 'access-management',
     'author' => 'Core',
-    'license' => 'MIT'
+    'license' => 'MIT',
+    'permissions' => [
+        ['pages','view','Pages View','View pages'],
+        ['pages','create','Pages Create','Create pages'],
+        ['pages','edit','Pages Edit','Edit pages'],
+        ['pages','delete','Pages Delete','Delete pages'],
+    ]
 ];

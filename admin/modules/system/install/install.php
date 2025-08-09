@@ -22,6 +22,7 @@ try {
         'site_url' => 'http://localhost',
         'logo_path' => '',
         'currency' => 'USD',
+    'currencies' => 'QAR,EUR,USD',
         'timezone' => 'UTC',
         'base_path' => '/opt/homebrew/var/www/restaurant.com/'
     ];

@@ -10,7 +10,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
         <a href="suppliers" class="btn btn-outline-secondary btn-sm me-2">
             <i class="fas fa-arrow-left"></i> <?php echo TranslationManager::t('back'); ?>
         </a>
-        <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'update')): ?>
+    <?php if (can('suppliers', 'update')): ?>
             <a href="<?php echo get_setting('site_url', 'http://localhost') ?>/admin/suppliers/suppliers/edit/<?php echo $supplier['id']; ?>" class="btn btn-primary btn-sm">
                 <i class="fas fa-edit"></i> <?php echo TranslationManager::t('edit'); ?>
             </a>
@@ -110,7 +110,7 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                 <h6 class="m-0 font-weight-bold text-primary">
                     <i class="fas fa-address-book me-2"></i><?php echo TranslationManager::t('supplier.additional_contacts'); ?>
                 </h6>
-                <?php if (has_permission($_SESSION['user_id'], 'suppliers', 'update')): ?>
+                <?php if (can('suppliers', 'contact.create')): ?>
                     <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addContactModal">
                         <i class="fas fa-plus"></i> <?php echo TranslationManager::t('add_contact'); ?>
                     </button>

@@ -56,9 +56,25 @@
                     <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
                 </div>
 
+                <?php $currenciesRaw = $settings['currencies'] ?? ($settings['currency'] ?? 'QAR');
+                      $currencyList = array_values(array_filter(array_map('trim', preg_split('/[,\n]+/',$currenciesRaw))));
+                      if(empty($currencyList)) $currencyList=['QAR'];
+                      // Ensure default currency first (QAR if not set)
+                      $defaultCurrency = $settings['currency'] ?? 'QAR';
+                      if(!in_array($defaultCurrency,$currencyList)) array_unshift($currencyList,$defaultCurrency);
+                ?>
                 <div class="mb-3">
-                    <label for="currency" class="form-label"><?php echo TranslationManager::t('currency'); ?> *</label>
-                    <input type="text" class="form-control" id="currency" name="currency" value="<?php echo htmlspecialchars($settings['currency'] ?? 'USD'); ?>" required>
+                    <label for="currencies" class="form-label"><?php echo TranslationManager::t('currencies'); ?> *</label>
+                    <textarea class="form-control" id="currencies" name="currencies" rows="2" placeholder="QAR,EUR,USD"><?php echo htmlspecialchars(implode(',', $currencyList)); ?></textarea>
+                    <small class="text-muted"><?php echo TranslationManager::t('currencies_help'); ?></small>
+                </div>
+                <div class="mb-3">
+                    <label for="currency" class="form-label"><?php echo TranslationManager::t('currency'); ?> (<?php echo TranslationManager::t('optional'); ?>)</label>
+                    <select class="form-select" id="currency" name="currency">
+                        <?php foreach($currencyList as $c): ?>
+                        <option value="<?php echo $c; ?>" <?php echo $c===$defaultCurrency? 'selected':''; ?>><?php echo $c; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
                 <div class="mb-3">

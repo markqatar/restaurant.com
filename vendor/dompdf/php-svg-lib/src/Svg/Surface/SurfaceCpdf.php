@@ -91,7 +91,7 @@ class SurfaceCpdf implements SurfaceInterface
         );
     }
 
-    public function TranslationManager::t$x, $y)
+    public function translate($x, $y)
     {
         if (self::DEBUG) echo __FUNCTION__ . "\n";
 

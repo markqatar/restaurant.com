@@ -20,7 +20,7 @@ class SupplierProductsController
     public function datatable()
     {
         $product_id = (int)$_POST['product_id'];
-        $data = $this->model->getByProduct($product_id);
+    $data = $this->model->getByProduct($product_id); // consider adding supplier filter if needed
         echo json_encode([
             "data" => $data,
             "recordsTotal" => count($data),
@@ -41,7 +41,9 @@ class SupplierProductsController
             'quantity' => (float)$_POST['quantity'],
             'base_quantity' => (float)($_POST['base_quantity'] ?? 1),
             'price' => (float)$_POST['price'],
-            'currency' => sanitize_input($_POST['currency'])
+            // Currency now selected from configured list in settings UI
+            'currency' => sanitize_input($_POST['currency']),
+            'category_id' => isset($_POST['category_id']) ? (int)$_POST['category_id'] : null
         ];
 
         if ($id) {
@@ -55,8 +57,8 @@ class SupplierProductsController
 
     public function get($id)
     {
-        $product = $this->model->find((int)$id);
-        echo json_encode($product);
+    $row = $this->model->find((int)$id);
+    echo json_encode($row ? array_merge(['success'=>true], $row) : ['success'=>false]);
     }
 
     public function delete()
@@ -78,8 +80,24 @@ class SupplierProductsController
         // ritorna SOLO i prodotti già associati a quel fornitore
         $rows = $this->model->selectProductsBySupplier($supplier_id, $search);
 
-        // formato Select2
-        $out = array_map(fn($r) => ['id' => $r['id'], 'text' => $r['name']], $rows);
+        // formato Select2 con metadati unità
+        $out = array_map(fn($r) => [
+            'id' => $r['id'],
+            'text' => $r['name'],
+            'unit_id' => $r['unit_id'] ?? null,
+            'unit_name' => $r['unit_name'] ?? null,
+            'base_unit_id' => $r['base_unit_id'] ?? null,
+            'base_unit_name' => $r['base_unit_name'] ?? null,
+        ], $rows);
         echo json_encode($out);
+    }
+
+    // Inventory summary in base units for a supplier
+    public function inventorySummary()
+    {
+        $supplier_id = (int)($_GET['supplier_id'] ?? 0);
+        if ($supplier_id <= 0) { echo json_encode([]); return; }
+        $rows = $this->model->inventorySummaryBySupplier($supplier_id);
+        echo json_encode($rows);
     }
 }

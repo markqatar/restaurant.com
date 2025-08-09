@@ -40,11 +40,25 @@ class SystemConfigController
                 'site_name' => sanitize_input($_POST['site_name']),
                 'site_url' => sanitize_input($_POST['site_url']),
                 'currency' => sanitize_input($_POST['currency']),
+                // new multi-currency list (comma or newline separated codes)
+                'currencies' => implode(',', array_unique(array_filter(array_map('trim', preg_split('/[\n,]+/', $_POST['currencies'] ?? ''))))),
                 'timezone' => sanitize_input($_POST['timezone']),
                 'date_format_admin' => sanitize_input($_POST['date_format_admin']),
                 'date_format_public' => sanitize_input($_POST['date_format_public']),
                 'website_enabled' => isset($_POST['website_enabled']) ? 1 : 0
             ];
+
+            if(empty($data['currencies'])){
+                // Ensure at least default currency present
+                $data['currencies'] = $data['currency'];
+            } else {
+                // Ensure default currency is included
+                $list = explode(',', $data['currencies']);
+                if(!in_array($data['currency'], $list)){
+                    array_unshift($list, $data['currency']);
+                    $data['currencies'] = implode(',', array_unique($list));
+                }
+            }
 
             if (isset($_FILES['logo']) && $_FILES['logo']['error'] === 0) {
                 $logo_path = upload_file($_FILES['logo'], get_setting('base_path') . '/public/assets/images/logo/');

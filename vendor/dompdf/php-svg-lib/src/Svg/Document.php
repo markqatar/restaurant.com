@@ -247,7 +247,7 @@ class Document extends AbstractTag
         $parser = $this->initParser();
 
         if ($this->x || $this->y) {
-            $surface->TranslationManager::t-$this->x, -$this->y);
+            $surface->translate(-$this->x, -$this->y);
         }
 
         $fp = fopen($this->filename, "r");

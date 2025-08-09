@@ -257,6 +257,8 @@ return [
             'received_qty' => 'Qta Ricevuta',
             'barcode' => 'Barcode',
             'notes' => 'Note',
+            'supplier_reference' => 'Ref. Fornitore',
+            'order_discount' => "Sconto Ordine (%)",
         ],
         'btn' => [
             'add_row' => 'Aggiungi Riga',
@@ -264,8 +266,9 @@ return [
             'new_order' => 'Nuovo Ordine',
             'confirm_receive' => 'Conferma ricezione',
             'download_pdf' => 'Scarica PDF',
-            'send_order' => 'Invia Ordine',
+            'send_order' => 'Conferma Ordine',
             'mark_as_received' => 'Segna come Ricevuto',
+            'edit_order' => 'Modifica Ordine',
         ],
         'placeholder' => [
             'price_per_unit' => '€/pz',
@@ -273,18 +276,100 @@ return [
         ],
         'status' => [
             'draft' => 'Bozza',
-            'sent' => 'Inviato',
+            'sent' => 'Confermato',
             'received' => 'Ricevuto',
         ],
         'msg' => [
             'add_at_least_one_product' => 'Aggiungi almeno un prodotto',
+            'select_supplier_first' => 'Seleziona prima un fornitore',
             'created_successfully' => 'Ordine creato con successo',
             'not_found' => 'Ordine non trovato',
             'sent_successfully' => 'Ordine inviato con successo',
             'invalid_token' => 'Token non valido',
             'received_successfully' => 'Ordine ricevuto con successo',
             'not_receivable' => 'L\'ordine non è in uno stato ricevibile',
+            'updated_successfully' => 'Ordine aggiornato con successo',
+            'invalid_branch' => 'Filiale non valida',
+            'confirm_send_title' => 'Confermi l\'ordine?',
+            'confirm_send_button' => 'Conferma',
+            'confirm_receive_title' => 'Segnare come ricevuto?',
+            'confirm_receive_button' => 'Conferma',
+            'generic_ok' => 'OK',
+            'generic_error' => 'Errore',
+            'resent_successfully' => 'Email dell\'ordine reinviata con successo',
+            'resending_email' => 'Reinvio email ordine...'
+            ,'sending_order' => 'Invio ordine...'
+            ,'receiving_order' => 'Conferma ricezione...'
         ],
+        'summary' => [
+            'subtotal' => 'Subtotale',
+            'line_discounts' => 'Sconti Righe',
+            'order_discount_pct' => 'Sconto Ordine (%)',
+            'order_discount_val' => 'Sconto Ordine Val.',
+            'net_total' => 'Totale Netto'
+        ],
+        'history' => [
+            'title' => 'Storico Stati',
+            'changed_at' => 'Data Cambio',
+            'old_status' => 'Stato Precedente',
+            'new_status' => 'Nuovo Stato'
+        ],
+        'validation' => [
+            'fix_invalid_prices' => 'Correggi i prezzi non validi',
+            'expiry_required' => 'La data di scadenza è obbligatoria per i prodotti indicati',
+            'expiry_invalid_format' => 'Formato data scadenza non valido (atteso YYYY-MM-DD)'
+        ],
+        'pdf' => [
+            'title' => 'Ordine d\'Acquisto',
+            'footer' => 'Documento generato automaticamente - Non rispondere a questa email'
+        ],
+        'email' => [
+            'subject' => 'Ordine d\'Acquisto #{order}',
+            'subject_resend' => 'Ordine d\'Acquisto (Reinvio) #{order}',
+            'greeting' => 'Gentile Fornitore,',
+            'intro' => 'In allegato trova il nostro ordine d\'acquisto. Può anche scaricarlo cliccando sul pulsante qui sotto:',
+            'download_button' => 'Scarica Ordine',
+            'thanks' => 'Grazie per la collaborazione,',
+            'signature' => 'Ufficio Acquisti'
+        ],
+        'barcode' => [
+            'title' => 'Barcode per Ordine',
+            'print_button' => 'Stampa',
+            'generated_total' => 'Barcode Generati',
+            'none' => 'Nessun barcode generato per questo ordine',
+            'invalid_params' => 'Parametri barcode non validi',
+            'regenerated' => 'Barcode generati con successo'
+        ],
+        'stats' => [
+            'last_price' => 'Ultimo Prezzo',
+            'last_purchase_date' => 'Data Ultimo Acquisto'
+        ],
+    ],
+
+    // Categorie Prodotti Fornitore & Unità Base
+    'supplier_product' => [
+        'base_unit' => 'Unità Base',
+        'category' => 'Categoria',
+        'categories' => [
+            'consumables' => 'Consumabili',
+            'food' => 'Cibo',
+            'raw_materials' => 'Materie Prime',
+            'houseware' => 'Casalinghi'
+        ],
+        'form' => [
+            'product' => 'Prodotto',
+            'invoice_name' => 'Nome in Fattura',
+            'unit' => 'Unità',
+            'quantity' => 'Quantità',
+            'base_quantity' => 'Quantità in Unità Base (conversione)',
+            'price' => 'Prezzo',
+            'currency' => 'Valuta'
+        ],
+        'inventory' => [
+            'title' => 'Riepilogo Inventario',
+            'supplier_units' => 'Unità Fornitore',
+            'base_unit_total' => 'Totale in Unità Base'
+        ]
     ],
 
 ];

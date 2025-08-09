@@ -80,5 +80,33 @@ return [
         'forgot_password' => 'Forgot Password?',
         'username' => 'Username',
         'password' => 'Password'
+    ],
+
+    // =======================
+    // Suppliers module
+    // =======================
+    'suppliers' => [
+        'products_title' => 'Products',
+        'add_product' => 'Add Product',
+        'manage_product' => 'Manage Product',
+        'raw_material' => 'Raw Material',
+        'generate_barcode' => 'Generate Barcode',
+        'requires_expiry' => 'Requires Expiry Date',
+        'supplier' => 'Supplier',
+        'unit' => 'Unit',
+        'quantity' => 'Quantity',
+        'quantity_per_unit' => 'Quantity per Unit',
+        'sub_unit_level' => 'Sub-Unit Level :level',
+        'quantity_for_unit' => 'Quantity for this Unit',
+        'active' => 'Active',
+        'associate' => 'Associate',
+        'associations' => 'Associations',
+        'back_to_products' => 'Back to Products',
+        'add_sub_unit' => 'Add Sub-Unit',
+        'cancel_edit' => 'Cancel Edit',
+        'confirm_delete' => 'Confirm deletion?',
+        'delete_yes' => 'Yes, delete',
+        'record_not_found' => 'Record not found',
+        'base_quantity_gt_zero' => 'Base quantity must be > 0'
     ]
 ];

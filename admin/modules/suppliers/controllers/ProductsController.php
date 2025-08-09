@@ -12,7 +12,7 @@ class ProductsController
 
     public function index()
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'view')) {
+        if (!can('suppliers_products', 'view')) {
             redirect('admin/unauthorized.php');
         }
         $page_title = "Products";
@@ -26,7 +26,8 @@ class ProductsController
         $length = intval($_POST['length'] ?? 10);
         $search = $_POST['search']['value'] ?? '';
 
-        $data = $this->product_model->datatable($start, $length, $search);
+    $data = $this->product_model->datatable($start, $length, $search);
+    // datatable already returns raw rows; could enrich with base unit name if needed
         echo json_encode([
             "draw" => $draw,
             "recordsTotal" => $data['total'],
@@ -38,10 +39,25 @@ class ProductsController
     public function store()
     {
         $id = $_POST['id'] ?? null;
+        if ($id) {
+            if (!can('suppliers_products','update')) {
+                echo json_encode(['success'=>false,'error'=>'forbidden']);
+                return;
+            }
+        } else {
+            if (!can('suppliers_products','create')) {
+                echo json_encode(['success'=>false,'error'=>'forbidden']);
+                return;
+            }
+        }
         $data = [
             'name' => sanitize_input($_POST['name']),
             'sku' => sanitize_input($_POST['sku']),
-            'description' => sanitize_input($_POST['description'])
+            'description' => sanitize_input($_POST['description']),
+            'base_unit_id' => isset($_POST['base_unit_id']) && $_POST['base_unit_id'] !== '' ? (int)$_POST['base_unit_id'] : null,
+            'is_raw_material' => isset($_POST['is_raw_material']) ? 1 : 0,
+            'generate_barcode' => isset($_POST['generate_barcode']) ? 1 : 0,
+            'requires_expiry' => isset($_POST['requires_expiry']) ? 1 : 0,
         ];
 
         if ($id) {
@@ -62,6 +78,10 @@ class ProductsController
     public function delete()
     {
         $id = (int)$_POST['id'];
+        if (!can('suppliers_products','delete')) {
+            echo json_encode(['success'=>false,'error'=>'forbidden']);
+            return;
+        }
         $this->product_model->delete($id);
         echo json_encode(['success' => true]);
     }
@@ -83,7 +103,7 @@ class ProductsController
 
     public function associate($product_id)
     {
-        if (!has_permission($_SESSION['user_id'], 'suppliers', 'view')) {
+    if (!can('suppliers_products','associate.view')) {
             redirect('admin/unauthorized.php');
         }
 
@@ -94,7 +114,7 @@ class ProductsController
             redirect('admin/products');
         }
 
-        $page_title = "Associa Fornitori - " . htmlspecialchars($product['name']);
+    $page_title = "Associa Fornitori - " . htmlspecialchars($product['name']);
         include admin_module_path('/views/products/associate.php', 'suppliers');
     }
 }
