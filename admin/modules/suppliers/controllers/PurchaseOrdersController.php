@@ -21,12 +21,20 @@ class PurchaseOrdersController
 
     public function datatable()
     {
-        $draw = intval($_POST['draw'] ?? 1);
-        $start = intval($_POST['start'] ?? 0);
-        $length = intval($_POST['length'] ?? 10);
-        $search = sanitize_input($_POST['search']['value'] ?? '');
+    $export = $_GET['export'] ?? $_POST['export'] ?? null;
+    $draw = intval($_POST['draw'] ?? 1);
+    $start = intval($_POST['start'] ?? 0);
+    $length = intval($_POST['length'] ?? 10);
+    $search = sanitize_input($_GET['search'] ?? ($_POST['search']['value'] ?? ''));
 
+        if($export){ $start=0; $length=1000000; }
         $data = $this->model->datatable($start, $length, $search);
+        if($export){
+            require_once get_setting('base_path').'includes/export.php';
+            $rowsExport=[]; foreach($data['data'] as $row){ $rowsExport[]=[ $row['id'], $row['supplier_name'] ?? '', $row['status'], $row['currency'], $row['created_at'] ]; }
+            $headers=['ID','Supplier','Status','Currency','Created'];
+            if($export==='csv') export_csv('purchase_orders.csv',$headers,$rowsExport); else export_pdf('purchase_orders.pdf','Purchase Orders',$headers,$rowsExport);
+        }
 
         echo json_encode([
             'draw' => $draw,
@@ -364,6 +372,19 @@ class PurchaseOrdersController
             $meta['total_discount_order'] = isset($order_discount) ? ($subtotal - $lineDiscountTotal) * ($order_discount/100) : 0;
             $meta['total_net'] = $subtotal - $lineDiscountTotal - $meta['total_discount_order'];
         }
+        // Handle supplier invoice PDF upload (optional)
+        if(isset($_FILES['supplier_invoice_pdf']) && is_uploaded_file($_FILES['supplier_invoice_pdf']['tmp_name'])){
+            $uplDir = get_setting('base_path').'storage/supplier_invoices/';
+            if(!is_dir($uplDir)) mkdir($uplDir,0777,true);
+            $ext = strtolower(pathinfo($_FILES['supplier_invoice_pdf']['name'], PATHINFO_EXTENSION));
+            if($ext==='pdf'){
+                $fname = 'PO-'.$order_id.'-'.date('YmdHis').'.pdf';
+                $dest  = $uplDir.$fname;
+                if(move_uploaded_file($_FILES['supplier_invoice_pdf']['tmp_name'],$dest)){
+                    $meta['supplier_invoice_pdf'] = str_replace(get_setting('base_path'),'',$dest);
+                }
+            }
+        }
         if (!empty($meta)) {
             if (method_exists($this->model, 'updateMeta')) {
                 $this->model->updateMeta($order_id, $meta);
@@ -383,29 +404,36 @@ class PurchaseOrdersController
      * @param bool $useOrderedIfEmpty when true, use ordered quantity (for direct receive)
      */
     private function incrementInventoryForOrder(int $order_id, ?array $receivedQtys = null, bool $useOrderedIfEmpty = false): void {
-        // Load items with required fields
         $items = $this->model->getItems($order_id);
-        if(empty($items)) return;
-        // Attempt to load Recipe model for inventory system (lazy) - skip silently if missing
-        $invModel = null;
+        if (empty($items)) return;
+        // Load centralized Inventory model (suppliers)
+        $inv = null;
         try {
-            $path = get_setting('base_path') . 'admin/modules/restaurant/models/Recipe.php';
-            if (is_file($path)) { require_once $path; $invModel = new Recipe(); }
-        } catch(Exception $e){ $invModel = null; }
-        if(!$invModel || !method_exists($invModel,'adjustInventory')) return; // inventory system not present
-        foreach($items as $it){
+            $invPath = get_setting('base_path') . 'admin/modules/warehouse/models/Inventory.php';
+            if (is_file($invPath)) { require_once $invPath; $inv = new Inventory(); }
+        } catch (Exception $e) { $inv = null; }
+        if(!$inv || !method_exists($inv,'adjust')) return; // inventory system unavailable
+    // Load centralized reasons
+    $reasons = [];
+    $reasonsPath = get_setting('base_path') . 'admin/modules/suppliers/config/inventory_reasons.php';
+    if(is_file($reasonsPath)) { $reasons = require $reasonsPath; }
+    $reasonReceive = $reasons['PO_RECEIVE'] ?? 'po_receive';
+        // Determine branch_id from order (assumes model getById or similar accessor exists)
+        $branch_id = null;
+        if(method_exists($this->model,'find')){
+            try { $order = $this->model->find($order_id); if($order && isset($order['branch_id'])) $branch_id = (int)$order['branch_id']; } catch(Exception $e){ $branch_id=null; }
+        }
+        foreach ($items as $it) {
             $qty = null;
-            if($receivedQtys !== null && isset($receivedQtys[$it['id']]) && $receivedQtys[$it['id']] !== ''){
+            if ($receivedQtys !== null && isset($receivedQtys[$it['id']]) && $receivedQtys[$it['id']] !== '') {
                 $qty = (float)$receivedQtys[$it['id']];
-            } elseif($useOrderedIfEmpty) {
+            } elseif ($useOrderedIfEmpty) {
                 $qty = (float)$it['quantity'];
             }
-            if($qty === null) continue; // nothing to add
-            if($qty <= 0) continue;
-            // Positive delta adds inventory
+            if ($qty === null || $qty <= 0) continue;
             try {
-                $invModel->adjustInventory('product', (int)$it['product_id'], (float)$qty, $it['unit_id'] ? (int)$it['unit_id'] : null, 'po_receive', 'PO-'.$order_id);
-            } catch(Exception $e){ /* swallow inventory errors to not block receiving */ }
+                $inv->adjust('product', (int)$it['product_id'], (float)$qty, $it['unit_id'] ? (int)$it['unit_id'] : null, $reasonReceive, 'PO-' . $order_id, $branch_id);
+            } catch (Exception $e) { /* ignore inventory failures */ }
         }
     }
 
@@ -577,30 +605,61 @@ class PurchaseOrdersController
     if ($expiry) { $ts = strtotime($expiry); if ($ts) { $expPart = date('Ymd', $ts); } }
     if (!$expPart) { $expPart = '-'; }
     $db = Database::getInstance()->getConnection();
-    $stmtIns = $db->prepare("INSERT IGNORE INTO purchase_order_barcodes (purchase_order_id, supplier_id, product_id, expiry_date, code, file_path) VALUES (:poid, :sid, :pid, :exp, :code, :file)");
-    $prefix = sprintf('SUP-%d-%d-%d-%s-', $orderId, $supplierId, $productId, $expPart);
-    $stmtCnt = $db->prepare("SELECT COUNT(*) FROM purchase_order_barcodes WHERE code LIKE :pfx");
-    $stmtCnt->execute([':pfx' => $prefix . '%']);
-    $start = (int)$stmtCnt->fetchColumn();
-    for ($i=1; $i <= $qty; $i++) {
-        $seq = $start + $i;
-        $code = $prefix . sprintf('%02d', $seq);
-            $png = $generator->getBarcode($code, $generator::TYPE_CODE_128, 2, 60);
-            $filePath = $barcodeDir . $code . '.png';
-            file_put_contents($filePath, $png);
-            try {
-                $stmtIns->execute([
-            ':poid' => $orderId,
-                    ':sid'  => $supplierId,
-                    ':pid'  => $productId,
-                    ':exp'  => ($expiry && $expiry !== '' ? (date('Y-m-d', strtotime($expiry)) ?: null) : null),
-                    ':code' => $code,
-                    ':file' => str_replace(get_setting('base_path'), '', $filePath)
-                ]);
-            } catch (Exception $e) { /* ignore duplicate or failure */ }
-            // Opzionale: stampa (commentato per evitare side effects non desiderati)
-            // exec("lp -d Thermal_Printer " . escapeshellarg($filePath));
-        }
+    // Ensure quantity column exists
+    try { $db->exec("ALTER TABLE purchase_order_barcodes ADD COLUMN quantity INT NOT NULL DEFAULT 1"); } catch(Exception $e) { /* ignore */ }
+    // Unique key per combination; code deterministic without sequence
+    $baseCode = sprintf('SUP-%d-%d-%d-%s', $orderId, $supplierId, $productId, $expPart ?: '-');
+    // Insert or update quantity
+    $stmtSel = $db->prepare("SELECT id, quantity, file_path FROM purchase_order_barcodes WHERE code=:code LIMIT 1");
+    $stmtSel->execute([':code'=>$baseCode]);
+    $existing = $stmtSel->fetch(PDO::FETCH_ASSOC);
+    // Fetch product & supplier names once for label overlay
+    $pname=''; $sname='';
+    try { $pname = $db->query("SELECT name FROM products WHERE id=".(int)$productId)->fetchColumn() ?: ''; } catch(Exception $e) {}
+    try { $sname = $db->query("SELECT name FROM suppliers WHERE id=".(int)$supplierId)->fetchColumn() ?: ''; } catch(Exception $e) {}
+    if($existing){
+        // Update quantity sum
+        $newQty = (int)$existing['quantity'] + $qty;
+        $stmtUpd = $db->prepare("UPDATE purchase_order_barcodes SET quantity=:q WHERE id=:id");
+        $stmtUpd->execute([':q'=>$newQty, ':id'=>$existing['id']]);
+        return; // image already exists
+    }
+    // Create new image once
+    $pngRaw = $generator->getBarcode($baseCode, $generator::TYPE_CODE_128, 2, 60);
+    $img = imagecreatefromstring($pngRaw);
+    if($img){
+        $w = imagesx($img); $h = imagesy($img); $extraH = 55;
+        $canvas = imagecreatetruecolor($w, $h+$extraH);
+        $white = imagecolorallocate($canvas,255,255,255); $black=imagecolorallocate($canvas,0,0,0);
+        imagefilledrectangle($canvas,0,0,$w,$h+$extraH,$white);
+        $line1 = mb_substr($pname,0,40);
+        $line2 = 'EXP: '.($expiry?:'-').'  PO#'.$orderId;
+        $line3 = 'SUP: '.mb_substr($sname,0,25);
+        $line4 = $baseCode;
+        $y=12; imagestring($canvas,2,2,$y,$line1,$black);
+        $y+=12; imagestring($canvas,2,2,$y,$line2,$black);
+        $y+=12; imagestring($canvas,2,2,$y,$line3,$black);
+        $y+=12; imagestring($canvas,2,2,$y,$line4,$black);
+        imagecopy($canvas,$img,0,$extraH,0,0,$w,$h);
+        $filePath = $barcodeDir . $baseCode . '.png';
+        imagepng($canvas,$filePath,9);
+        imagedestroy($img); imagedestroy($canvas);
+    } else {
+        $filePath = $barcodeDir . $baseCode . '.png';
+        file_put_contents($filePath,$pngRaw);
+    }
+    try {
+        $stmt = $db->prepare("INSERT INTO purchase_order_barcodes (purchase_order_id,supplier_id,product_id,expiry_date,code,file_path,quantity) VALUES (:po,:sid,:pid,:exp,:code,:file,:q)");
+        $stmt->execute([
+            ':po'=>$orderId,
+            ':sid'=>$supplierId,
+            ':pid'=>$productId,
+            ':exp'=> ($expiry && $expiry!=='' ? (date('Y-m-d', strtotime($expiry)) ?: null) : null),
+            ':code'=>$baseCode,
+            ':file'=> str_replace(get_setting('base_path'),'',$filePath),
+            ':q'=>$qty
+        ]);
+    } catch(Exception $e){ /* ignore */ }
     }
 
     /** Stampa semplice dei barcode (griglia) */

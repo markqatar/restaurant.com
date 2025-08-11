@@ -7,6 +7,60 @@ class Page {
 
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
+        $this->runMigrations();
+    }
+
+    // Run one-time migrations: move *_ar fields into translations table then drop them; add featured_image column
+    private function runMigrations() {
+        try {
+            // 1. If legacy Arabic columns exist, migrate their data into page_translations
+            $col = $this->db->query("SHOW COLUMNS FROM `{$this->table}` LIKE 'title_ar'")->fetch(PDO::FETCH_ASSOC);
+            if ($col) {
+                // Ensure translations table exists (should by separate migration)
+                $this->db->exec("CREATE TABLE IF NOT EXISTS `page_translations` (
+                  `id` INT NOT NULL AUTO_INCREMENT,
+                  `page_id` INT NOT NULL,
+                  `language_code` VARCHAR(10) NOT NULL,
+                  `title` VARCHAR(200) NOT NULL,
+                  `slug` VARCHAR(200) DEFAULT NULL,
+                  `content` TEXT DEFAULT NULL,
+                  `meta_title` VARCHAR(200) DEFAULT NULL,
+                  `meta_description` TEXT DEFAULT NULL,
+                  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `uniq_page_language` (`page_id`,`language_code`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+                $rows = $this->db->query("SELECT id, title_ar, content_ar, meta_title_ar, meta_description_ar FROM `{$this->table}` WHERE (title_ar IS NOT NULL AND title_ar <> '')")->fetchAll(PDO::FETCH_ASSOC);
+                if ($rows) {
+                    foreach ($rows as $r) {
+                        $slug = $this->generateSlug($r['title_ar'], 'ar', $r['id']);
+                        $stmt = $this->db->prepare("INSERT INTO {$this->translations_table} (page_id, language_code, title, slug, content, meta_title, meta_description, created_at, updated_at)
+                            VALUES (:pid,'ar',:title,:slug,:content,:meta_title,:meta_description,NOW(),NOW())
+                            ON DUPLICATE KEY UPDATE title=VALUES(title), slug=VALUES(slug), content=VALUES(content), meta_title=VALUES(meta_title), meta_description=VALUES(meta_description), updated_at=NOW()");
+                        $stmt->execute([
+                            ':pid' => $r['id'],
+                            ':title' => $r['title_ar'],
+                            ':slug' => $slug,
+                            ':content' => $r['content_ar'],
+                            ':meta_title' => $r['meta_title_ar'],
+                            ':meta_description' => $r['meta_description_ar'],
+                        ]);
+                    }
+                }
+                // Drop legacy columns
+                $this->db->exec("ALTER TABLE `{$this->table}` DROP COLUMN title_ar, DROP COLUMN content_ar, DROP COLUMN meta_title_ar, DROP COLUMN meta_description_ar");
+            }
+
+            // 2. Ensure featured_image column
+            $fcol = $this->db->query("SHOW COLUMNS FROM `{$this->table}` LIKE 'featured_image'")->fetch(PDO::FETCH_ASSOC);
+            if (!$fcol) {
+                $this->db->exec("ALTER TABLE `{$this->table}` ADD COLUMN `featured_image` VARCHAR(255) NULL AFTER `sort_order`");
+            }
+        } catch (Exception $e) {
+            // Silent fail to avoid breaking front-end; could log
+        }
     }
 
     // Get all pages (with default public language title joined)
@@ -41,11 +95,12 @@ class Page {
     }
 
     public function create($baseData, $translations) {
-        $sql = "INSERT INTO {$this->table} (is_published, sort_order, created_at) VALUES (:is_published,:sort_order,NOW())";
+        $sql = "INSERT INTO {$this->table} (is_published, sort_order, featured_image, created_at) VALUES (:is_published,:sort_order,:featured_image,NOW())";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             ':is_published' => $baseData['is_published'] ?? 0,
             ':sort_order' => $baseData['sort_order'] ?? 0,
+            ':featured_image' => $baseData['featured_image'] ?? null,
         ]);
         $pageId = $this->db->lastInsertId();
         $this->saveTranslations($pageId, $translations);
@@ -53,12 +108,13 @@ class Page {
     }
 
     public function update($id, $baseData, $translations) {
-        $sql = "UPDATE {$this->table} SET is_published=:is_published, sort_order=:sort_order WHERE id=:id";
+        $sql = "UPDATE {$this->table} SET is_published=:is_published, sort_order=:sort_order, featured_image=:featured_image WHERE id=:id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             ':id' => $id,
             ':is_published' => $baseData['is_published'] ?? 0,
             ':sort_order' => $baseData['sort_order'] ?? 0,
+            ':featured_image' => $baseData['featured_image'] ?? null,
         ]);
         $this->saveTranslations($id, $translations, true);
         return true;

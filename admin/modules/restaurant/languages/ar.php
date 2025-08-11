@@ -1,17 +1,6 @@
 <?php
 return [
-
-    // Navigation & Menu
-    'dashboard' => 'لوحة التحكم',
-    'users' => 'المستخدمون',
-    'products' => 'المنتجات',
-    'orders' => 'الطلبات',
-    'suppliers' => 'الموردون',
-    'branches' => 'الفروع',
-    'reports' => 'التقارير',
-    'settings' => 'الإعدادات',
-    'logout' => 'تسجيل الخروج',
-    'profile' => 'الملف الشخصي',
+    // (Navigation keys removed - now global)
 
     // Error messages
     'error' => [
@@ -22,129 +11,21 @@ return [
     'page_not_found' => 'الصفحة غير موجودة',
     'back_to_dashboard' => 'العودة إلى لوحة التحكم',
 
-    // User Management
-    'user' => [
-        'management' => 'إدارة المستخدمين',
-        'new_user' => 'مستخدم جديد',
-        'edit_user' => 'تعديل المستخدم',
-        'user_list' => 'قائمة المستخدمين',
-        'total_users' => 'إجمالي المستخدمين',
-        'active_users' => 'المستخدمون النشطون',
-        'username' => 'اسم المستخدم',
-        'first_name' => 'الاسم الأول',
-        'last_name' => 'اسم العائلة',
-        'full_name' => 'الاسم الكامل',
-        'groups' => 'مجموعات المستخدمين',
-        'permissions' => 'الأذونات',
-        'no_groups' => 'لا توجد مجموعات',
-        'user_data' => 'بيانات المستخدم',
-        'account_info' => 'معلومات الحساب',
-        'user_id' => 'معرف المستخدم',
-        'created_on' => 'تم الإنشاء في',
-        'last_modified' => 'آخر تعديل',
-        'quick_actions' => 'إجراءات سريعة',
-        'reset_password' => 'إعادة تعيين كلمة المرور',
-        'delete_user' => 'حذف المستخدم',
-        'user_active' => 'المستخدم نشط',
-        'save_changes' => 'حفظ التغييرات',
-        'password_note' => 'لأسباب أمنية، لا يمكن تعديل كلمة المرور من هذا القسم. استخدم وظيفة "إعادة تعيين كلمة المرور" إذا لزم الأمر.',
-        'confirm_delete' => 'هل أنت متأكد من رغبتك في حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.',
-        'confirm_reset_password' => 'هل أنت متأكد من رغبتك في إعادة تعيين كلمة مرور هذa المستخدم؟ سيتم إرسال كلمة مرور مؤقتة.',
-    ],
+    // (User management keys removed - handled by access-management module / global)
 
-    // Branch Management
-    'branch' => [
-        'management' => 'إدارة الفروع',
-        'new_branch' => 'فرع جديد',
-        'edit_branch' => 'تعديل الفرع',
-        'branch_list' => 'قائمة الفروع',
-        'branch_name' => 'اسم الفرع',
-        'branch_code' => 'كود الفرع',
-        'manager' => 'المدير',
-        'location' => 'الموقع',
-        'contact_info' => 'معلومات الاتصال',
-        'total_branches' => 'إجمالي الفروع',
-        'active_branches' => 'الفروع النشطة',
-        'manage_users' => 'إدارة المستخدمين',
-        'confirm_delete_title' => 'تأكيد الحذف',
-        'confirm_delete_message' => 'هل أنت متأكد من رغبتك في حذف الفرع',
-        'delete_warning' => 'هذا الإجراء سيؤدي أيضاً إلى إزالة جميع تعيينات المستخدمين.',
-    ],
+    // (Branch management keys removed - now global)
 
-    // Supplier Management
-    'supplier' => [
-        'management' => 'إدارة الموردين',
-        'new_supplier' => 'مورد جديد',
-        'edit_supplier' => 'تعديل المورد',
-        'supplier_list' => 'قائمة الموردين',
-        'supplier_name' => 'اسم المورد',
-        'company' => 'الشركة',
-        'contact_person' => 'شخص الاتصال',
-        'total_suppliers' => 'إجمالي الموردين',
-        'active_suppliers' => 'الموردون النشطون',
-        'city' => 'المدينة',
-        'country' => 'البلد',
-        'confirm_delete' => 'هل أنت متأكد من رغبتك في حذف هذا المورد؟ ستؤدي هذه العملية أيضًا إلى حذف جميع جهات الاتصال المرتبطة ولا يمكن التراجع عنها.',
-    ],
+    // (Supplier management keys removed - in suppliers module)
 
-    // Product Management
-    'product' => [
-        'management' => 'إدارة المنتجات',
-        'new_product' => 'منتج جديد',
-        'edit_product' => 'تعديل المنتج',
-        'product_list' => 'قائمة المنتجات',
-        'product_name' => 'اسم المنتج',
-        'category' => 'الفئة',
-        'price' => 'السعر',
-        'stock' => 'المخزون',
-        'barcode' => 'الرمز الشريطي',
-    ],
+    // (Product management keys removed - not restaurant-specific)
 
-    // Order Management
-    'order' => [
-        'management' => 'إدارة الطلبات',
-        'new_order' => 'طلب جديد',
-        'edit_order' => 'تعديل الطلب',
-        'order_list' => 'قائمة الطلبات',
-        'order_number' => 'رقم الطلب',
-        'customer' => 'العميل',
-        'total' => 'المجموع',
-        'order_date' => 'تاريخ الطلب',
-        'delivery_date' => 'تاريخ التسليم',
-    ],
+    // (Order management keys removed - not restaurant-specific)
 
-    // Buttons & Actions
-    'btn' => [
-        'refresh' => 'تحديث',
-        'add_new' => 'إضافة جديد',
-        'view' => 'عرض',
-        'modify' => 'تعديل',
-        'remove' => 'إزالة',
-        'confirm' => 'تأكيد',
-        'close' => 'إغلاق',
-    ],
+    // (Generic button keys removed - now global)
 
-    // Messages
-    'msg' => [
-        'success' => 'تمت العملية بنجاح',
-        'error' => 'حدث خطأ',
-        'warning' => 'تحذير',
-        'info' => 'معلومات',
-        'no_data' => 'لا توجد بيانات متاحة',
-        'loading' => 'جاري التحميل...',
-        'saved' => 'تم الحفظ بنجاح',
-        'deleted' => 'تم الحذف بنجاح',
-        'updated' => 'تم التحديث بنجاح',
-    ],
+    // (Generic message keys removed - now global)
 
-    // Forms
-    'form' => [
-        'required' => 'مطلوب',
-        'optional' => 'اختياري',
-        'select_option' => 'اختر خياراً',
-        'enter_value' => 'أدخل القيمة',
-        'choose_file' => 'اختر ملف',
-    ],
+    // (Generic form keys removed - now global)
 
     // Additional missing translations
     'password' => 'كلمة المرور',
@@ -184,42 +65,63 @@ return [
     'confirm_delete' => 'تأكيد الحذف',
     'yes_delete' => 'نعم، احذف',
 
-    // وحدة الوصفات (namespaced)
-    'restaurant.menu' => 'المطعم',
-    'restaurant.recipes' => 'الوصفات',
-    'restaurant.production' => 'الإنتاج',
-    'recipes.title' => 'الوصفات',
-    'recipes.action.new' => 'جديدة',
-    'recipes.field.name' => 'الاسم',
-    'recipes.field.yield' => 'العائد',
-    'recipes.field.components' => 'المكونات',
-    'recipes.field.actions' => 'إجراءات',
-    'recipes.action.edit' => 'تعديل',
-    'recipes.action.delete' => 'حذف',
-    'recipes.action.production' => 'الإنتاج',
-    'recipes.production.batch_title' => 'دفعة إنتاج',
-    'recipes.field.output_quantity' => 'كمية الخرج',
-    'recipes.field.reference_code' => 'رمز مرجعي',
-    'recipes.msg.batch_success' => 'تم إنتاج الدفعة بنجاح',
-    'recipes.msg.batch_error' => 'فشل إنتاج الدفعة',
-    'recipes.components.preview' => 'معاينة المكونات',
-    'recipes.field.base_qty' => 'الكمية الأساسية',
-    'recipes.field.scaled_qty' => 'الكمية المحسوبة',
-    'recipes.field.unit' => 'الوحدة',
-    'recipes.field.yield_label' => 'العائد',
+    // وحدة الوصفات (مصفوفات متداخلة)
+    'restaurant' => [
+        'menu' => 'المطعم',
+        'recipes' => 'الوصفات',
+        'production' => 'الإنتاج',
+    ],
+    'recipes' => [
+        'title' => 'الوصفات',
+        'action' => [
+            'new' => 'جديدة',
+            'edit' => 'تعديل',
+            'delete' => 'حذف',
+            'production' => 'الإنتاج',
+            'add_component' => 'إضافة مكون',
+        ],
+        'field' => [
+            'name' => 'الاسم',
+            'yield' => 'العائد',
+            'components' => 'المكونات',
+            'actions' => 'إجراءات',
+            'output_quantity' => 'كمية الخرج',
+            'reference_code' => 'رمز مرجعي',
+            'base_qty' => 'الكمية الأساسية',
+            'scaled_qty' => 'الكمية المحسوبة',
+            'unit' => 'الوحدة',
+            'yield_label' => 'العائد',
+        ],
+        'production' => [
+            'batch_title' => 'دفعة إنتاج',
+        ],
+        'msg' => [
+            'batch_success' => 'تم إنتاج الدفعة بنجاح',
+            'batch_error' => 'فشل إنتاج الدفعة',
+        ],
+        'components' => [
+            'preview' => 'معاينة المكونات',
+        ],
+        'confirm' => [
+            'delete' => 'حذف الوصفة؟',
+        ],
+    ],
 
-    // المخزون
-    'inventory.title' => 'المخزون',
-    'inventory.field.type' => 'النوع',
-    'inventory.field.updated_at' => 'محدث',
-    'inventory.field.quantity' => 'الكمية',
-    'inventory.field.unit' => 'الوحدة',
-    'recipes.action.add_component' => 'إضافة مكون',
-    'recipes.field.unit' => 'الوحدة',
-    'recipes.confirm.delete' => 'حذف الوصفة؟',
-    'inventory.reason.batch_consume' => 'استهلاك الدفعة',
-    'inventory.reason.batch_produce' => 'إنتاج الدفعة',
-    'inventory.reason.po_receive' => 'استلام أمر شراء',
+    // المخزون (متداخل)
+    'inventory' => [
+        'title' => 'المخزون',
+        'field' => [
+            'type' => 'النوع',
+            'updated_at' => 'محدث',
+            'quantity' => 'الكمية',
+            'unit' => 'الوحدة',
+        ],
+        'reason' => [
+            'batch_consume' => 'استهلاك الدفعة',
+            'batch_produce' => 'إنتاج الدفعة',
+            'po_receive' => 'استلام أمر شراء',
+        ],
+    ],
     'cancel' => 'إلغاء',
 
 ];

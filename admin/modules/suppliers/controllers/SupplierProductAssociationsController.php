@@ -13,9 +13,15 @@ class SupplierProductAssociationsController
     // ✅ Lista associazioni (DataTable)
     public function datatable()
     {
-        $product_id = (int)$_POST['product_id'];
+        $export = $_GET['export'] ?? $_POST['export'] ?? null;
+        $product_id = (int)($_POST['product_id'] ?? 0);
         $data = $this->model->getByProduct($product_id);
-
+        if($export){
+            require_once get_setting('base_path').'includes/export.php';
+            $rowsExport=[]; foreach($data as $r){ $rowsExport[]=[ $r['id'], $r['supplier_name'] ?? '', $r['unit_name'] ?? '', $r['quantity'] ?? '', ($r['is_active']??0)?'YES':'NO' ]; }
+            $headers=['ID','Supplier','Unit','Quantity','Active'];
+            if($export==='csv') export_csv('supplier_product_associations.csv',$headers,$rowsExport); else export_pdf('supplier_product_associations.pdf','Supplier Product Associations',$headers,$rowsExport);
+        }
         echo json_encode([
             'data' => $data,
             'recordsTotal' => count($data),

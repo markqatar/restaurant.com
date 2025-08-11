@@ -19,8 +19,15 @@ class SupplierProductsController
 
     public function datatable()
     {
-        $product_id = (int)$_POST['product_id'];
-    $data = $this->model->getByProduct($product_id); // consider adding supplier filter if needed
+        $export = $_GET['export'] ?? $_POST['export'] ?? null;
+        $product_id = (int)($_POST['product_id'] ?? 0);
+        $data = $this->model->getByProduct($product_id); // consider adding supplier filter if needed
+        if($export){
+            require_once get_setting('base_path').'includes/export.php';
+            $rowsExport=[]; foreach($data as $r){ $rowsExport[]=[ $r['id'], $r['supplier_name'] ?? '', $r['sku'] ?? '', $r['unit_name'] ?? '', $r['quantity'] ?? '', $r['price'] ?? '', $r['currency'] ?? '' ]; }
+            $headers=['ID','Supplier','SKU','Unit','Quantity','Price','Currency'];
+            if($export==='csv') export_csv('supplier_products.csv',$headers,$rowsExport); else export_pdf('supplier_products.pdf','Supplier Products',$headers,$rowsExport);
+        }
         echo json_encode([
             "data" => $data,
             "recordsTotal" => count($data),
@@ -97,7 +104,14 @@ class SupplierProductsController
     {
         $supplier_id = (int)($_GET['supplier_id'] ?? 0);
         if ($supplier_id <= 0) { echo json_encode([]); return; }
+        $export = $_GET['export'] ?? null;
         $rows = $this->model->inventorySummaryBySupplier($supplier_id);
+        if($export){
+            require_once get_setting('base_path').'includes/export.php';
+            $rowsExport=[]; foreach($rows as $r){ $rowsExport[]=[ $r['product_id'] ?? $r['id'] ?? '', $r['product_name'] ?? $r['name'] ?? '', $r['quantity'] ?? '', $r['unit_name'] ?? '', $r['base_quantity'] ?? '', $r['base_unit_name'] ?? '' ]; }
+            $headers=['Product ID','Product','Quantity','Unit','Base Qty','Base Unit'];
+            if($export==='csv') export_csv('supplier_inventory.csv',$headers,$rowsExport); else export_pdf('supplier_inventory.pdf','Supplier Inventory',$headers,$rowsExport);
+        }
         echo json_encode($rows);
     }
 }

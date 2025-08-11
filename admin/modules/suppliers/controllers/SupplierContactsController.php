@@ -21,18 +21,19 @@ class SupplierContactsController
             echo json_encode(['error' => 'Permission denied']);
             exit;
         }
-
+        $export = $_GET['export'] ?? $_POST['export'] ?? null;
         $supplier_id = (int)($_POST['supplier_id'] ?? 0);
         $start = (int)($_POST['start'] ?? 0);
         $length = (int)($_POST['length'] ?? 10);
-        $search = trim($_POST['search']['value'] ?? '');
+        $search = trim($_GET['search'] ?? ($_POST['search']['value'] ?? ''));
         $draw = (int)($_POST['draw'] ?? 1);
 
         // Calcolo totale contatti per il fornitore (senza filtro)
         $recordsTotal = $this->contact_model->countBySupplier($supplier_id);
 
-        // Ottieni contatti con ricerca e paginazione
-        $contacts = $this->contact_model->getBySupplierPaginated($supplier_id, $start, $length, $search);
+    if($export){ $start=0; $length=1000000; }
+    // Ottieni contatti con ricerca e paginazione (o tutti per export)
+    $contacts = $this->contact_model->getBySupplierPaginated($supplier_id, $start, $length, $search);
 
         // Conta i contatti filtrati
         $recordsFiltered = $this->contact_model->countBySupplier($supplier_id, $search);
@@ -53,6 +54,12 @@ class SupplierContactsController
             ];
         }
 
+        if($export){
+            require_once get_setting('base_path').'includes/export.php';
+            $rowsExport=[]; foreach($data as $r){ $rowsExport[]=[ strip_tags($r['name']), $r['email'], $r['phone'], strip_tags($r['is_primary'])? 'YES':'', ]; }
+            $headers=['Name','Email','Phone','Primary'];
+            if($export==='csv') export_csv('supplier_contacts.csv',$headers,$rowsExport); else export_pdf('supplier_contacts.pdf','Supplier Contacts',$headers,$rowsExport);
+        }
         echo json_encode([
             'draw' => $draw,
             'recordsTotal' => $recordsTotal,

@@ -1,77 +1,17 @@
 <?php
 return [
+    // (Navigation & generic UI keys pruned - now global)
+    // Keep domain-specific: supplier CRUD, purchase orders, supplier products, inventory transfer, reasons, and minimal error handling
 
-    // Navigation & Menu
-    'dashboard' => 'Dashboard',
-    'users' => 'Users',
-    'products' => 'Products',
-    'orders' => 'Orders',
-    'suppliers' => 'Suppliers',
-    'branches' => 'Branches',
-    'reports' => 'Reports',
-    'settings' => 'Settings',
-    'logout' => 'Logout',
-    'profile' => 'Profile',
-    
-    // Error messages
+    // Error messages (domain specific 404 useful if module routed directly)
     'error' => [
         '404_title' => 'Page Not Found',
         '404_message' => 'The page you are looking for could not be found. Please check the URL or return to the dashboard.',
     ],
-    
     'page_not_found' => 'Page Not Found',
     'back_to_dashboard' => 'Back to Dashboard',
-    
-    // User Management
-    'user' => [
-        'management' => 'User Management',
-        'new_user' => 'New User',
-        'edit_user' => 'Edit User',
-        'user_list' => 'User List',
-        'total_users' => 'Total Users',
-        'active_users' => 'Active Users',
-        'username' => 'Username',
-        'first_name' => 'First Name',
-        'last_name' => 'Last Name',
-        'full_name' => 'Full Name',
-        'groups' => 'User Groups',
-        'permissions' => 'Permissions',
-        'no_groups' => 'No Groups',
-        'user_data' => 'User Data',
-        'account_info' => 'Account Information',
-        'user_id' => 'User ID',
-        'created_on' => 'Created on',
-        'last_modified' => 'Last Modified',
-        'quick_actions' => 'Quick Actions',
-        'reset_password' => 'Reset Password',
-        'delete_user' => 'Delete User',
-        'user_active' => 'User Active',
-        'save_changes' => 'Save Changes',
-        'password_note' => 'For security reasons, passwords cannot be modified from this section. Use the "Reset Password" function if necessary.',
-        'confirm_delete' => 'Are you sure you want to delete this user? This action cannot be undone.',
-        'confirm_reset_password' => 'Are you sure you want to reset this user\'s password? A temporary password will be sent.',
-    ],
-    
-    // Branch Management
-    'branch' => [
-        'management' => 'Branch Management',
-        'new_branch' => 'New Branch',
-        'edit_branch' => 'Edit Branch',
-        'branch_list' => 'Branch List',
-        'branch_name' => 'Branch Name',
-        'branch_code' => 'Branch Code',
-        'manager' => 'Manager',
-        'location' => 'Location',
-        'contact_info' => 'Contact Information',
-        'total_branches' => 'Total Branches',
-        'active_branches' => 'Active Branches',
-        'manage_users' => 'Manage Users',
-        'confirm_delete_title' => 'Confirm Deletion',
-        'confirm_delete_message' => 'Are you sure you want to delete the branch',
-        'delete_warning' => 'This action will also remove all user assignments.',
-    ],
-    
-    // Supplier Management
+
+    // Supplier Management (module domain)
     'supplier' => [
         'management' => 'Supplier Management',
         'new_supplier' => 'New Supplier',
@@ -86,157 +26,8 @@ return [
         'country' => 'Country',
         'confirm_delete' => 'Are you sure you want to delete this supplier? This action will also delete all associated contacts and cannot be undone.',
     ],
-    
-    // Product Management
-    'product' => [
-        'management' => 'Product Management',
-        'new_product' => 'New Product',
-        'edit_product' => 'Edit Product',
-        'product_list' => 'Product List',
-        'product_name' => 'Product Name',
-        'category' => 'Category',
-        'price' => 'Price',
-        'stock' => 'Stock',
-        'barcode' => 'Barcode',
-    ],
-    
-    // Order Management
-    'order' => [
-        'management' => 'Order Management',
-        'new_order' => 'New Order',
-        'edit_order' => 'Edit Order',
-        'order_list' => 'Order List',
-        'order_number' => 'Order Number',
-        'customer' => 'Customer',
-        'total' => 'Total',
-        'order_date' => 'Order Date',
-        'delivery_date' => 'Delivery Date',
-    ],
-    
-    // Buttons & Actions
-    'btn' => [
-        'refresh' => 'Refresh',
-        'add_new' => 'Add New',
-        'view' => 'View',
-        'modify' => 'Modify',
-        'remove' => 'Remove',
-        'confirm' => 'Confirm',
-        'close' => 'Close',
-    ],
-    
-    // Messages
-    'msg' => [
-        'success' => 'Operation completed successfully',
-        'error' => 'An error occurred',
-        'warning' => 'Warning',
-        'info' => 'Information',
-        'no_data' => 'No data available',
-        'loading' => 'Loading...',
-        'saved' => 'Saved successfully',
-        'deleted' => 'Deleted successfully',
-        'updated' => 'Updated successfully',
-    ],
-    
-    // Forms
-    'form' => [
-        'required' => 'Required',
-        'optional' => 'Optional',
-        'select_option' => 'Select an option',
-        'enter_value' => 'Enter value',
-        'choose_file' => 'Choose file',
-    ],
-    
-    // Additional missing translations
-    'password' => 'Password',
-    'min_characters' => 'Minimum characters',
-    'instructions' => 'Instructions',
-    'important_info' => 'Important Information',
-    'security' => 'Security',
-    'ensure_secure_passwords' => 'Ensure you use secure passwords and assign only necessary permissions.',
-    'fields_marked_required' => 'Fields marked with * are required',
-    'username_must_be_unique' => 'Username must be unique in the system',
-    'password_min_length' => 'Password must be at least 6 characters',
-    'assign_groups_after_creation' => 'After creation, you can assign the user to groups',
-    'validation_error' => 'Validation Error',
-    'fill_required_fields' => 'Please fill in all required fields',
-    
-    // Settings specific
-    'general_settings' => 'General Settings',
-    'site_name' => 'Site Name',
-    'site_url' => 'Site URL',
-    'site_logo' => 'Site Logo',
-    'upload_logo' => 'Upload Logo',
-    'current_logo' => 'Current Logo',
-    'no_logo' => 'No logo uploaded',
-    'rooms_management' => 'Rooms Management',
-    'tables_management' => 'Tables Management',
-    'room' => 'Room',
-    'rooms' => 'Rooms',
-    'table' => 'Table',
-    'tables' => 'Tables',
-    'add_room' => 'Add Room',
-    'edit_room' => 'Edit Room',
-    'add_table' => 'Add Table',
-    'edit_table' => 'Edit Table',
-    'room_name' => 'Room Name',
-    'room_description' => 'Room Description',
-    'table_name' => 'Table Name',
-    'seats' => 'Seats',
-    'select_branch' => 'Select Branch',
-    'select_room' => 'Select Room',
-    'room_examples' => 'Examples: Main Hall, Terrace, Balcony, Private Room, Garden, etc.',
-    'table_examples' => 'Examples: Table 1, A1, Terrace-1, etc.',
-    
-    // Messages for new features
-    'msg.settings_updated_successfully' => 'Settings updated successfully',
-    'msg.room_created_successfully' => 'Room created successfully',
-    'msg.room_updated_successfully' => 'Room updated successfully',
-    'msg.room_deleted_successfully' => 'Room deleted successfully',
-    'msg.table_created_successfully' => 'Table created successfully',
-    'msg.table_updated_successfully' => 'Table updated successfully',
-    'msg.table_deleted_successfully' => 'Table deleted successfully',
-    'msg.cannot_delete_room_has_tables' => 'Cannot delete room that has tables',
-    'msg.required_fields' => 'Required fields are missing',
-    'msg.invalid_token' => 'Invalid security token',
-    'msg.not_found' => 'Item not found',
-    'msg.created_successfully' => 'Created successfully',
-    'msg.updated_successfully' => 'Updated successfully',
-    'msg.deleted_successfully' => 'Deleted successfully',
-    'msg.error_occurred' => 'An error occurred',
-    
-    // Logo management
-    'delete_logo' => 'Delete Logo',
-    'confirm_delete_logo' => 'Are you sure you want to delete the current logo?',
-    'logo_deleted_successfully' => 'Logo deleted successfully',
-    'error_occurred' => 'An error occurred',
 
-        // Delivery Areas Management
-    'add_delivery_area' => 'Add Delivery Area',
-    'edit_delivery_area' => 'Edit Delivery Area',
-    'area_name' => 'Area Name',
-    'area_name_required' => 'Area name is required',
-    'branch_required' => 'Branch selection is required',
-    'no_branch' => 'No Branch',
-    'delivery_area_created' => 'Delivery area created successfully',
-    'delivery_area_updated' => 'Delivery area updated successfully',
-    'delivery_area_deleted' => 'Delivery area deleted successfully',
-    'delivery_area_not_found' => 'Delivery area not found',
-    'error_creating_delivery_area' => 'Error creating delivery area',
-    'error_updating_delivery_area' => 'Error updating delivery area',
-    'error_deleting_delivery_area' => 'Error deleting delivery area',
-    'delete_delivery_area_confirm' => 'Are you sure you want to delete the delivery area "%s"?',
-    'branch' => 'Branch',
-    'created_at' => 'Created At',
-    'id' => 'ID',
-    'back' => 'Back',
-    'invalid_request' => 'Invalid request',
-    'no_permission' => 'You do not have permission to access this page',
-    'confirm_delete' => 'Confirm Delete',
-    'yes_delete' => 'Yes, Delete',
-
-    // ===========================
-    // Purchase Orders (New)
-    // ===========================
+    // Purchase Orders
     'purchase_order' => [
         'list_title' => 'Purchase Orders',
         'create_title' => "Create Purchase Order",
@@ -265,6 +56,8 @@ return [
             'notes' => 'Notes',
             'supplier_reference' => 'Supplier Ref.',
             'order_discount' => 'Order Discount (%)',
+            'supplier_invoice_pdf' => 'Supplier PDF',
+            'view_pdf' => 'View PDF',
         ],
         'btn' => [
             'add_row' => 'Add Row',
@@ -375,6 +168,33 @@ return [
             'title' => 'Inventory Summary',
             'supplier_units' => 'Supplier Units',
             'base_unit_total' => 'Total Base Units'
+        ]
+    ],
+
+    // Inventory Transfer & Reasons
+    'inventory_transfer' => [
+        'menu_title' => 'Inventory Transfers',
+        'list_title' => 'Inventory Transfers',
+        'new_transfer' => 'New Transfer',
+        'from_branch' => 'From Branch',
+        'to_branch' => 'To Branch',
+        'item' => 'Item',
+        'quantity' => 'Quantity',
+        'unit' => 'Unit',
+        'note' => 'Note',
+        'created_at' => 'Created At',
+        'reason_out' => 'Transfer Out',
+        'reason_in' => 'Transfer In',
+        'msg' => [
+            'completed' => 'Transfer completed successfully',
+            'failed' => 'Transfer failed',
+            'invalid' => 'Invalid transfer data'
+        ]
+    ],
+    'inventory' => [
+        'reason' => [
+            'transfer_out' => 'Transfer Out',
+            'transfer_in' => 'Transfer In'
         ]
     ],
 

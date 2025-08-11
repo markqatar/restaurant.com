@@ -1,17 +1,6 @@
 <?php
 return [
-
-    // Navigation & Menu
-    'dashboard' => 'Dashboard',
-    'users' => 'Utenti',
-    'products' => 'Prodotti',
-    'orders' => 'Ordini',
-    'suppliers' => 'Fornitori',
-    'branches' => 'Filiali',
-    'reports' => 'Rapporti',
-    'settings' => 'Impostazioni',
-    'logout' => 'Esci',
-    'profile' => 'Profilo',
+    // (Navigation & menu keys removed - now global)
 
     // Error messages
     'error' => [
@@ -22,129 +11,21 @@ return [
     'page_not_found' => 'Pagina Non Trovata',
     'back_to_dashboard' => 'Torna alla Dashboard',
 
-    // User Management
-    'user' => [
-        'management' => 'Gestione Utenti',
-        'new_user' => 'Nuovo Utente',
-        'edit_user' => 'Modifica Utente',
-        'user_list' => 'Lista Utenti',
-        'total_users' => 'Totale Utenti',
-        'active_users' => 'Utenti Attivi',
-        'username' => 'Username',
-        'first_name' => 'Nome',
-        'last_name' => 'Cognome',
-        'full_name' => 'Nome Completo',
-        'groups' => 'Gruppi Utenti',
-        'permissions' => 'Permessi',
-        'no_groups' => 'Nessun Gruppo',
-        'user_data' => 'Dati Utente',
-        'account_info' => 'Informazioni Account',
-        'user_id' => 'ID Utente',
-        'created_on' => 'Creato il',
-        'last_modified' => 'Ultima modifica',
-        'quick_actions' => 'Azioni Rapide',
-        'reset_password' => 'Reset Password',
-        'delete_user' => 'Elimina Utente',
-        'user_active' => 'Utente Attivo',
-        'save_changes' => 'Salva Modifiche',
-        'password_note' => 'Per motivi di sicurezza, la password non può essere modificata da questa sezione. Utilizzare la funzione "Reset Password" se necessario.',
-        'confirm_delete' => 'Sei sicuro di voler eliminare questo utente? Questa azione non può essere annullata.',
-        'confirm_reset_password' => 'Sei sicuro di voler resettare la password di questo utente? Verrà inviata una nuova password temporanea.',
-    ],
+    // (User management keys removed - handled by access-management module / global)
 
-    // Branch Management
-    'branch' => [
-        'management' => 'Gestione Filiali',
-        'new_branch' => 'Nuova Filiale',
-        'edit_branch' => 'Modifica Filiale',
-        'branch_list' => 'Lista Filiali',
-        'branch_name' => 'Nome Filiale',
-        'branch_code' => 'Codice Filiale',
-        'manager' => 'Responsabile',
-        'location' => 'Ubicazione',
-        'contact_info' => 'Informazioni di Contatto',
-        'total_branches' => 'Totale Filiali',
-        'active_branches' => 'Filiali Attive',
-        'manage_users' => 'Gestisci Utenti',
-        'confirm_delete_title' => 'Conferma Eliminazione',
-        'confirm_delete_message' => 'Sei sicuro di voler eliminare la filiale',
-        'delete_warning' => 'Questa azione rimuoverà anche tutte le assegnazioni utenti.',
-    ],
+    // (Branch management keys removed - now global)
 
-    // Supplier Management
-    'supplier' => [
-        'management' => 'Gestione Fornitori',
-        'new_supplier' => 'Nuovo Fornitore',
-        'edit_supplier' => 'Modifica Fornitore',
-        'supplier_list' => 'Lista Fornitori',
-        'supplier_name' => 'Nome Fornitore',
-        'company' => 'Azienda',
-        'contact_person' => 'Persona di Contatto',
-        'total_suppliers' => 'Totale Fornitori',
-        'active_suppliers' => 'Fornitori Attivi',
-        'city' => 'Città',
-        'country' => 'Paese',
-        'confirm_delete' => 'Sei sicuro di voler eliminare questo fornitore? Questa azione eliminerà anche tutti i contatti associati e non può essere annullata.',
-    ],
+    // (Supplier management keys removed - in suppliers module)
 
-    // Product Management
-    'product' => [
-        'management' => 'Gestione Prodotti',
-        'new_product' => 'Nuovo Prodotto',
-        'edit_product' => 'Modifica Prodotto',
-        'product_list' => 'Lista Prodotti',
-        'product_name' => 'Nome Prodotto',
-        'category' => 'Categoria',
-        'price' => 'Prezzo',
-        'stock' => 'Scorta',
-        'barcode' => 'Codice a Barre',
-    ],
+    // (Product management keys removed - not restaurant-specific)
 
-    // Order Management
-    'order' => [
-        'management' => 'Gestione Ordini',
-        'new_order' => 'Nuovo Ordine',
-        'edit_order' => 'Modifica Ordine',
-        'order_list' => 'Lista Ordini',
-        'order_number' => 'Numero Ordine',
-        'customer' => 'Cliente',
-        'total' => 'Totale',
-        'order_date' => 'Data Ordine',
-        'delivery_date' => 'Data Consegna',
-    ],
+    // (Order management keys removed - not restaurant-specific)
 
-    // Buttons & Actions
-    'btn' => [
-        'refresh' => 'Aggiorna',
-        'add_new' => 'Aggiungi Nuovo',
-        'view' => 'Visualizza',
-        'modify' => 'Modifica',
-        'remove' => 'Rimuovi',
-        'confirm' => 'Conferma',
-        'close' => 'Chiudi',
-    ],
+    // (Generic button keys removed - now global)
 
-    // Messages
-    'msg' => [
-        'success' => 'Operazione completata con successo',
-        'error' => 'Si è verificato un errore',
-        'warning' => 'Attenzione',
-        'info' => 'Informazione',
-        'no_data' => 'Nessun dato disponibile',
-        'loading' => 'Caricamento...',
-        'saved' => 'Salvato con successo',
-        'deleted' => 'Eliminato con successo',
-        'updated' => 'Aggiornato con successo',
-    ],
+    // (Generic message keys removed - now global)
 
-    // Forms
-    'form' => [
-        'required' => 'Obbligatorio',
-        'optional' => 'Opzionale',
-        'select_option' => 'Seleziona un\'opzione',
-        'enter_value' => 'Inserisci valore',
-        'choose_file' => 'Scegli file',
-    ],
+    // (Generic form keys removed - now global)
 
     // Additional missing translations
     'password' => 'Password',
@@ -187,22 +68,24 @@ return [
     'room_examples' => 'Esempi: Sala Principale, Terrazza, Balcone, Sala Privata, Giardino, ecc.',
     'table_examples' => 'Esempi: Tavolo 1, A1, Terrazza-1, ecc.',
 
-    // Messaggi per nuove funzionalità
-    'msg.settings_updated_successfully' => 'Impostazioni aggiornate con successo',
-    'msg.room_created_successfully' => 'Sala creata con successo',
-    'msg.room_updated_successfully' => 'Sala aggiornata con successo',
-    'msg.room_deleted_successfully' => 'Sala eliminata con successo',
-    'msg.table_created_successfully' => 'Tavolo creato con successo',
-    'msg.table_updated_successfully' => 'Tavolo aggiornato con successo',
-    'msg.table_deleted_successfully' => 'Tavolo eliminato con successo',
-    'msg.cannot_delete_room_has_tables' => 'Non è possibile eliminare una sala che contiene tavoli',
-    'msg.required_fields' => 'Campi obbligatori mancanti',
-    'msg.invalid_token' => 'Token di sicurezza non valido',
-    'msg.not_found' => 'Elemento non trovato',
-    'msg.created_successfully' => 'Creato con successo',
-    'msg.updated_successfully' => 'Aggiornato con successo',
-    'msg.deleted_successfully' => 'Eliminato con successo',
-    'msg.error_occurred' => 'Si è verificato un errore',
+    // Messaggi per nuove funzionalità (annidati)
+    'msg' => [
+        'settings_updated_successfully' => 'Impostazioni aggiornate con successo',
+        'room_created_successfully' => 'Sala creata con successo',
+        'room_updated_successfully' => 'Sala aggiornata con successo',
+        'room_deleted_successfully' => 'Sala eliminata con successo',
+        'table_created_successfully' => 'Tavolo creato con successo',
+        'table_updated_successfully' => 'Tavolo aggiornato con successo',
+        'table_deleted_successfully' => 'Tavolo eliminato con successo',
+        'cannot_delete_room_has_tables' => 'Non è possibile eliminare una sala che contiene tavoli',
+        'required_fields' => 'Campi obbligatori mancanti',
+        'invalid_token' => 'Token di sicurezza non valido',
+        'not_found' => 'Elemento non trovato',
+        'created_successfully' => 'Creato con successo',
+        'updated_successfully' => 'Aggiornato con successo',
+        'deleted_successfully' => 'Eliminato con successo',
+        'error_occurred' => 'Si è verificato un errore',
+    ],
 
     // Gestione Zone di Consegna
     'add_delivery_area' => 'Aggiungi Zona di Consegna',
@@ -228,42 +111,63 @@ return [
     'confirm_delete' => 'Conferma Eliminazione',
     'yes_delete' => 'Sì, Elimina',
 
-    // Modulo Ricette (namespaced)
-    'restaurant.menu' => 'Ristorante',
-    'restaurant.recipes' => 'Ricette',
-    'restaurant.production' => 'Produzione',
-    'recipes.title' => 'Ricette',
-    'recipes.action.new' => 'Nuova',
-    'recipes.field.name' => 'Nome',
-    'recipes.field.yield' => 'Resa',
-    'recipes.field.components' => 'Componenti',
-    'recipes.field.actions' => 'Azioni',
-    'recipes.action.edit' => 'Modifica',
-    'recipes.action.delete' => 'Elimina',
-    'recipes.action.production' => 'Produzione',
-    'recipes.production.batch_title' => 'Batch Produzione',
-    'recipes.field.output_quantity' => 'Quantità Output',
-    'recipes.field.reference_code' => 'Codice Riferimento',
-    'recipes.msg.batch_success' => 'Batch prodotto con successo',
-    'recipes.msg.batch_error' => 'Errore produzione batch',
-    'recipes.components.preview' => 'Anteprima Componenti',
-    'recipes.field.base_qty' => 'Qtà Base',
-    'recipes.field.scaled_qty' => 'Qtà Scalata',
-    'recipes.field.unit' => 'Unità',
-    'recipes.field.yield_label' => 'Resa',
+    // Modulo Ricette (annidato)
+    'restaurant' => [
+        'menu' => 'Ristorante',
+        'recipes' => 'Ricette',
+        'production' => 'Produzione',
+    ],
+    'recipes' => [
+        'title' => 'Ricette',
+        'action' => [
+            'new' => 'Nuova',
+            'edit' => 'Modifica',
+            'delete' => 'Elimina',
+            'production' => 'Produzione',
+            'add_component' => 'Aggiungi Componente',
+        ],
+        'field' => [
+            'name' => 'Nome',
+            'yield' => 'Resa',
+            'components' => 'Componenti',
+            'actions' => 'Azioni',
+            'output_quantity' => 'Quantità Output',
+            'reference_code' => 'Codice Riferimento',
+            'base_qty' => 'Qtà Base',
+            'scaled_qty' => 'Qtà Scalata',
+            'unit' => 'Unità',
+            'yield_label' => 'Resa',
+        ],
+        'production' => [
+            'batch_title' => 'Batch Produzione',
+        ],
+        'msg' => [
+            'batch_success' => 'Batch prodotto con successo',
+            'batch_error' => 'Errore produzione batch',
+        ],
+        'components' => [
+            'preview' => 'Anteprima Componenti',
+        ],
+        'confirm' => [
+            'delete' => 'Eliminare la ricetta?',
+        ],
+    ],
 
-    // Inventario
-    'inventory.title' => 'Inventario',
-    'inventory.field.type' => 'Tipo',
-    'inventory.field.updated_at' => 'Aggiornato',
-    'inventory.field.quantity' => 'Quantità',
-    'inventory.field.unit' => 'Unità',
-    'recipes.action.add_component' => 'Aggiungi Componente',
-    'recipes.field.unit' => 'Unità',
-    'recipes.confirm.delete' => 'Eliminare la ricetta?',
-    'inventory.reason.batch_consume' => 'Consumo Batch',
-    'inventory.reason.batch_produce' => 'Produzione Batch',
-    'inventory.reason.po_receive' => 'Ricezione Ordine Acquisto',
+    // Inventario (annidato)
+    'inventory' => [
+        'title' => 'Inventario',
+        'field' => [
+            'type' => 'Tipo',
+            'updated_at' => 'Aggiornato',
+            'quantity' => 'Quantità',
+            'unit' => 'Unità',
+        ],
+        'reason' => [
+            'batch_consume' => 'Consumo Batch',
+            'batch_produce' => 'Produzione Batch',
+            'po_receive' => 'Ricezione Ordine Acquisto',
+        ],
+    ],
     'cancel' => 'Annulla',
 
 ];

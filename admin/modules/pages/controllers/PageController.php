@@ -45,6 +45,7 @@ class PageController {
             }
             $is_published = isset($_POST['is_published']) ? 1 : 0; // maintained naming
             $sort_order = (int)($_POST['sort_order'] ?? 0);
+            $featured_image = trim($_POST['featured_image'] ?? '') ?: null;
 
             $translationsInput = $_POST['translations'] ?? [];
             // Ensure default language title exists
@@ -70,7 +71,7 @@ class PageController {
                 ];
             }
 
-            $baseData = [ 'is_published' => $is_published, 'sort_order' => $sort_order ];
+            $baseData = [ 'is_published' => $is_published, 'sort_order' => $sort_order, 'featured_image' => $featured_image ];
             $pageId = $this->page_model->create($baseData, $translations);
             if ($pageId) {
                 send_notification('page.saved_success','success');
@@ -111,6 +112,7 @@ class PageController {
             }
             $is_published = isset($_POST['is_published']) ? 1 : 0;
             $sort_order = (int)($_POST['sort_order'] ?? 0);
+            $featured_image = trim($_POST['featured_image'] ?? '') ?: null;
             $translationsInput = $_POST['translations'] ?? [];
             $defaultLang = get_default_public_language_from_db();
             $defaultTitle = trim($translationsInput[$defaultLang]['title'] ?? '');
@@ -132,7 +134,7 @@ class PageController {
                     'meta_description' => $vals['meta_description'] ?? null,
                 ];
             }
-            $baseData = [ 'is_published' => $is_published, 'sort_order' => $sort_order ];
+            $baseData = [ 'is_published' => $is_published, 'sort_order' => $sort_order, 'featured_image' => $featured_image ];
             if ($this->page_model->update($id, $baseData, $translations)) {
                 send_notification('page.updated_success','success');
                 redirect(get_setting('site_url','/admin') . '/admin/pages');

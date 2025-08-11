@@ -11,7 +11,7 @@ return [
     'hooks' => [
     ],
     'extends' => 'access-management',
-    'author' => 'Core',
+    'author' => 'Marcello Fornaciari',
     'license' => 'MIT',
     'permissions' => [
         ['pages','view','Pages View','View pages'],

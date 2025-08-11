@@ -7,6 +7,8 @@ if (!isset($_SESSION['user_id']) || !has_permission($_SESSION['user_id'], 'artic
 
 $controller = new ArticleController($pdo);
 $data = $controller->create();
+$languages = $data['languages'] ?? [];
+$activeLanguages = $data['activeLanguages'] ?? [];
 
 $pageTitle = TranslationManager::t('add_article');
 include 'includes/header.php';
@@ -33,32 +35,54 @@ include 'includes/header.php';
                 <form method="POST" action="" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-8">
-                            <!-- Main Content -->
                             <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0"><?php echo TranslationManager::t('article_content'); ?></h5>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0"><?php echo TranslationManager::t('article_translations'); ?></h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label"><?php echo TranslationManager::t('article_title'); ?> *</label>
-                                        <input type="text" class="form-control" id="title" name="title" 
-                                               value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>" 
-                                               required maxlength="255">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="content" class="form-label"><?php echo TranslationManager::t('article_content'); ?> *</label>
-                                        <textarea class="form-control tinymce-editor" id="content" name="content" rows="15">
-                                            <?php echo htmlspecialchars($_POST['content'] ?? ''); ?>
-                                        </textarea>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="excerpt" class="form-label"><?php echo TranslationManager::t('article_excerpt'); ?></label>
-                                        <textarea class="form-control" id="excerpt" name="excerpt" rows="3" maxlength="500">
-                                            <?php echo htmlspecialchars($_POST['excerpt'] ?? ''); ?>
-                                        </textarea>
-                                        <div class="form-text">Riassunto dell'articolo che appare nelle liste e condivisioni social</div>
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <?php $ti=0; foreach($activeLanguages as $lang): $code=$lang['code']; ?>
+                                            <li class="nav-item" role="presentation"><button class="nav-link <?php echo $ti===0?'active':''; ?>" data-bs-toggle="tab" data-bs-target="#lang-<?php echo $code; ?>" type="button" role="tab"><?php echo strtoupper($code); ?></button></li>
+                                        <?php $ti++; endforeach; ?>
+                                    </ul>
+                                    <div class="tab-content border border-top-0 p-3">
+                                        <?php $ti=0; $defaultLang = get_default_public_language_from_db(); foreach($activeLanguages as $lang): $code=$lang['code']; ?>
+                                        <div class="tab-pane fade <?php echo $ti===0?'show active':''; ?>" id="lang-<?php echo $code; ?>" role="tabpanel">
+                                            <div class="mb-3">
+                                                <label class="form-label"><?php echo TranslationManager::t('article_title'); ?> (<?php echo strtoupper($code); ?>)<?php echo $code===$defaultLang?' *':''; ?></label>
+                                                <input type="text" class="form-control" name="translations[<?php echo $code; ?>][title]" value="<?php echo htmlspecialchars($_POST['translations'][$code]['title'] ?? ''); ?>" maxlength="255" <?php echo $code===$defaultLang?'required':''; ?>>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Slug</label>
+                                                <input type="text" class="form-control slug-input" data-lang="<?php echo $code; ?>" name="translations[<?php echo $code; ?>][slug]" value="<?php echo htmlspecialchars($_POST['translations'][$code]['slug'] ?? ''); ?>" maxlength="255">
+                                                <div class="form-text d-flex justify-content-between"><span><?php echo TranslationManager::t('leave_empty_auto'); ?></span><span class="slug-status text-muted" data-status-for="<?php echo $code; ?>"></span></div>
+                                            </div>
+// Slug live validation
+document.querySelectorAll('.slug-input').forEach(inp=>{ inp.addEventListener('blur',()=>{ const val=inp.value.trim(); if(!val) return; const lang=inp.dataset.lang; const statusEl=document.querySelector('[data-status-for="'+lang+'"]'); statusEl.textContent='...'; fetch('article-slug-check.php?slug='+encodeURIComponent(val)+'&lang='+encodeURIComponent(lang)).then(r=>r.json()).then(j=>{ if(j.available){ statusEl.textContent='OK'; statusEl.classList.remove('text-danger'); statusEl.classList.add('text-success'); } else { statusEl.textContent='IN USO'; statusEl.classList.remove('text-success'); statusEl.classList.add('text-danger'); } }).catch(()=>{ statusEl.textContent='err'; statusEl.classList.add('text-danger'); }); }); });
+                                            <div class="mb-3">
+                                                <label class="form-label"><?php echo TranslationManager::t('article_content'); ?> <?php echo $code===$defaultLang?'*':''; ?></label>
+                                                <textarea class="form-control tinymce-editor" name="translations[<?php echo $code; ?>][content]" rows="12"><?php echo htmlspecialchars($_POST['translations'][$code]['content'] ?? ''); ?></textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label"><?php echo TranslationManager::t('article_excerpt'); ?></label>
+                                                <textarea class="form-control" name="translations[<?php echo $code; ?>][excerpt]" rows="3" maxlength="500"><?php echo htmlspecialchars($_POST['translations'][$code]['excerpt'] ?? ''); ?></textarea>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label"><?php echo TranslationManager::t('meta_title'); ?></label>
+                                                    <input type="text" class="form-control" name="translations[<?php echo $code; ?>][meta_title]" value="<?php echo htmlspecialchars($_POST['translations'][$code]['meta_title'] ?? ''); ?>" maxlength="255">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label"><?php echo TranslationManager::t('meta_keywords'); ?></label>
+                                                    <input type="text" class="form-control" name="translations[<?php echo $code; ?>][meta_keywords]" value="<?php echo htmlspecialchars($_POST['translations'][$code]['meta_keywords'] ?? ''); ?>" maxlength="255">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label"><?php echo TranslationManager::t('meta_description'); ?></label>
+                                                <textarea class="form-control" name="translations[<?php echo $code; ?>][meta_description]" rows="2" maxlength="160"><?php echo htmlspecialchars($_POST['translations'][$code]['meta_description'] ?? ''); ?></textarea>
+                                            </div>
+                                        </div>
+                                        <?php $ti++; endforeach; ?>
                                     </div>
                                 </div>
                             </div>
@@ -135,9 +159,13 @@ include 'includes/header.php';
                                     
                                     <div class="mb-3">
                                         <label for="published_at" class="form-label"><?php echo TranslationManager::t('published_at'); ?></label>
-                                        <input type="datetime-local" class="form-control" id="published_at" name="published_at" 
-                                               value="<?php echo htmlspecialchars($_POST['published_at'] ?? ''); ?>">
+                                        <input type="datetime-local" class="form-control" id="published_at" name="published_at" value="<?php echo htmlspecialchars($_POST['published_at'] ?? ''); ?>">
                                         <div class="form-text">Lascia vuoto per pubblicazione immediata</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Tags</label>
+                                        <input type="text" class="form-control" name="tags" value="<?php echo htmlspecialchars($_POST['tags'] ?? ''); ?>" placeholder="seo, cucina, ricetta">
+                                        <div class="form-text">Separati da virgola</div>
                                     </div>
                                     
                                     <div class="form-check">
@@ -199,73 +227,24 @@ include 'includes/header.php';
 <!-- TinyMCE Editor -->
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-tinymce.init({
-    selector: '.tinymce-editor',
-  base_url: '/admin/assets/plugins/tinymce', // cartella "root" di TinyMCE
-  suffix: '.min',                             // se usi i file .min.js
-  license_key: 'gpl',                         // opzionale, non obbligatorio
-    height: 500,
-    menubar: true,
-    plugins: [
-        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-        'insertdatetime', 'media', 'table', 'help', 'wordcount'
-    ],
-    toolbar: 'undo redo | blocks | ' +
-        'bold italic forecolor | alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'removeformat | image media link | code | help',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-    language: '<?php echo $language; ?>',
-    relative_urls: false,
-    remove_script_host: false,
-    convert_urls: true,
-    branding: false,
-    image_uploadtab: true,
-    automatic_uploads: true,
-    file_picker_types: 'image',
-    file_picker_callback: function(cb, value, meta) {
-        if (meta.filetype === 'image') {
-            openMediaLibrary(function(imageUrl) {
-                cb(imageUrl, { alt: '' });
-            });
-        }
-    }
-});
-
-// Image selection functionality
-document.getElementById('selectImageBtn').addEventListener('click', function() {
-    openMediaLibrary(function(imageUrl) {
-        document.getElementById('featured_image').value = imageUrl;
-        document.getElementById('previewImg').src = imageUrl;
-        document.getElementById('imagePreview').style.display = 'block';
-        document.getElementById('removeImageBtn').style.display = 'inline-block';
+function initEditors(){
+    tinymce.init({
+        selector: '.tinymce-editor',
+        height: 400,
+        menubar: true,
+        plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+        toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image media link | code | help',
+        language: '<?php echo $language; ?>',
+        relative_urls:false, remove_script_host:false, convert_urls:true, branding:false,
+        file_picker_types:'image',
+        file_picker_callback:(cb,value,meta)=>{ if(meta.filetype==='image'){ openMediaLibrary(url=>cb(url,{alt:''})); } }
     });
-});
-
-document.getElementById('removeImageBtn').addEventListener('click', function() {
-    document.getElementById('featured_image').value = '';
-    document.getElementById('imagePreview').style.display = 'none';
-    this.style.display = 'none';
-});
-
-// Simple media library opener (to be enhanced)
-function openMediaLibrary(callback) {
-    const imageUrl = prompt('Inserisci URL dell\'immagine:');
-    if (imageUrl) {
-        callback(imageUrl);
-    }
 }
-
-// Initialize image preview if image already selected
-document.addEventListener('DOMContentLoaded', function() {
-    const featuredImage = document.getElementById('featured_image').value;
-    if (featuredImage) {
-        document.getElementById('previewImg').src = featuredImage;
-        document.getElementById('imagePreview').style.display = 'block';
-        document.getElementById('removeImageBtn').style.display = 'inline-block';
-    }
-});
+document.addEventListener('DOMContentLoaded',function(){ initEditors(); });
+document.getElementById('selectImageBtn').addEventListener('click', function(){ openMediaLibrary(function(imageUrl){ document.getElementById('featured_image').value=imageUrl; document.getElementById('previewImg').src=imageUrl; document.getElementById('imagePreview').style.display='block'; document.getElementById('removeImageBtn').style.display='inline-block'; });});
+document.getElementById('removeImageBtn').addEventListener('click', function(){ document.getElementById('featured_image').value=''; document.getElementById('imagePreview').style.display='none'; this.style.display='none'; });
+function openMediaLibrary(cb){ const imageUrl=prompt('Inserisci URL dell\'immagine:'); if(imageUrl){ cb(imageUrl);} }
+document.addEventListener('DOMContentLoaded',function(){ const fi=document.getElementById('featured_image').value; if(fi){ document.getElementById('previewImg').src=fi; document.getElementById('imagePreview').style.display='block'; document.getElementById('removeImageBtn').style.display='inline-block'; }});
 </script>
 
 <?php include 'includes/footer.php'; ?>

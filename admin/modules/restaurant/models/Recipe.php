@@ -21,9 +21,6 @@ class Recipe {
         } catch(Exception $e){ /* ignore - migration best effort */ }
         $this->db->exec("CREATE TABLE IF NOT EXISTS recipe_components (id INT AUTO_INCREMENT PRIMARY KEY, recipe_id INT NOT NULL, component_type ENUM('product','recipe') NOT NULL, component_id INT NOT NULL, quantity DECIMAL(14,6) NOT NULL, unit_id INT NULL, INDEX(recipe_id), INDEX(component_type), FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $this->db->exec("CREATE TABLE IF NOT EXISTS recipe_batches (id INT AUTO_INCREMENT PRIMARY KEY, recipe_id INT NOT NULL, produced_quantity DECIMAL(14,6) NOT NULL, unit_id INT NULL, reference_code VARCHAR(190) NULL, notes TEXT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE, INDEX(recipe_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-        // Simple inventory table for raw materials & produced recipe outputs (aggregated by product or recipe)
-        $this->db->exec("CREATE TABLE IF NOT EXISTS ingredient_inventory (id INT AUTO_INCREMENT PRIMARY KEY, item_type ENUM('product','recipe') NOT NULL, item_id INT NOT NULL, quantity DECIMAL(18,6) NOT NULL DEFAULT 0, unit_id INT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, UNIQUE KEY uniq_item (item_type,item_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-        $this->db->exec("CREATE TABLE IF NOT EXISTS inventory_movements (id INT AUTO_INCREMENT PRIMARY KEY, item_type ENUM('product','recipe') NOT NULL, item_id INT NOT NULL, delta DECIMAL(18,6) NOT NULL, unit_id INT NULL, reason VARCHAR(50) NOT NULL, context VARCHAR(190) NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, INDEX(item_type,item_id), INDEX(reason)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     }
     public function listAll(){
         $stmt = $this->db->query("SELECT r.*, u.name AS yield_unit_name FROM recipes r LEFT JOIN units u ON u.id = r.yield_unit_id WHERE r.is_active=1 ORDER BY r.name");
@@ -74,26 +71,30 @@ class Recipe {
         $this->db->prepare("DELETE FROM recipes WHERE id=:id")->execute([':id'=>$id]);
         return true;
     }
-    // Inventory helpers
-    public function adjustInventory(string $type,int $id,float $delta, ?int $unit_id, string $reason, ?string $context=null){
-        $this->db->beginTransaction();
-        try {
-            $sel = $this->db->prepare("SELECT id, quantity FROM ingredient_inventory WHERE item_type=:t AND item_id=:i FOR UPDATE");
-            $sel->execute([':t'=>$type, ':i'=>$id]);
-            $row=$sel->fetch(PDO::FETCH_ASSOC);
-            if($row){
-                $newQ = (float)$row['quantity'] + $delta;
-                if($newQ < -0.000001) $newQ = 0; // floor to zero
-                $up = $this->db->prepare("UPDATE ingredient_inventory SET quantity=:q, unit_id=COALESCE(:u,unit_id) WHERE id=:id");
-                $up->execute([':q'=>$newQ, ':u'=>$unit_id, ':id'=>$row['id']]);
-            } else {
-                $ins = $this->db->prepare("INSERT INTO ingredient_inventory (item_type,item_id,quantity,unit_id) VALUES (:t,:i,:q,:u)");
-                $ins->execute([':t'=>$type,':i'=>$id,':q'=>$delta,':u'=>$unit_id]);
-            }
-            $mov = $this->db->prepare("INSERT INTO inventory_movements (item_type,item_id,delta,unit_id,reason,context) VALUES (:t,:i,:d,:u,:r,:c)");
-            $mov->execute([':t'=>$type,':i'=>$id,':d'=>$delta,':u'=>$unit_id,':r'=>$reason,':c'=>$context]);
-            $this->db->commit();
-        } catch(Exception $e){ $this->db->rollBack(); throw $e; }
+    /**
+     * Server-side datatable provider
+     */
+    public function datatable(int $start,int $length,string $search='', string $orderCol='r.name', string $orderDir='ASC'){
+        $orderDir = strtoupper($orderDir)==='DESC' ? 'DESC':'ASC';
+        $allowedOrder = ['r.name','r.yield_quantity'];
+        if(!in_array($orderCol,$allowedOrder)) $orderCol = 'r.name';
+        $where=' WHERE r.is_active=1';
+        $params=[];
+        if($search!==''){
+            $where .= ' AND r.name LIKE :s';
+            $params[':s']='%'.$search.'%';
+        }
+        $total = (int)$this->db->query("SELECT COUNT(*) FROM recipes r WHERE r.is_active=1")->fetchColumn();
+        $stCount = $this->db->prepare("SELECT COUNT(*) FROM recipes r".$where);
+        $stCount->execute($params); $filtered = (int)$stCount->fetchColumn();
+        $sql = "SELECT r.id,r.name,r.yield_quantity,u.name AS yield_unit_name,(SELECT COUNT(*) FROM recipe_components rc WHERE rc.recipe_id=r.id) AS components_count FROM recipes r LEFT JOIN units u ON u.id=r.yield_unit_id".$where." ORDER BY $orderCol $orderDir LIMIT :start,:len";
+        $st = $this->db->prepare($sql);
+        foreach($params as $k=>$v){ $st->bindValue($k,$v); }
+        $st->bindValue(':start',$start,PDO::PARAM_INT);
+        $st->bindValue(':len',$length,PDO::PARAM_INT);
+        $st->execute();
+        $rows = $st->fetchAll(PDO::FETCH_ASSOC);
+        return ['total'=>$total,'filtered'=>$filtered,'data'=>$rows];
     }
     public function recordBatch(int $recipe_id,float $produced_qty, ?int $unit_id, ?string $ref, ?string $notes){
         $stmt=$this->db->prepare("INSERT INTO recipe_batches (recipe_id, produced_quantity, unit_id, reference_code, notes) VALUES (:r,:q,:u,:ref,:n)");
@@ -103,18 +104,28 @@ class Recipe {
     public function produce(int $recipe_id, float $desired_output_qty, ?string $reference_code=null){
         $recipe = $this->find($recipe_id); if(!$recipe) throw new Exception('Recipe not found');
         $factor = $desired_output_qty / max(0.000001,(float)$recipe['yield_quantity']);
+        // Load shared inventory reasons
+        $reasons = [];
+    $reasonsPath = get_setting('base_path').'admin/modules/suppliers/config/inventory_reasons.php'; // TODO: move to warehouse/config in future
+        if(is_file($reasonsPath)) { $reasons = require $reasonsPath; }
+        $reasonConsume = $reasons['BATCH_CONSUME'] ?? 'batch_consume';
+        $reasonProduce = $reasons['BATCH_PRODUCE'] ?? 'batch_produce';
         // 1. consume components
+    $inventory = new Inventory();
+    $branch_id = null; // Placeholder: derive from session / context if available
+    if(isset($_SESSION['active_branch_id'])){ $branch_id = (int)$_SESSION['active_branch_id']; }
         foreach($recipe['components'] as $c){
             $consumeQty = (float)$c['quantity'] * $factor * -1; // negative delta
-            $this->adjustInventory($c['component_type'], (int)$c['component_id'], $consumeQty, $c['unit_id'], 'batch_consume', $reference_code);
+            $inventory->adjust($c['component_type'], (int)$c['component_id'], $consumeQty, $c['unit_id'], $reasonConsume, $reference_code, $branch_id);
         }
-        // 2. add produced qty to recipe inventory (as aggregated item_type=recipe)
-        $this->adjustInventory('recipe', $recipe_id, $desired_output_qty, $recipe['yield_unit_id'], 'batch_produce', $reference_code);
+        // 2. add produced qty to recipe inventory
+        $inventory->adjust('recipe', $recipe_id, $desired_output_qty, $recipe['yield_unit_id'], $reasonProduce, $reference_code, $branch_id);
         $this->recordBatch($recipe_id, $desired_output_qty, $recipe['yield_unit_id'], $reference_code, null);
         return true;
     }
     public function getInventorySummary(){
-        $sql = "SELECT ii.*, CASE WHEN ii.item_type='product' THEN p.name ELSE r.name END AS name, u.name AS unit_name FROM ingredient_inventory ii LEFT JOIN products p ON (ii.item_type='product' AND p.id=ii.item_id) LEFT JOIN recipes r ON (ii.item_type='recipe' AND r.id=ii.item_id) LEFT JOIN units u ON u.id=ii.unit_id ORDER BY name";
-        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    }
+        if (file_exists(get_setting('base_path').'admin/modules/warehouse/models/Inventory.php')) {
+            require_once get_setting('base_path').'admin/modules/warehouse/models/Inventory.php';
+        }
+        $inv = new Inventory(); return $inv->summary(); }
 }

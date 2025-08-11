@@ -6,7 +6,7 @@ return [
     'description' => 'Funzionalità di base del sistema',
     'dependencies' => [],
     'extends' => null,
-    'author' => 'Tuo Nome',
+    'author' => 'Marcello Fornaciari',
     'license' => 'MIT',
     'permissions' => [
         ['system_logs','view','System Logs View','View activity logs'],

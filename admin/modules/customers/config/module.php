@@ -9,7 +9,7 @@ return [
 		'access-management'
 	],
 	'extends' => 'access-management',
-	'author' => 'Core',
+	'author' => 'Marcello Fornaciari',
 	'license' => 'MIT',
 	'permissions' => [
 		// Customers core
@@ -23,5 +23,6 @@ return [
 	],
 	'hooks_files' => [
 		// Placeholder if future hooks are added (ui / logic)
-	],
+	]
 ];
+?>

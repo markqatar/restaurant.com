@@ -19,7 +19,7 @@ return [
     'direction' => 'الاتجاه',
     'admin' => 'الإدارة',
     'public' => 'الموقع',
-    'actions' => 'الإجراءات',
+    // (Generic actions key removed - now global)
     'delete_language' => 'حذف اللغة',
 
     'modal' => [
@@ -60,51 +60,76 @@ return [
     'yes_restore' => 'نعم، استعادة',
     'details' => 'تفاصيل',
     'restore' => 'استعادة',
-    // Admin Menu management keys
-    'settings' => 'الإعدادات',
-    'menu.management' => 'إدارة القائمة',
-    'add.new' => 'إضافة جديد',
-    'add.menu.item' => 'إضافة عنصر قائمة',
-    'parent.menu' => 'القائمة الأب',
-    'select.parent' => 'اختر الأب',
-    'optional' => 'اختياري',
-    'title' => 'العنوان',
-    'url' => 'الرابط',
-    'icon' => 'أيقونة',
-    'sort.order' => 'ترتيب',
-    'permission.module' => 'وحدة الصلاحية',
-    'permission.action' => 'إجراء الصلاحية',
-    'permission.action.view' => 'عرض',
-    'permission.action.create' => 'إنشاء',
-    'permission.action.update' => 'تحديث',
-    'permission.action.delete' => 'حذف',
+    // Admin Menu management keys (متداخلة)
+    'menu' => [
+        'management' => 'إدارة القائمة',
+        'total_items' => 'إجمالي العناصر',
+        'active_items' => 'العناصر النشطة',
+        'items' => 'عناصر القائمة',
+    ],
+    'add' => [
+        'new' => 'إضافة جديد',
+        'menu' => [
+            'item' => 'إضافة عنصر قائمة'
+        ],
+    ],
+    'parent' => [
+        'menu' => 'القائمة الأب'
+    ],
+    'select' => [
+        'parent' => 'اختر الأب'
+    ],
+    'sort' => [
+        'order' => 'ترتيب'
+    ],
+    'permission' => [
+        'module' => 'وحدة الصلاحية',
+        'action' => [
+            '_value' => 'إجراء الصلاحية',
+            'view' => 'عرض',
+            'create' => 'إنشاء',
+            'update' => 'تحديث',
+            'delete' => 'حذف',
+        ],
+    ],
     'target' => 'الهدف',
-    'css.class' => 'فئة CSS',
-    'is.active' => 'نشط',
-    'is.separator' => 'فاصل',
-    'example.url' => 'مثال: users.php',
-    'example.module' => 'مثال: users',
-    'leave.empty.parent' => 'اتركه فارغاً لعناصر القائمة الرئيسية',
-    'leave.empty.permission' => 'اتركه فارغاً بدون فحص صلاحيات',
+    'css' => [
+        'class' => 'فئة CSS'
+    ],
+    'is' => [
+        'active' => 'نشط',
+        'separator' => 'فاصل'
+    ],
+    'example' => [
+        'url' => 'مثال: users.php',
+        'module' => 'مثال: users'
+    ],
+    'leave' => [
+        'empty' => [
+            'parent' => 'اتركه فارغاً لعناصر القائمة الرئيسية',
+            'permission' => 'اتركه فارغاً بدون فحص صلاحيات'
+        ]
+    ],
     'preview' => 'معاينة',
-    'browse.icons' => 'تصفح أيقونات FontAwesome',
-    'browse.icons.info' => 'افتح موقع FontAwesome لاستعراض الأيقونات',
-    'same.window' => 'نفس النافذة',
-    'new.window' => 'نافذة جديدة',
-    'icon.placeholder' => 'fas fa-circle',
-    'custom.class.placeholder' => 'custom-class'
-    , 'menu.total_items' => 'إجمالي العناصر'
-    , 'menu.active_items' => 'العناصر النشطة'
-    , 'menu.items' => 'عناصر القائمة'
-    , 'parent' => 'الأب'
-    , 'root' => 'الجذر'
-    , 'order' => 'الترتيب'
-    , 'permission' => 'الصلاحية'
-    , 'status' => 'الحالة'
-    , 'separator' => 'فاصل'
-    , 'active' => 'نشط'
-    , 'inactive' => 'غير نشط'
-    , 'confirm_delete' => 'تأكيد الحذف'
-    , 'delete_menu_item_confirm' => 'حذف عنصر القائمة هذا؟ لا يمكن التراجع.'
-    , 'yes_delete' => 'نعم، حذف'
+    'browse' => [
+        'icons' => 'تصفح أيقونات FontAwesome',
+        'icons_info' => 'افتح موقع FontAwesome لاستعراض الأيقونات'
+    ],
+    'same' => [
+        'window' => 'نفس النافذة'
+    ],
+    'new' => [
+        'window' => 'نافذة جديدة'
+    ],
+    'icon' => [
+        'placeholder' => 'fas fa-circle'
+    ],
+    'custom' => [
+        'class' => [
+            'placeholder' => 'custom-class'
+        ]
+    ],
+    'root' => 'الجذر',
+    'order' => 'الترتيب',
+    // (Status & confirmation keys removed - now global)
 ];

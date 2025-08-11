@@ -9,37 +9,45 @@
     </div>
   </div>
   <div class="card-body">
-    <table class="table table-bordered table-sm">
-  <thead><tr><th><?php echo TranslationManager::t('recipes.field.name') ?: 'Name'; ?></th><th><?php echo TranslationManager::t('recipes.field.yield') ?: 'Yield'; ?></th><th><?php echo TranslationManager::t('recipes.field.components') ?: 'Components'; ?></th><th><?php echo TranslationManager::t('recipes.field.actions') ?: 'Actions'; ?></th></tr></thead>
-      <tbody>
-        <?php foreach($recipes as $r): ?>
+    <table id="recipesTable" class="table table-bordered table-sm w-100">
+      <thead>
         <tr>
-          <td><?php echo htmlspecialchars($r['name']); ?></td>
-          <td><?php echo (float)$r['yield_quantity'].' '.htmlspecialchars($r['yield_unit_name']); ?></td>
-          <td><?php
-            $count = Database::getInstance()->getConnection()->prepare("SELECT COUNT(*) FROM recipe_components WHERE recipe_id=?");
-            $count->execute([$r['id']]);
-            echo (int)$count->fetchColumn();
-          ?></td>
-          <td>
-            <?php if(can('recipes','update')): ?><a class="btn btn-sm btn-primary" title="<?php echo TranslationManager::t('recipes.action.edit') ?: 'Edit'; ?>" href="<?php echo get_setting('site_url'); ?>/admin/restaurant/recipes/edit/<?php echo (int)$r['id']; ?>"><i class="fas fa-edit"></i></a><?php endif; ?>
-            <?php if(can('recipes','delete')): ?><button data-id="<?php echo (int)$r['id']; ?>" class="btn btn-sm btn-danger btn-delete" title="<?php echo TranslationManager::t('recipes.action.delete') ?: 'Delete'; ?>"><i class="fas fa-trash"></i></button><?php endif; ?>
-          </td>
+          <th><?php echo TranslationManager::t('recipes.field.name') ?: 'Name'; ?></th>
+          <th><?php echo TranslationManager::t('recipes.field.yield') ?: 'Yield'; ?></th>
+          <th><?php echo TranslationManager::t('recipes.field.components') ?: 'Components'; ?></th>
+          <th><?php echo TranslationManager::t('recipes.field.actions') ?: 'Actions'; ?></th>
         </tr>
-        <?php endforeach; ?>
-      </tbody>
+      </thead>
+      <tbody></tbody>
     </table>
   </div>
 </div>
  <script>
- <?php if(can('recipes','delete')): ?>
- document.addEventListener('click', function(e){
-  if(e.target.closest('.btn-delete')){
-  if(confirm('<?php echo addslashes(TranslationManager::t('recipes.confirm.delete') ?: 'Delete recipe?'); ?>')){
-      fetch('<?php echo get_setting('site_url'); ?>/admin/restaurant/recipes/delete', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'id='+e.target.closest('.btn-delete').dataset.id+'&csrf_token=<?php echo generate_csrf_token(); ?>'}).then(r=>r.json()).then(j=>{ if(j.success) location.reload(); else alert('Error'); });
-    }
-  }
+ $(function(){
+   $('#recipesTable').DataTable({
+     processing:true,
+     serverSide:true,
+     pageLength:25,
+     order:[[0,'asc']],
+     ajax:{
+       url:'<?php echo get_setting('site_url'); ?>/admin/restaurant/recipes/datatable',
+       type:'POST'
+     },
+     columns:[
+       {data:0},
+       {data:1},
+       {data:2, orderable:false},
+       {data:3, orderable:false, searchable:false}
+     ]
+   });
+   document.addEventListener('click', function(e){
+     const btn = e.target.closest('.btn-delete');
+     if(btn){
+       if(confirm('<?php echo addslashes(TranslationManager::t('recipes.confirm.delete') ?: 'Delete recipe?'); ?>')){
+         fetch('<?php echo get_setting('site_url'); ?>/admin/restaurant/recipes/delete', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'id='+btn.dataset.id+'&csrf_token=<?php echo generate_csrf_token(); ?>'}).then(r=>r.json()).then(j=>{ if(j.success){ $('#recipesTable').DataTable().ajax.reload(null,false); } else alert('Error'); });
+       }
+     }
+   });
  });
- <?php endif; ?>
  </script>
 <?php require_once get_setting('base_path').'admin/layouts/footer.php'; ?>

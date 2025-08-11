@@ -60,51 +60,76 @@ return [
     'yes_restore' => 'Sì, Ripristina',
     'details' => 'Dettagli',
     'restore' => 'Ripristina',
-    // Admin Menu management keys
-    'settings' => 'Impostazioni',
-    'menu.management' => 'Gestione Menu',
-    'add.new' => 'Aggiungi Nuovo',
-    'add.menu.item' => 'Aggiungi Elemento Menu',
-    'parent.menu' => 'Menu Padre',
-    'select.parent' => 'Seleziona Padre',
-    'optional' => 'Opzionale',
-    'title' => 'Titolo',
-    'url' => 'URL',
-    'icon' => 'Icona',
-    'sort.order' => 'Ordine',
-    'permission.module' => 'Modulo Permessi',
-    'permission.action' => 'Azione Permesso',
-    'permission.action.view' => 'Visualizza',
-    'permission.action.create' => 'Crea',
-    'permission.action.update' => 'Aggiorna',
-    'permission.action.delete' => 'Elimina',
+    // Admin Menu management keys (annidati)
+    'menu' => [
+        'management' => 'Gestione Menu',
+        'total_items' => 'Elementi Totali',
+        'active_items' => 'Elementi Attivi',
+        'items' => 'Voci di Menu',
+    ],
+    'add' => [
+        'new' => 'Aggiungi Nuovo',
+        'menu' => [
+            'item' => 'Aggiungi Elemento Menu'
+        ],
+    ],
+    'parent' => [
+        'menu' => 'Menu Padre'
+    ],
+    'select' => [
+        'parent' => 'Seleziona Padre'
+    ],
+    'sort' => [
+        'order' => 'Ordine'
+    ],
+    'permission' => [
+        'module' => 'Modulo Permessi',
+        'action' => [
+            '_value' => 'Azione Permesso',
+            'view' => 'Visualizza',
+            'create' => 'Crea',
+            'update' => 'Aggiorna',
+            'delete' => 'Elimina',
+        ],
+    ],
     'target' => 'Target',
-    'css.class' => 'Classe CSS',
-    'is.active' => 'Attivo',
-    'is.separator' => 'Separatore',
-    'example.url' => 'es. users.php',
-    'example.module' => 'es. users',
-    'leave.empty.parent' => 'Lascia vuoto per elementi di livello superiore',
-    'leave.empty.permission' => 'Lascia vuoto per nessun controllo permessi',
+    'css' => [
+        'class' => 'Classe CSS'
+    ],
+    'is' => [
+        'active' => 'Attivo',
+        'separator' => 'Separatore'
+    ],
+    'example' => [
+        'url' => 'es. users.php',
+        'module' => 'es. users'
+    ],
+    'leave' => [
+        'empty' => [
+            'parent' => 'Lascia vuoto per elementi di livello superiore',
+            'permission' => 'Lascia vuoto per nessun controllo permessi'
+        ]
+    ],
     'preview' => 'Anteprima',
-    'browse.icons' => 'Sfoglia Icone FontAwesome',
-    'browse.icons.info' => 'Apri il sito FontAwesome per cercare le icone',
-    'same.window' => 'Stessa Finestra',
-    'new.window' => 'Nuova Finestra',
-    'icon.placeholder' => 'fas fa-circle',
-    'custom.class.placeholder' => 'custom-class'
-    , 'menu.total_items' => 'Elementi Totali'
-    , 'menu.active_items' => 'Elementi Attivi'
-    , 'menu.items' => 'Voci di Menu'
-    , 'parent' => 'Padre'
-    , 'root' => 'Radice'
-    , 'order' => 'Ordine'
-    , 'permission' => 'Permesso'
-    , 'status' => 'Stato'
-    , 'separator' => 'Separatore'
-    , 'active' => 'Attivo'
-    , 'inactive' => 'Inattivo'
-    , 'confirm_delete' => 'Conferma Eliminazione'
-    , 'delete_menu_item_confirm' => 'Eliminare questa voce di menu? Azione irreversibile.'
-    , 'yes_delete' => 'Si, Elimina'
+    'browse' => [
+        'icons' => 'Sfoglia Icone FontAwesome',
+        'icons_info' => 'Apri il sito FontAwesome per cercare le icone'
+    ],
+    'same' => [
+        'window' => 'Stessa Finestra'
+    ],
+    'new' => [
+        'window' => 'Nuova Finestra'
+    ],
+    'icon' => [
+        'placeholder' => 'fas fa-circle'
+    ],
+    'custom' => [
+        'class' => [
+            'placeholder' => 'custom-class'
+        ]
+    ],
+    'root' => 'Radice',
+    'order' => 'Ordine',
+    // (Status & confirm keys removed - now global)
 ];

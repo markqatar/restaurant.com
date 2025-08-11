@@ -12,7 +12,7 @@ return [
     ],
 
     'extends' => 'access-management', // Questo modulo estende access-management
-    'author' => 'Tuo Nome',
+    'author' => 'Marcello Fornaciari',
     'license' => 'MIT',
     'permissions' => [
         ['articles','view','Articles View','View articles'],

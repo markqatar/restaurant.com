@@ -15,12 +15,9 @@ class CategoryController {
             header('Location: /admin/dashboard.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
-        
+        TranslationManager::loadModuleTranslations('blog');
         $categories = $this->category->getAllCategories();
-        
-        return [
-            'categories' => $categories
-        ];
+        return ['categories' => $categories];
     }
     
     public function create() {
@@ -29,43 +26,56 @@ class CategoryController {
             header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
-
+        $languages = get_available_languages_from_db('public');
+        $activeLanguages = array_filter($languages, function($l){ return (int)$l['is_active_public'] === 1; });
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name'] ?? '');
-            $description = trim($_POST['description'] ?? '');
-            $parent_id = !empty($_POST['parent_id']) ? intval($_POST['parent_id']) : null;
-            $sort_order = intval($_POST['sort_order'] ?? 0);
-            
-            if (empty($name)) {
+            $translationsInput = $_POST['translations'] ?? [];
+            $defaultLang = get_default_public_language_from_db();
+            $defaultName = trim($translationsInput[$defaultLang]['name'] ?? '');
+            if ($defaultName === '') {
                 return [
                     'parentCategories' => $this->category->getAllCategories(),
-                    'error' => TranslationManager::t('Category name is required')
+                    'languages' => $languages,
+                    'activeLanguages' => $activeLanguages,
+                    'error' => TranslationManager::t('category_name_required')
                 ];
             }
-            
-            $slug = $this->category->generateSlug($name);
-            
-            $data = [
-                'name' => $name,
-                'slug' => $slug,
-                'description' => $description,
-                'parent_id' => $parent_id,
-                'sort_order' => $sort_order
+            // build translations array
+            $translations = [];
+            foreach ($translationsInput as $lang => $vals) {
+                $name = trim($vals['name'] ?? '');
+                if ($name === '') continue;
+                $slug = $vals['slug'] ?? $this->category->generateSlug($name, $lang);
+                $translations[$lang] = [
+                    'name' => $name,
+                    'slug' => $slug,
+                    'description' => $vals['description'] ?? null,
+                    'meta_title' => $vals['meta_title'] ?? null,
+                    'meta_description' => $vals['meta_description'] ?? null,
+                ];
+            }
+            $baseData = [
+                'parent_id' => !empty($_POST['parent_id']) ? intval($_POST['parent_id']) : null,
+                'sort_order' => intval($_POST['sort_order'] ?? 0),
+                'is_active' => isset($_POST['is_active']) ? 1 : 0
             ];
-            
-            if ($this->category->createCategory($data)) {
+            $newId = $this->category->createCategory($baseData, $translations);
+            if ($newId) {
                 header('Location: /admin/categories.php?success=' . urlencode(TranslationManager::t('category_created')));
                 exit;
-            } else {
-                return [
-                    'parentCategories' => $this->category->getAllCategories(),
-                    'error' => TranslationManager::t('error_occurred')
-                ];
             }
+            return [
+                'parentCategories' => $this->category->getAllCategories(),
+                'languages' => $languages,
+                'activeLanguages' => $activeLanguages,
+                'error' => TranslationManager::t('error_occurred')
+            ];
         }
-        
-        $parentCategories = $this->category->getAllCategories();
-        return ['parentCategories' => $parentCategories];
+        return [
+            'parentCategories' => $this->category->getAllCategories(),
+            'languages' => $languages,
+            'activeLanguages' => $activeLanguages
+        ];
     }
     
     public function edit($id) {
@@ -74,54 +84,61 @@ class CategoryController {
             header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('no_permission')));
             exit;
         }
-        
+        $languages = get_available_languages_from_db('public');
+        $activeLanguages = array_filter($languages, function($l){ return (int)$l['is_active_public'] === 1; });
         $category = $this->category->getCategoryById($id);
-        
         if (!$category) {
             header('Location: /admin/categories.php?error=' . urlencode(TranslationManager::t('category_not_found')));
             exit;
         }
-        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name'] ?? '');
-            $description = trim($_POST['description'] ?? '');
-            $parent_id = !empty($_POST['parent_id']) ? intval($_POST['parent_id']) : null;
-            $sort_order = intval($_POST['sort_order'] ?? 0);
-            
-            if (empty($name)) {
+            $translationsInput = $_POST['translations'] ?? [];
+            $defaultLang = get_default_public_language_from_db();
+            $defaultName = trim($translationsInput[$defaultLang]['name'] ?? '');
+            if ($defaultName === '') {
                 return [
                     'category' => $category,
                     'parentCategories' => $this->category->getAllCategories(),
-                    'error' => TranslationManager::t('Category name is required')
+                    'languages' => $languages,
+                    'activeLanguages' => $activeLanguages,
+                    'error' => TranslationManager::t('category_name_required')
                 ];
             }
-            
-            $slug = $this->category->generateSlug($name, $id);
-            
-            $data = [
-                'name' => $name,
-                'slug' => $slug,
-                'description' => $description,
-                'parent_id' => $parent_id,
-                'sort_order' => $sort_order
+            $translations = [];
+            foreach ($translationsInput as $lang => $vals) {
+                $name = trim($vals['name'] ?? '');
+                if ($name === '') continue;
+                $slug = $vals['slug'] ?? $this->category->generateSlug($name, $lang, $id);
+                $translations[$lang] = [
+                    'name' => $name,
+                    'slug' => $slug,
+                    'description' => $vals['description'] ?? null,
+                    'meta_title' => $vals['meta_title'] ?? null,
+                    'meta_description' => $vals['meta_description'] ?? null,
+                ];
+            }
+            $baseData = [
+                'parent_id' => !empty($_POST['parent_id']) ? intval($_POST['parent_id']) : null,
+                'sort_order' => intval($_POST['sort_order'] ?? 0),
+                'is_active' => isset($_POST['is_active']) ? 1 : 0
             ];
-            
-            if ($this->category->updateCategory($id, $data)) {
+            if ($this->category->updateCategory($id, $baseData, $translations)) {
                 header('Location: /admin/categories.php?success=' . urlencode(TranslationManager::t('category_updated')));
                 exit;
-            } else {
-                return [
-                    'category' => $category,
-                    'parentCategories' => $this->category->getAllCategories(),
-                    'error' => TranslationManager::t('error_occurred')
-                ];
             }
+            return [
+                'category' => $category,
+                'parentCategories' => $this->category->getAllCategories(),
+                'languages' => $languages,
+                'activeLanguages' => $activeLanguages,
+                'error' => TranslationManager::t('error_occurred')
+            ];
         }
-        
-        $parentCategories = $this->category->getAllCategories();
         return [
             'category' => $category,
-            'parentCategories' => $parentCategories
+            'parentCategories' => $this->category->getAllCategories(),
+            'languages' => $languages,
+            'activeLanguages' => $activeLanguages
         ];
     }
     

@@ -8,7 +8,7 @@ return [
         'system' => '^1.0'
     ],
     'extends' => null,
-    'author' => 'Tuo Nome',
+    'author' => 'Marcello Fornaciari',
     'license' => 'MIT',
     'permissions' => [
         ['users','view','Users View','View users'],

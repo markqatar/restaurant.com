@@ -5,41 +5,17 @@ return [
     // ===========================
     // الأزرار والإجراءات العامة
     // ===========================
-    'btn' => [
-        'add_new' => 'إضافة جديد',
-        'refresh' => 'تحديث',
-    ],
-
-    'create' => 'إنشاء',
-    'edit' => 'تعديل',
-    'delete' => 'حذف',
-    'save' => 'حفظ',
-    'cancel' => 'إلغاء',
-    'back_to_list' => 'العودة إلى القائمة',
-    'yes_delete' => 'نعم، احذف',
+    // (Generic button / CRUD keys removed - now global)
 
     // ===========================
     // الرسائل
     // ===========================
-    'msg' => [
-        'info' => 'معلومات',
-        'error' => 'حدث خطأ',
-        'warning' => 'تحذير',
-        'no_data' => 'لا توجد بيانات متاحة',
-        'confirm_delete' => 'هل أنت متأكد أنك تريد حذف هذا العنصر؟',
-        'confirm_delete_text' => 'لا يمكن التراجع عن هذا الإجراء.',
-    ],
+    // (Generic message keys removed - now global)
 
     // ===========================
     // النماذج
     // ===========================
-    'required_field' => 'حقل إلزامي',
-    'form' => [
-        'required' => '(إلزامي)',
-        'optional' => '(اختياري)',
-        'select_option' => 'اختر خياراً',
-        'enter_value' => 'أدخل قيمة',
-    ],
+    // (Generic form keys removed - now global)
 
     // ===========================
     // إدارة المستخدمين
@@ -75,6 +51,8 @@ return [
         'select_branches' => 'حدد الفروع لتعيين هذا المستخدم.',
         'total_users' => 'إجمالي المستخدمين',
         'active_users' => 'المستخدمون النشطون',
+    // تمت إضافة حقل الصورة الرمزية داخل المصفوفة
+    'avatar' => 'الصورة الرمزية',
     ],
 
     // ===========================
@@ -102,20 +80,12 @@ return [
     // ===========================
     // الحقول الشائعة
     // ===========================
-    'name' => 'الاسم',
-    'description' => 'الوصف',
-    'email' => 'البريد الإلكتروني',
-    'phone' => 'الهاتف',
-    'users' => 'المستخدمون',
-    'created' => 'تم الإنشاء',
-    'actions' => 'الإجراءات',
+    // (Common field labels removed - now global)
 
     // ===========================
     // الحالة
     // ===========================
-    'status' => 'الحالة',
-    'active' => 'نشط',
-    'inactive' => 'غير نشط',
+    // (Status keys removed - now global)
 
     // ===========================
     // الفروع
@@ -161,7 +131,7 @@ return [
         'failed_to_remove_avatar' => 'فشل إزالة صورة الملف الشخصي.',
     ],
     'profile' => 'Profile',
-    'user.avatar' => 'User Avatar',
+    // نقل تسمية الصورة الرمزية داخل مصفوفة user
     'update_profile_picture' => 'Update Profile Picture',
     'upload_avatar' => 'Upload Avatar',
     'remove_avatar' => 'Remove Avatar',

@@ -20,20 +20,20 @@ return [
     ],
 
     'extends' => 'shops', // Questo modulo estende Shops
-    'author' => 'Tuo Nome',
+    'author' => 'Marcello Fornaciari',
     'license' => 'MIT',
     'permissions' => [
         // Placeholder restaurant permissions (adjust with real features)
-        ['restaurant','view','Restaurant View','View restaurant data'],
-        ['restaurant','update','Restaurant Update','Update restaurant data'],
-    // Recipes
-    ['recipes','view','Recipes View','List & view recipes'],
-    ['recipes','create','Recipes Create','Create new recipes'],
-    ['recipes','update','Recipes Update','Edit recipes'],
-    ['recipes','delete','Recipes Delete','Delete recipes'],
-    // Production (batch making of recipes)
-    ['production','batch','Production Batch','Execute recipe batch production'],
-    // Inventory
-    ['inventory','view','Inventory View','View ingredient inventory']
+        ['restaurant', 'view', 'Restaurant View', 'View restaurant data'],
+        ['restaurant', 'update', 'Restaurant Update', 'Update restaurant data'],
+        // Recipes
+        ['recipes', 'view', 'Recipes View', 'List & view recipes'],
+        ['recipes', 'create', 'Recipes Create', 'Create new recipes'],
+        ['recipes', 'update', 'Recipes Update', 'Edit recipes'],
+        ['recipes', 'delete', 'Recipes Delete', 'Delete recipes'],
+        // Production (batch making of recipes)
+        ['production', 'batch', 'Production Batch', 'Execute recipe batch production'],
+        // Inventory
+        ['inventory', 'view', 'Inventory View', 'View ingredient inventory']
     ]
 ];

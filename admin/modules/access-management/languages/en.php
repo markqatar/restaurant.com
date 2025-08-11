@@ -2,44 +2,14 @@
 
 return [
 
-    // ===========================
-    // Buttons & Generic Actions
-    // ===========================
-    'btn' => [
-        'add_new' => 'Add New',
-        'refresh' => 'Refresh',
-    ],
+    // (Generic buttons & actions removed - now in global language file)
 
-    'create' => 'Create',
-    'edit' => 'Edit',
-    'delete' => 'Delete',
-    'save' => 'Save',
-    'cancel' => 'Cancel',
-    'back_to_list' => 'Back to List',
-    'yes_delete' => 'Yes, Delete',
-
-    // ===========================
-    // Messages
-    // ===========================
-    'msg' => [
-        'info' => 'Information',
-        'error' => 'An error occurred',
-        'warning' => 'Warning',
-        'no_data' => 'No data available',
-        'confirm_delete' => 'Are you sure you want to delete this item?',
-        'confirm_delete_text' => 'This action cannot be undone.',
-    ],
+    // (Generic messages removed - now in global language file)
 
     // ===========================
     // Form Related
     // ===========================
-    'required_field' => 'Required field',
-    'form' => [
-        'required' => '(Required)',
-        'optional' => '(Optional)',
-        'select_option' => 'Select an option',
-        'enter_value' => 'Enter a value',
-    ],
+    // (Form helper keys removed - now in global language file)
 
     // ===========================
     // User Management
@@ -75,6 +45,8 @@ return [
         'select_branches' => 'Select the branches this user should be assigned to.',
         'total_users' => 'Total Users',
         'active_users' => 'Active Users',
+    // Added nested avatar label (previous dotted key removed)
+    'avatar' => 'Avatar',
     ],
 
     // ===========================
@@ -99,23 +71,9 @@ return [
     'module' => 'Module',
     'action' => 'Action',
 
-    // ===========================
-    // Common Fields
-    // ===========================
-    'name' => 'Name',
-    'description' => 'Description',
-    'email' => 'Email',
-    'phone' => 'Phone',
-    'users' => 'Users',
-    'created' => 'Created',
-    'actions' => 'Actions',
+    // (Common field labels removed - now in global language file)
 
-    // ===========================
-    // Status Labels
-    // ===========================
-    'status' => 'Status',
-    'active' => 'Active',
-    'inactive' => 'Inactive',
+    // (Status labels removed - now in global language file)
 
     // ===========================
     // Branches
@@ -165,7 +123,8 @@ return [
 ],
 
     'profile' => 'Profile',
-    'user.avatar' => 'User Avatar',
+    // Avatar nested inside existing user array above
+    // (Moved avatar label into the main 'user' array earlier if needed)
     'update_profile_picture' => 'Update Profile Picture',
     'upload_avatar' => 'Upload Avatar',
     'remove_avatar' => 'Remove Avatar',

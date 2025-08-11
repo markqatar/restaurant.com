@@ -1,17 +1,7 @@
 <?php
 return [
 
-    // Navigation & Menu
-    'dashboard' => 'Dashboard',
-    'users' => 'Users',
-    'products' => 'Products',
-    'orders' => 'Orders',
-    'suppliers' => 'Suppliers',
-    'branches' => 'Branches',
-    'reports' => 'Reports',
-    'settings' => 'Settings',
-    'logout' => 'Logout',
-    'profile' => 'Profile',
+    // (Navigation keys removed - now in global file)
     
     // Error messages
     'error' => [
@@ -22,120 +12,19 @@ return [
     'page_not_found' => 'Page Not Found',
     'back_to_dashboard' => 'Back to Dashboard',
     
-    // User Management
-    'user' => [
-        'management' => 'User Management',
-        'new_user' => 'New User',
-        'edit_user' => 'Edit User',
-        'user_list' => 'User List',
-        'total_users' => 'Total Users',
-        'active_users' => 'Active Users',
-        'username' => 'Username',
-        'first_name' => 'First Name',
-        'last_name' => 'Last Name',
-        'full_name' => 'Full Name',
-        'groups' => 'User Groups',
-        'permissions' => 'Permissions',
-        'no_groups' => 'No Groups',
-        'user_data' => 'User Data',
-        'account_info' => 'Account Information',
-        'user_id' => 'User ID',
-        'created_on' => 'Created on',
-        'last_modified' => 'Last Modified',
-        'quick_actions' => 'Quick Actions',
-        'reset_password' => 'Reset Password',
-        'delete_user' => 'Delete User',
-        'user_active' => 'User Active',
-        'save_changes' => 'Save Changes',
-        'password_note' => 'For security reasons, passwords cannot be modified from this section. Use the "Reset Password" function if necessary.',
-        'confirm_delete' => 'Are you sure you want to delete this user? This action cannot be undone.',
-        'confirm_reset_password' => 'Are you sure you want to reset this user\'s password? A temporary password will be sent.',
-    ],
+    // (User management keys removed - now in dedicated module/global)
     
-    // Branch Management
-    'branch' => [
-        'management' => 'Branch Management',
-        'new_branch' => 'New Branch',
-        'edit_branch' => 'Edit Branch',
-        'branch_list' => 'Branch List',
-        'branch_name' => 'Branch Name',
-        'branch_code' => 'Branch Code',
-        'manager' => 'Manager',
-        'location' => 'Location',
-        'contact_info' => 'Contact Information',
-        'total_branches' => 'Total Branches',
-        'active_branches' => 'Active Branches',
-        'manage_users' => 'Manage Users',
-        'confirm_delete_title' => 'Confirm Deletion',
-        'confirm_delete_message' => 'Are you sure you want to delete the branch',
-        'delete_warning' => 'This action will also remove all user assignments.',
-    ],
+    // (Branch management keys removed - now global)
     
-    // Supplier Management
-    'supplier' => [
-        'management' => 'Supplier Management',
-        'new_supplier' => 'New Supplier',
-        'edit_supplier' => 'Edit Supplier',
-        'supplier_list' => 'Supplier List',
-        'supplier_name' => 'Supplier Name',
-        'company' => 'Company',
-        'contact_person' => 'Contact Person',
-        'total_suppliers' => 'Total Suppliers',
-        'active_suppliers' => 'Active Suppliers',
-        'city' => 'City',
-        'country' => 'Country',
-        'confirm_delete' => 'Are you sure you want to delete this supplier? This action will also delete all associated contacts and cannot be undone.',
-    ],
+    // (Supplier management keys removed - belongs to suppliers module)
     
-    // Product Management
-    'product' => [
-        'management' => 'Product Management',
-        'new_product' => 'New Product',
-        'edit_product' => 'Edit Product',
-        'product_list' => 'Product List',
-        'product_name' => 'Product Name',
-        'category' => 'Category',
-        'price' => 'Price',
-        'stock' => 'Stock',
-        'barcode' => 'Barcode',
-    ],
+    // (Product management keys removed - not restaurant-specific)
     
-    // Order Management
-    'order' => [
-        'management' => 'Order Management',
-        'new_order' => 'New Order',
-        'edit_order' => 'Edit Order',
-        'order_list' => 'Order List',
-        'order_number' => 'Order Number',
-        'customer' => 'Customer',
-        'total' => 'Total',
-        'order_date' => 'Order Date',
-        'delivery_date' => 'Delivery Date',
-    ],
+    // (Order management keys removed - not restaurant-specific)
     
-    // Buttons & Actions
-    'btn' => [
-        'refresh' => 'Refresh',
-        'add_new' => 'Add New',
-        'view' => 'View',
-        'modify' => 'Modify',
-        'remove' => 'Remove',
-        'confirm' => 'Confirm',
-        'close' => 'Close',
-    ],
+    // (Generic button keys removed - now global)
     
-    // Messages
-    'msg' => [
-        'success' => 'Operation completed successfully',
-        'error' => 'An error occurred',
-        'warning' => 'Warning',
-        'info' => 'Information',
-        'no_data' => 'No data available',
-        'loading' => 'Loading...',
-        'saved' => 'Saved successfully',
-        'deleted' => 'Deleted successfully',
-        'updated' => 'Updated successfully',
-    ],
+    // (Generic message keys removed - now global)
     
     // Forms
     'form' => [
@@ -187,22 +76,24 @@ return [
     'room_examples' => 'Examples: Main Hall, Terrace, Balcony, Private Room, Garden, etc.',
     'table_examples' => 'Examples: Table 1, A1, Terrace-1, etc.',
     
-    // Messages for new features
-    'msg.settings_updated_successfully' => 'Settings updated successfully',
-    'msg.room_created_successfully' => 'Room created successfully',
-    'msg.room_updated_successfully' => 'Room updated successfully',
-    'msg.room_deleted_successfully' => 'Room deleted successfully',
-    'msg.table_created_successfully' => 'Table created successfully',
-    'msg.table_updated_successfully' => 'Table updated successfully',
-    'msg.table_deleted_successfully' => 'Table deleted successfully',
-    'msg.cannot_delete_room_has_tables' => 'Cannot delete room that has tables',
-    'msg.required_fields' => 'Required fields are missing',
-    'msg.invalid_token' => 'Invalid security token',
-    'msg.not_found' => 'Item not found',
-    'msg.created_successfully' => 'Created successfully',
-    'msg.updated_successfully' => 'Updated successfully',
-    'msg.deleted_successfully' => 'Deleted successfully',
-    'msg.error_occurred' => 'An error occurred',
+    // Messages for new features (nested)
+    'msg' => [
+        'settings_updated_successfully' => 'Settings updated successfully',
+        'room_created_successfully' => 'Room created successfully',
+        'room_updated_successfully' => 'Room updated successfully',
+        'room_deleted_successfully' => 'Room deleted successfully',
+        'table_created_successfully' => 'Table created successfully',
+        'table_updated_successfully' => 'Table updated successfully',
+        'table_deleted_successfully' => 'Table deleted successfully',
+        'cannot_delete_room_has_tables' => 'Cannot delete room that has tables',
+        'required_fields' => 'Required fields are missing',
+        'invalid_token' => 'Invalid security token',
+        'not_found' => 'Item not found',
+        'created_successfully' => 'Created successfully',
+        'updated_successfully' => 'Updated successfully',
+        'deleted_successfully' => 'Deleted successfully',
+        'error_occurred' => 'An error occurred',
+    ],
     
     // Logo management
     'delete_logo' => 'Delete Logo',
@@ -234,43 +125,63 @@ return [
     'confirm_delete' => 'Confirm Delete',
     'yes_delete' => 'Yes, Delete',
 
-    // Recipes Module (namespaced)
-    'restaurant.menu' => 'Restaurant',
-    'restaurant.recipes' => 'Recipes',
-    'restaurant.production' => 'Production',
-    'recipes.title' => 'Recipes',
-    'recipes.action.new' => 'New',
-    'recipes.field.name' => 'Name',
-    'recipes.field.yield' => 'Yield',
-    'recipes.field.components' => 'Components',
-    'recipes.field.actions' => 'Actions',
-    'recipes.action.edit' => 'Edit',
-    'recipes.action.delete' => 'Delete',
-    'recipes.action.production' => 'Production',
-    'recipes.production.batch_title' => 'Production Batch',
-    'recipes.field.output_quantity' => 'Output Quantity',
-    'recipes.field.reference_code' => 'Reference Code',
-    'recipes.msg.batch_success' => 'Batch produced successfully',
-    'recipes.msg.batch_error' => 'Batch production failed',
-    'recipes.components.preview' => 'Components Preview',
-    'recipes.field.base_qty' => 'Base Qty',
-    'recipes.field.scaled_qty' => 'Scaled Qty',
-    'recipes.field.unit' => 'Unit',
-    'recipes.field.yield_label' => 'Yield',
+    // Recipes Module (nested)
+    'restaurant' => [
+        'menu' => 'Restaurant',
+        'recipes' => 'Recipes',
+        'production' => 'Production',
+    ],
+    'recipes' => [
+        'title' => 'Recipes',
+        'action' => [
+            'new' => 'New',
+            'edit' => 'Edit',
+            'delete' => 'Delete',
+            'production' => 'Production',
+            'add_component' => 'Add Component',
+        ],
+        'field' => [
+            'name' => 'Name',
+            'yield' => 'Yield',
+            'components' => 'Components',
+            'actions' => 'Actions',
+            'output_quantity' => 'Output Quantity',
+            'reference_code' => 'Reference Code',
+            'base_qty' => 'Base Qty',
+            'scaled_qty' => 'Scaled Qty',
+            'unit' => 'Unit',
+            'yield_label' => 'Yield',
+        ],
+        'production' => [
+            'batch_title' => 'Production Batch',
+        ],
+        'msg' => [
+            'batch_success' => 'Batch produced successfully',
+            'batch_error' => 'Batch production failed',
+        ],
+        'components' => [
+            'preview' => 'Components Preview',
+        ],
+        'confirm' => [
+            'delete' => 'Delete recipe?',
+        ],
+    ],
 
-    // Inventory
-    'inventory.title' => 'Inventory',
-    'inventory.field.type' => 'Type',
-    'inventory.field.updated_at' => 'Updated',
-    'inventory.field.quantity' => 'Quantity',
-    'inventory.field.unit' => 'Unit',
-    'recipes.action.add_component' => 'Add Component',
-    'recipes.field.unit' => 'Unit',
-    'recipes.confirm.delete' => 'Delete recipe?',
-    // Inventory movement reasons
-    'inventory.reason.batch_consume' => 'Batch Consumption',
-    'inventory.reason.batch_produce' => 'Batch Production',
-    'inventory.reason.po_receive' => 'Purchase Order Receive',
+    // Inventory (nested)
+    'inventory' => [
+        'title' => 'Inventory',
+        'field' => [
+            'type' => 'Type',
+            'updated_at' => 'Updated',
+            'quantity' => 'Quantity',
+            'unit' => 'Unit',
+        ],
+        'reason' => [
+            'batch_consume' => 'Batch Consumption',
+            'batch_produce' => 'Batch Production',
+            'po_receive' => 'Purchase Order Receive',
+        ],
+    ],
     'cancel' => 'Cancel',
 
 ];

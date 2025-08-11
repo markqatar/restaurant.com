@@ -35,6 +35,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th style="width:60px;">IMG</th>
                                         <th><?php echo TranslationManager::t('page.title'); ?></th>
                                         <th><?php echo TranslationManager::t('page.status'); ?></th>
                                         <th><?php echo TranslationManager::t('page.created_at'); ?></th>
@@ -45,6 +46,11 @@
                                     <?php foreach ($pages as $page): ?>
                                         <tr>
                                             <td><?php echo htmlspecialchars($page['id']); ?></td>
+                                            <td>
+                                                <?php if (!empty($page['featured_image'])): ?>
+                                                    <img src="<?php echo htmlspecialchars($page['featured_image']); ?>" alt="" style="width:50px;height:40px;object-fit:cover;border-radius:4px;">
+                                                <?php endif; ?>
+                                            </td>
                                             <td>
                                                 <strong><?php echo htmlspecialchars($page['title']); ?></strong>
                                                 <br><small class="text-muted"><?php echo htmlspecialchars($page['slug']); ?></small>

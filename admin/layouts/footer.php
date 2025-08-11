@@ -23,6 +23,10 @@
 
     <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/datatables.mark.js/dist/datatables.mark.min.js"></script>
     <script src="<?php echo $siteUrl; ?>/admin/assets/plugins/tinymce/tinymce.min.js"></script>
 
     <!-- Main JS -->
@@ -36,6 +40,23 @@
         <script src="<?php echo $script; ?>"></script>
       <?php endforeach; ?>
     <?php endif; ?>
+    <script>
+    if (window.jQuery && $.fn.dataTable) {
+      $.extend(true, $.fn.dataTable.defaults, { responsive: true, mark: true });
+    }
+    document.addEventListener('init.dt', function(e, settings){
+      if(!window.jQuery) return;
+      var api = new $.fn.dataTable.Api(settings);
+      var ajax = settings.oInit.ajax || settings.ajax; if(!ajax) return;
+      var url = typeof ajax === 'string' ? ajax : ajax.url; if(!url) return;
+      var tableContainer = $(api.table().container());
+      if(tableContainer.prev('.dt-export-bar').length) return;
+      var bar = $('<div class="dt-export-bar mb-2 d-flex gap-2 flex-wrap"></div>');
+      function buildUrl(fmt){ var search = api.search(); var base = url + (url.indexOf('?')>-1?'&':'?') + 'export=' + fmt; if(search){ base += '&search=' + encodeURIComponent(search); } return base; }
+      ['csv','pdf'].forEach(function(fmt){ $('<button type="button" class="btn btn-sm btn-outline-secondary">'+fmt.toUpperCase()+' Export</button>').on('click', function(){ window.open(buildUrl(fmt),'_blank'); }).appendTo(bar); });
+      tableContainer.before(bar);
+    });
+    </script>
     <?php if ($notification = get_notification()): ?>
       <script>
         document.addEventListener('DOMContentLoaded', function() {

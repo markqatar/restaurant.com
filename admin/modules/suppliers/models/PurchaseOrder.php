@@ -48,6 +48,11 @@ class PurchaseOrder
                     try { $this->db->exec($ddl); } catch (Exception $e) { /* ignore */ }
                 }
             }
+            // Ensure supplier invoice pdf column exists
+            $col = $this->db->query("SHOW COLUMNS FROM {$this->table} LIKE 'supplier_invoice_pdf'")->fetch();
+            if(!$col){
+                try { $this->db->exec("ALTER TABLE {$this->table} ADD COLUMN supplier_invoice_pdf VARCHAR(255) NULL AFTER supplier_reference"); } catch(Exception $e){ /* ignore */ }
+            }
             // Ensure currency column for purchase_order_items (per-item currency)
             $col = $this->db->query("SHOW COLUMNS FROM {$this->itemsTable} LIKE 'currency'")->fetch();
             if(!$col){
@@ -240,7 +245,7 @@ class PurchaseOrder
 
     /** Update order meta fields (discount, supplier_reference) */
     public function updateMeta(int $id, array $data): bool {
-        $allowed = ['discount', 'supplier_reference', 'subtotal', 'total_discount_lines', 'total_discount_order', 'total_net'];
+    $allowed = ['discount', 'supplier_reference', 'subtotal', 'total_discount_lines', 'total_discount_order', 'total_net', 'supplier_invoice_pdf'];
         $sets = [];
         $params = [':id' => $id];
         foreach ($allowed as $col) {
@@ -380,7 +385,7 @@ class PurchaseOrder
         try {
             $exists = $this->db->query("SHOW TABLES LIKE 'purchase_order_barcodes'")->fetch();
             if (!$exists) return [];
-            $sql = "SELECT * FROM purchase_order_barcodes WHERE purchase_order_id = :oid ORDER BY id ASC";
+            $sql = "SELECT pob.*, p.name AS product_name, s.name AS supplier_name FROM purchase_order_barcodes pob JOIN products p ON p.id=pob.product_id JOIN suppliers s ON s.id=pob.supplier_id WHERE pob.purchase_order_id = :oid ORDER BY pob.id ASC";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':oid' => $order_id]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];

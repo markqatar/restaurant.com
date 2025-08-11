@@ -78,11 +78,11 @@
 ?>
 const CREATE_PO_VARS = {
     urls: {
-        store: "<?php echo get_setting('site_url'); ?>/admin/suppliers/purchaseorders/store",
-        suppliersSelect: "<?php echo get_setting('site_url'); ?>/admin/suppliers/suppliers/select",
+    store: "<?php echo get_setting('site_url'); ?>/admin/suppliers/purchaseorders/store",
+    suppliersSelect: "<?php echo get_setting('site_url'); ?>/admin/suppliers/suppliers/select",
     productsSelect: "<?php echo get_setting('site_url'); ?>/admin/suppliers/supplierproducts/select",
-    lastPrice: "<?php echo get_setting('site_url'); ?>/admin/suppliers/purchaseorders/lastprice" // new endpoint
-        unitsSelect: "<?php echo get_setting('site_url'); ?>/admin/system/units/select"
+    lastPrice: "<?php echo get_setting('site_url'); ?>/admin/suppliers/purchaseorders/lastprice",
+    unitsSelect: "<?php echo get_setting('site_url'); ?>/admin/system/units/select"
     },
         csrfToken: "<?php echo generate_csrf_token(); ?>",
         currencies: <?php echo json_encode($currencyList); ?>,

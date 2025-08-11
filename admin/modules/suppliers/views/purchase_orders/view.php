@@ -31,6 +31,10 @@
             <span class="badge bg-<?php echo $order['status'] == 'draft' ? 'secondary' : ($order['status'] == 'sent' ? 'primary' : 'success'); ?>">
                 <?php echo TranslationManager::t('purchase_order.status.' . $order['status']); ?>
             </span>
+            <?php if(!empty($order['supplier_invoice_pdf'])): ?>
+                <br><strong><?php echo TranslationManager::t('purchase_order.field.supplier_invoice_pdf'); ?>:</strong>
+                <a target="_blank" href="<?php echo get_setting('site_url').'/'.ltrim($order['supplier_invoice_pdf'],'/'); ?>"><?php echo TranslationManager::t('purchase_order.field.view_pdf'); ?></a>
+            <?php endif; ?>
         </div>
 
         <hr>

@@ -42,7 +42,14 @@ class TranslationManager
             }
         }
 
-        return is_string($value) ? $value : $key;
+        if (is_string($value)) {
+            return $value;
+        }
+        // If value is an array produced by nesting (with optional '_value')
+        if (is_array($value) && isset($value['_value'])) {
+            return $value['_value'];
+        }
+        return $key;
     }
     /** ✅ Formattazione data in base a setting DB */
     public static function format_date_localized($date, $context = 'admin')

@@ -13,6 +13,6 @@ return [
         'logic' => admin_module_path('/hooks/logic_hooks.php', 'shop')
     ],
     'extends' => 'access-management', // Estende il modulo access-management
-    'author' => 'Tuo Nome',
+    'author' => 'Marcello Fornaciari',
     'license' => 'MIT'
 ];

@@ -21,12 +21,19 @@ class ProductsController
 
     public function datatable()
     {
+        $export = $_GET['export'] ?? $_POST['export'] ?? null;
         $draw = intval($_POST['draw'] ?? 1);
         $start = intval($_POST['start'] ?? 0);
         $length = intval($_POST['length'] ?? 10);
-        $search = $_POST['search']['value'] ?? '';
-
-    $data = $this->product_model->datatable($start, $length, $search);
+        $search = $_GET['search'] ?? ($_POST['search']['value'] ?? '');
+        if($export){ $start=0; $length=1000000; }
+        $data = $this->product_model->datatable($start, $length, $search);
+        if($export){
+            require_once get_setting('base_path').'includes/export.php';
+            $rowsExport=[]; foreach($data['data'] as $r){ $rowsExport[]=[ $r['id'], $r['name'], $r['sku'], $r['base_unit_name'] ?? '', $r['is_raw_material'] ? 'RAW':'', $r['created_at'] ?? '' ]; }
+            $headers=['ID','Name','SKU','Base Unit','Raw Material','Created'];
+            if($export==='csv') export_csv('products.csv',$headers,$rowsExport); else export_pdf('products.pdf','Products',$headers,$rowsExport);
+        }
     // datatable already returns raw rows; could enrich with base unit name if needed
         echo json_encode([
             "draw" => $draw,

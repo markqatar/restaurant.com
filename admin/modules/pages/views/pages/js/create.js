@@ -43,6 +43,9 @@
   const featuredInput = qs(selectors.featuredImageInput);
   const previewWrap = qs(selectors.imagePreviewWrapper);
   const previewImg  = qs(selectors.imagePreviewImg);
+  const fileInput = document.getElementById('featured_file');
+  const dropZone = document.getElementById('dropZone');
+  const uploadStatus = document.getElementById('uploadStatus');
 
   if (selectBtn) {
     selectBtn.addEventListener('click', function () {
@@ -62,6 +65,43 @@
       this.style.display = 'none';
     });
   }
+
+  function doUpload(file){
+    if(!file) return;
+    if(!file.type.match(/^image\//)) { showStatus('Only image files allowed','text-danger'); return; }
+    const formData = new FormData();
+    formData.append('file', file);
+    showStatus('Uploading...','text-info');
+    fetch('/admin/media/media/upload', { method:'POST', body: formData })
+      .then(r=>r.json())
+      .then(json=>{
+        if(json.success && json.url){
+          if (featuredInput) featuredInput.value = json.url;
+          if (previewImg) previewImg.src = json.url;
+          if (previewWrap) previewWrap.style.display = 'block';
+          if (removeBtn) removeBtn.style.display = 'inline-block';
+          showStatus('Uploaded','text-success');
+        } else {
+          showStatus(json.message || 'Upload failed','text-danger');
+        }
+      })
+      .catch(()=>showStatus('Upload error','text-danger'));
+  }
+
+  function showStatus(msg, cls){
+    if(!uploadStatus) return;
+    uploadStatus.textContent = msg;
+    uploadStatus.className = 'small mt-2 ' + cls;
+    uploadStatus.style.display = 'block';
+  }
+
+  if(dropZone){
+    ;['dragenter','dragover'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault(); e.stopPropagation(); dropZone.classList.add('border-primary');}));
+    ;['dragleave','drop'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('border-primary');}));
+    dropZone.addEventListener('drop', e=>{ const file = e.dataTransfer.files[0]; doUpload(file); });
+    dropZone.addEventListener('click', ()=> fileInput && fileInput.click());
+  }
+  if(fileInput){ fileInput.addEventListener('change', e=> doUpload(e.target.files[0])); }
 
   function openMediaLibrary(callback) {
     const modal = document.createElement('div');

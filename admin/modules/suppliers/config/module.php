@@ -6,7 +6,7 @@ return [
         'system' => '^1.0'
     ],
     'extends' => null,
-    'author' => 'Tuo Nome',
+    'author' => 'Marcello Fornaciari',
     'license' => 'MIT',
     // Module declared permissions (module, action, name, description) or short form action strings
     'permissions' => [
@@ -29,5 +29,7 @@ return [
         ['suppliers_products','associate.edit','Supplier Products Associate Edit','Edit product-supplier associations'],
         ['suppliers_products','associate.delete','Supplier Products Associate Delete','Delete product-supplier associations'],
         ['suppliers_products','subunit.add','Supplier Products Subunit Add','Add product sub-units'],
+    // Inventory transfers
+    ['inventory','transfer','Inventory Transfer','Transfer inventory between branches'],
     ]
 ];

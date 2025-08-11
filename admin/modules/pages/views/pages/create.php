@@ -72,6 +72,26 @@ require_once get_setting('base_path', '/var/www/html') . 'admin/layouts/header.p
                     </div>
                 </div>
             </div>
+            <div class="card mb-4 shadow">
+                <div class="card-header"><h6 class="m-0 font-weight-bold text-primary"><?php echo TranslationManager::t('featured_image'); ?></h6></div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="featured_image" class="form-label"><?php echo TranslationManager::t('select_image'); ?></label>
+                        <input type="text" class="form-control" id="featured_image" name="featured_image" value="<?php echo htmlspecialchars($_POST['featured_image'] ?? ''); ?>" readonly>
+                        <input type="file" id="featured_file" accept="image/*" style="display:none;">
+                        <button type="button" class="btn btn-outline-primary mt-2" id="selectImageBtn"><i class="fas fa-images"></i> <?php echo TranslationManager::t('choose_image'); ?></button>
+                        <button type="button" class="btn btn-outline-danger mt-2" id="removeImageBtn" style="display:none;"><i class="fas fa-times"></i> <?php echo TranslationManager::t('remove'); ?></button>
+                        <div id="dropZone" class="mt-3 p-3 border border-2 border-dashed rounded text-center bg-light" style="cursor:pointer;">
+                            <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-secondary"></i>
+                            <div class="fw-semibold small"><?php echo TranslationManager::t('drag_drop_image'); ?></div>
+                        </div>
+                        <div id="uploadStatus" class="small mt-2 text-muted" style="display:none;"></div>
+                    </div>
+                    <div id="imagePreview" class="text-center" style="display:none;">
+                        <img id="previewImg" src="" alt="Preview" class="img-fluid" style="max-height:200px;">
+                    </div>
+                </div>
+            </div>
             <div class="card shadow">
                 <div class="card-body">
                     <div class="d-grid gap-2">

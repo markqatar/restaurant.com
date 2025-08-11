@@ -1,7 +1,7 @@
 <?php
 require_once admin_module_path('/models/DeliveryArea.php');
 
-class DeliveryAreaController
+class DeliveryAreasController
 {
     private $delivery_area_model;
     private $db;

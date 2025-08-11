@@ -2,44 +2,14 @@
 
 return [
 
-    // ===========================
-    // Pulsanti e Azioni Generiche
-    // ===========================
-    'btn' => [
-        'add_new' => 'Aggiungi Nuovo',
-        'refresh' => 'Aggiorna',
-    ],
+    // (Generic buttons/actions removed - now global)
 
-    'create' => 'Crea',
-    'edit' => 'Modifica',
-    'delete' => 'Elimina',
-    'save' => 'Salva',
-    'cancel' => 'Annulla',
-    'back_to_list' => 'Torna alla Lista',
-    'yes_delete' => 'Sì, Elimina',
-
-    // ===========================
-    // Messaggi
-    // ===========================
-    'msg' => [
-        'info' => 'Informazioni',
-        'error' => 'Si è verificato un errore',
-        'warning' => 'Attenzione',
-        'no_data' => 'Nessun dato disponibile',
-        'confirm_delete' => 'Sei sicuro di voler eliminare questo elemento?',
-        'confirm_delete_text' => 'Questa azione non può essere annullata.',
-    ],
+    // (Generic messages removed - now global)
 
     // ===========================
     // Moduli Form
     // ===========================
-    'required_field' => 'Campo obbligatorio',
-    'form' => [
-        'required' => '(Obbligatorio)',
-        'optional' => '(Opzionale)',
-        'select_option' => 'Seleziona un\'opzione',
-        'enter_value' => 'Inserisci un valore',
-    ],
+    // (Form helper keys removed - now global)
 
     // ===========================
     // Gestione Utenti
@@ -75,6 +45,8 @@ return [
         'select_branches' => 'Seleziona le filiali da assegnare all\'utente.',
         'total_users' => 'Totale Utenti',
         'active_users' => 'Utenti Attivi',
+    // Etichetta avatar spostata dentro l'array annidato
+    'avatar' => 'Avatar',
     ],
 
     // ===========================
@@ -99,23 +71,9 @@ return [
     'module' => 'Modulo',
     'action' => 'Azione',
 
-    // ===========================
-    // Campi Comuni
-    // ===========================
-    'name' => 'Nome',
-    'description' => 'Descrizione',
-    'email' => 'Email',
-    'phone' => 'Telefono',
-    'users' => 'Utenti',
-    'created' => 'Creato',
-    'actions' => 'Azioni',
+    // (Common field labels removed - now global)
 
-    // ===========================
-    // Stato
-    // ===========================
-    'status' => 'Stato',
-    'active' => 'Attivo',
-    'inactive' => 'Inattivo',
+    // (Status labels removed - now global)
 
     // ===========================
     // Filiali
@@ -161,7 +119,7 @@ return [
         'failed_to_remove_avatar' => 'Impossibile rimuovere l\'immagine del profilo.',
     ],
     'profile' => 'Profilo',
-    'user.avatar' => 'Avatar Utente',
+    // Avatar label spostato dentro l'array 'user'
     'update_profile_picture' => 'Aggiorna Immagine Profilo',
     'upload_avatar' => 'Carica Avatar',
     'remove_avatar' => 'Rimuovi Avatar',

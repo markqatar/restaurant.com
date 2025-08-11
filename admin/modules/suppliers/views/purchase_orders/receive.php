@@ -17,7 +17,7 @@
 
 <div class="card">
   <div class="card-body">
-    <form id="receiveForm" method="post" action="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/purchaseorders/receiveSubmit'; ?>">
+  <form id="receiveForm" method="post" enctype="multipart/form-data" action="<?php echo get_setting('site_url', 'http://localhost') . '/admin/suppliers/purchaseorders/receiveSubmit'; ?>">
       <?php echo csrf_token_field(); ?>
       <input type="hidden" name="order_id" value="<?php echo (int)$order['id']; ?>">
 
@@ -29,6 +29,13 @@
         <div class="col-md-2">
           <label class="form-label fw-semibold"><?php echo TranslationManager::t('purchase_order.field.order_discount'); ?></label>
           <input type="number" step="0.01" name="order_discount" class="form-control" value="<?php echo htmlspecialchars($order['discount'] ?? ''); ?>" placeholder="0.00">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Supplier PDF</label>
+          <input type="file" name="supplier_invoice_pdf" accept="application/pdf" class="form-control">
+          <?php if(!empty($order['supplier_invoice_pdf'])): ?>
+            <small class="d-block mt-1"><a target="_blank" href="<?php echo get_setting('site_url').'/'.ltrim($order['supplier_invoice_pdf'],'/'); ?>">Existing PDF</a></small>
+          <?php endif; ?>
         </div>
       </div>
 
